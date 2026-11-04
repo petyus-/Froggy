@@ -1,0 +1,554 @@
+{
+  "@@locale": "ro",
+  "appTitle": "Broscuța Meteo Google (Froggy)",
+  "@appTitle": {
+    "description": "Application title"
+  },
+  "settings": "Setări",
+  "@settings": {
+    "description": "Settings screen title and tooltip"
+  },
+  "resetToDefaults": "Resetează la valorile implicite",
+  "@resetToDefaults": {
+    "description": "Tooltip for the reset button"
+  },
+  "resetSettingsTitle": "Resetați setările?",
+  "@resetSettingsTitle": {
+    "description": "Title of the reset confirmation dialog"
+  },
+  "resetSettingsBody": "Restabilește toate setările la valorile implicite. Locațiile salvate sunt păstrate.",
+  "@resetSettingsBody": {
+    "description": "Body of the reset confirmation dialog"
+  },
+  "cancel": "Anulează",
+  "@cancel": {
+    "description": "Generic cancel button"
+  },
+  "reset": "Resetează",
+  "@reset": {
+    "description": "Reset confirmation button"
+  },
+  "hidePreview": "Ascunde previzualizarea",
+  "@hidePreview": {
+    "description": "Tooltip to hide the settings preview"
+  },
+  "showPreview": "Afișează previzualizarea",
+  "@showPreview": {
+    "description": "Tooltip to show the settings preview"
+  },
+  "sectionTiming": "Temporizare",
+  "@sectionTiming": {
+    "description": "Timing settings section title"
+  },
+  "sectionOverlaySize": "Dimensiune strat",
+  "@sectionOverlaySize": {
+    "description": "Overlay size settings section title"
+  },
+  "sectionTextShadow": "Umbră text",
+  "@sectionTextShadow": {
+    "description": "Text shadow settings section title"
+  },
+  "sectionDisplay": "Afișare",
+  "@sectionDisplay": {
+    "description": "Display settings section title"
+  },
+  "sectionDimming": "Întunecare",
+  "@sectionDimming": {
+    "description": "Dimming settings section title"
+  },
+  "sectionStatusIcons": "Pictograme de stare",
+  "@sectionStatusIcons": {
+    "description": "Status icons settings section title"
+  },
+  "sectionKioskMode": "Mod kiosk",
+  "@sectionKioskMode": {
+    "description": "Kiosk mode settings section title"
+  },
+  "sectionLauncher": "Lansator",
+  "@sectionLauncher": {
+    "description": "Launcher settings section title"
+  },
+  "sectionLocation": "Locație",
+  "@sectionLocation": {
+    "description": "Location settings section title"
+  },
+  "sectionLanguage": "Limbă",
+  "@sectionLanguage": {
+    "description": "Language settings section title"
+  },
+  "sectionAbout": "Despre",
+  "@sectionAbout": {
+    "description": "About settings section title"
+  },
+  "sectionUnits": "Unități",
+  "@sectionUnits": {
+    "description": "Units settings section title"
+  },
+  "sectionTimeFormat": "Format oră",
+  "@sectionTimeFormat": {
+    "description": "Time format settings section title"
+  },
+  "weatherRefresh": "Actualizare meteo",
+  "@weatherRefresh": {
+    "description": "Weather refresh interval label"
+  },
+  "minutesValue": "{count} min",
+  "@minutesValue": {
+    "description": "Value in minutes",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "sceneRotation": "Rotirea scenelor",
+  "@sceneRotation": {
+    "description": "Scene rotation interval label"
+  },
+  "off": "Dezactivat",
+  "@off": {
+    "description": "Disabled state"
+  },
+  "clockTextSize": "Dimensiune ceas și text",
+  "@clockTextSize": {
+    "description": "Overlay scale label"
+  },
+  "showClock": "Afișează ceasul",
+  "@showClock": {
+    "description": "Toggle to show the clock"
+  },
+  "showClockSubtitle": "Ora jos",
+  "@showClockSubtitle": {
+    "description": "Show clock toggle subtitle"
+  },
+  "showDate": "Afișează data",
+  "@showDate": {
+    "description": "Toggle to show the date"
+  },
+  "showWeather": "Afișează vremea",
+  "@showWeather": {
+    "description": "Toggle to show the weather"
+  },
+  "showWeatherSubtitle": "Temperatură și condiții",
+  "@showWeatherSubtitle": {
+    "description": "Show weather toggle subtitle"
+  },
+  "showLocation": "Afișează locația",
+  "@showLocation": {
+    "description": "Toggle to show the location name"
+  },
+  "showLocationSubtitle": "Numele locului sus",
+  "@showLocationSubtitle": {
+    "description": "Show location toggle subtitle"
+  },
+  "dimOff": "Dezactivat",
+  "@dimOff": {
+    "description": "Dimming mode: off"
+  },
+  "dimAuto": "Auto",
+  "@dimAuto": {
+    "description": "Dimming mode: automatic"
+  },
+  "dimCustom": "Personalizat",
+  "@dimCustom": {
+    "description": "Dimming mode: scheduled"
+  },
+  "level": "Nivel",
+  "@level": {
+    "description": "Dim level label"
+  },
+  "from": "De la",
+  "@from": {
+    "description": "Dim schedule start label"
+  },
+  "to": "Până la",
+  "@to": {
+    "description": "Dim schedule end label"
+  },
+  "showStatusIcons": "Afișează pictogramele de stare",
+  "@showStatusIcons": {
+    "description": "Toggle to show status icons"
+  },
+  "wifi": "Wi-Fi",
+  "@wifi": {
+    "description": "Wi-Fi toggle label"
+  },
+  "bluetooth": "Bluetooth",
+  "@bluetooth": {
+    "description": "Bluetooth toggle label"
+  },
+  "music": "Muzică",
+  "@music": {
+    "description": "Music toggle label"
+  },
+  "showMusicTitle": "Afișează titlul melodiei",
+  "@showMusicTitle": {
+    "description": "Toggle to show the music track title"
+  },
+  "showMusicTitleSubtitle": "Numele piesei (necesită acces la notificări)",
+  "@showMusicTitleSubtitle": {
+    "description": "Show music title toggle subtitle"
+  },
+  "kioskMode": "Mod kiosk",
+  "@kioskMode": {
+    "description": "Kiosk mode toggle label"
+  },
+  "kioskModeSubtitle": "Ecran permanent pentru dispozitive fără screensaver. Ascunde butonul de setări (apăsați lung pe ecran pentru redeschidere) și menține ecranul aprins.",
+  "@kioskModeSubtitle": {
+    "description": "Kiosk mode toggle subtitle"
+  },
+  "homeApp": "Aplicația de pornire",
+  "@homeApp": {
+    "description": "Launcher home app tile title"
+  },
+  "isDefaultHomeApp": "Froggy este aplicația dvs. de pornire implicită",
+  "@isDefaultHomeApp": {
+    "description": "Subtitle when Froggy is the default home app"
+  },
+  "setAsHomeApp": "Afișează Froggy pe ecranul de pornire, înlocuind lansatorul",
+  "@setAsHomeApp": {
+    "description": "Subtitle when Froggy is not the default home app"
+  },
+  "set": "Setează",
+  "@set": {
+    "description": "Button to open the home app picker"
+  },
+  "automaticLocation": "Automat",
+  "@automaticLocation": {
+    "description": "Automatic location mode label"
+  },
+  "automaticLocationSubtitle": "Detectare din rețea / GPS",
+  "@automaticLocationSubtitle": {
+    "description": "Automatic location mode subtitle"
+  },
+  "remove": "Elimină",
+  "@remove": {
+    "description": "Tooltip to remove a saved location"
+  },
+  "addLocation": "Adaugă locație",
+  "@addLocation": {
+    "description": "Add location action and screen title"
+  },
+  "swipeToSwitch": "Glisează pentru schimbare",
+  "@swipeToSwitch": {
+    "description": "Location swipe gesture setting label"
+  },
+  "swipeGestureSubtitle": "Gest pe broască",
+  "@swipeGestureSubtitle": {
+    "description": "Location swipe gesture setting subtitle"
+  },
+  "swipeLeftRight": "Stânga / dreapta",
+  "@swipeLeftRight": {
+    "description": "Horizontal swipe option"
+  },
+  "swipeUpDown": "Sus / jos",
+  "@swipeUpDown": {
+    "description": "Vertical swipe option"
+  },
+  "switchLocations": "Schimbare locație",
+  "@switchLocations": {
+    "description": "Location rotation setting label"
+  },
+  "automaticRotationSubtitle": "Rotire automată",
+  "@automaticRotationSubtitle": {
+    "description": "Location rotation setting subtitle"
+  },
+  "manually": "Manual",
+  "@manually": {
+    "description": "Location rotation: manually"
+  },
+  "withScene": "Odată cu scena",
+  "@withScene": {
+    "description": "Location rotation: with scene"
+  },
+  "onATimer": "La interval",
+  "@onATimer": {
+    "description": "Location rotation: on a timer"
+  },
+  "edgeArrows": "Săgeți laterale",
+  "@edgeArrows": {
+    "description": "Location edge arrows toggle label"
+  },
+  "edgeArrowsSubtitle": "Butoanele înapoi / înainte pe laterale",
+  "@edgeArrowsSubtitle": {
+    "description": "Location edge arrows toggle subtitle"
+  },
+  "locationRotation": "Rotirea locațiilor",
+  "@locationRotation": {
+    "description": "Location rotation interval label"
+  },
+  "checkUpdatesOnStartup": "Caută actualizări la pornire",
+  "@checkUpdatesOnStartup": {
+    "description": "Toggle to check for updates on startup"
+  },
+  "checkForUpdates": "Caută actualizări",
+  "@checkForUpdates": {
+    "description": "Check for updates tile title"
+  },
+  "checkFailed": "Nu s-a putut verifica — încercați mai târziu",
+  "@checkFailed": {
+    "description": "Update check failed message"
+  },
+  "updateAvailableVersion": "Actualizare disponibilă: v{version}",
+  "@updateAvailableVersion": {
+    "description": "Update available status with version",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "upToDate": "Aveți cea mai recentă versiune",
+  "@upToDate": {
+    "description": "No update available message"
+  },
+  "downloadInstallUpdate": "Descarcă și instalează actualizarea",
+  "@downloadInstallUpdate": {
+    "description": "Download and install update tile title"
+  },
+  "getLatestRelease": "Obțineți ultima versiune",
+  "@getLatestRelease": {
+    "description": "Open the latest release page tile title"
+  },
+  "sourceCode": "Cod sursă",
+  "@sourceCode": {
+    "description": "Source code tile title"
+  },
+  "notificationAccess": "Acces la notificări",
+  "@notificationAccess": {
+    "description": "Notification access tile title"
+  },
+  "notificationAccessSubtitle": "Necesar pentru citirea titlului piesei",
+  "@notificationAccessSubtitle": {
+    "description": "Notification access tile subtitle"
+  },
+  "grant": "Permite",
+  "@grant": {
+    "description": "Button to grant notification access"
+  },
+  "froggy": "Froggy",
+  "@froggy": {
+    "description": "About tile app name"
+  },
+  "googlesWeatherFrog": "Broscuța Meteo Google",
+  "@googlesWeatherFrog": {
+    "description": "About tile app description"
+  },
+  "versionValue": "Versiunea {version}",
+  "@versionValue": {
+    "description": "Version label",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "cityName": "Numele orașului",
+  "@cityName": {
+    "description": "City name input hint"
+  },
+  "search": "Caută",
+  "@search": {
+    "description": "Search tooltip"
+  },
+  "noMatchesFound": "Niciun rezultat",
+  "@noMatchesFound": {
+    "description": "Empty geocoding search result message"
+  },
+  "searchFailed": "Căutarea a eșuat — verificați conexiunea",
+  "@searchFailed": {
+    "description": "Geocoding search failure message"
+  },
+  "updateAvailable": "Actualizare disponibilă",
+  "@updateAvailable": {
+    "description": "Update dialog title"
+  },
+  "updateAvailableDetails": "Froggy v{latest} este disponibilă — aveți v{current}.",
+  "@updateAvailableDetails": {
+    "description": "Update dialog body",
+    "placeholders": {
+      "latest": {
+        "type": "String"
+      },
+      "current": {
+        "type": "String"
+      }
+    }
+  },
+  "skip": "Omite",
+  "@skip": {
+    "description": "Skip this update button"
+  },
+  "later": "Mai târziu",
+  "@later": {
+    "description": "Remind me later button"
+  },
+  "update": "Actualizează",
+  "@update": {
+    "description": "Start update button"
+  },
+  "view": "Vizualizează",
+  "@view": {
+    "description": "View release button"
+  },
+  "downloadingUpdate": "Se descarcă actualizarea…",
+  "@downloadingUpdate": {
+    "description": "Update download started snackbar"
+  },
+  "couldNotStartUpdate": "Nu s-a putut porni actualizarea",
+  "@couldNotStartUpdate": {
+    "description": "Update download failed snackbar"
+  },
+  "couldNotOpenLink": "Nu s-a putut deschide linkul pe acest dispozitiv",
+  "@couldNotOpenLink": {
+    "description": "Failed to open URL snackbar"
+  },
+  "couldNotStartUpdateAlt": "Nu s-a putut porni actualizarea",
+  "@couldNotStartUpdateAlt": {
+    "description": "Update install failed snackbar (about section)"
+  },
+  "previousLocation": "Locația anterioară",
+  "@previousLocation": {
+    "description": "Tooltip for the previous location arrow"
+  },
+  "nextLocation": "Locația următoare",
+  "@nextLocation": {
+    "description": "Tooltip for the next location arrow"
+  },
+  "landscapeTitle": "Froggy arată cel mai bine în mod peisaj",
+  "@landscapeTitle": {
+    "description": "Rotate hint title"
+  },
+  "landscapeBody": "Rotește telefonul în lateral pentru vederea completă.",
+  "@landscapeBody": {
+    "description": "Rotate hint body"
+  },
+  "gotIt": "Am înțeles",
+  "@gotIt": {
+    "description": "Rotate hint dismiss button"
+  },
+  "locationBlocked": "Locația este blocată, deci aceasta este zona dvs. aproximativă. Permiteți locația în browser, apoi Reîncercați.",
+  "@locationBlocked": {
+    "description": "Web location permission warning"
+  },
+  "retry": "Reîncearcă",
+  "@retry": {
+    "description": "Retry button"
+  },
+  "dismiss": "Închide",
+  "@dismiss": {
+    "description": "Dismiss tooltip"
+  },
+  "systemLanguage": "Sistem (auto)",
+  "@systemLanguage": {
+    "description": "Follow the system language option"
+  },
+  "languageSubtitle": "Limba aplicației",
+  "@languageSubtitle": {
+    "description": "Language setting subtitle"
+  },
+  "wmoClear": "Cer senin",
+  "@wmoClear": {
+    "description": "WMO code 0"
+  },
+  "wmoMainlyClear": "Predominant senin",
+  "@wmoMainlyClear": {
+    "description": "WMO code 1"
+  },
+  "wmoPartlyCloudy": "Parțial noros",
+  "@wmoPartlyCloudy": {
+    "description": "WMO code 2"
+  },
+  "wmoOvercast": "Noros",
+  "@wmoOvercast": {
+    "description": "WMO code 3"
+  },
+  "wmoFog": "Ceață",
+  "@wmoFog": {
+    "description": "WMO code 45"
+  },
+  "wmoRimeFog": "Ceață cu brumă",
+  "@wmoRimeFog": {
+    "description": "WMO code 48"
+  },
+  "wmoLightDrizzle": "Burniță ușoară",
+  "@wmoLightDrizzle": {
+    "description": "WMO code 51"
+  },
+  "wmoDrizzle": "Burniță",
+  "@wmoDrizzle": {
+    "description": "WMO code 53"
+  },
+  "wmoHeavyDrizzle": "Burniță puternică",
+  "@wmoHeavyDrizzle": {
+    "description": "WMO code 55"
+  },
+  "wmoFreezingDrizzle": "Burniță înghețată",
+  "@wmoFreezingDrizzle": {
+    "description": "WMO codes 56, 57"
+  },
+  "wmoLightRain": "Ploaie slabă",
+  "@wmoLightRain": {
+    "description": "WMO code 61"
+  },
+  "wmoRain": "Ploaie",
+  "@wmoRain": {
+    "description": "WMO code 63"
+  },
+  "wmoHeavyRain": "Ploaie puternică",
+  "@wmoHeavyRain": {
+    "description": "WMO code 65"
+  },
+  "wmoFreezingRain": "Ploaie înghețată",
+  "@wmoFreezingRain": {
+    "description": "WMO codes 66, 67"
+  },
+  "wmoLightSnow": "Ninsoare slabă",
+  "@wmoLightSnow": {
+    "description": "WMO code 71"
+  },
+  "wmoSnow": "Ninsoare",
+  "@wmoSnow": {
+    "description": "WMO code 73"
+  },
+  "wmoHeavySnow": "Ninsoare abundentă",
+  "@wmoHeavySnow": {
+    "description": "WMO code 75"
+  },
+  "wmoSnowGrains": "Granule de zăpadă",
+  "@wmoSnowGrains": {
+    "description": "WMO code 77"
+  },
+  "wmoLightShowers": "Averse ușoare",
+  "@wmoLightShowers": {
+    "description": "WMO code 80"
+  },
+  "wmoShowers": "Averse",
+  "@wmoShowers": {
+    "description": "WMO code 81"
+  },
+  "wmoHeavyShowers": "Averse puternice",
+  "@wmoHeavyShowers": {
+    "description": "WMO code 82"
+  },
+  "wmoSnowShowers": "Averse de zăpadă",
+  "@wmoSnowShowers": {
+    "description": "WMO code 85"
+  },
+  "wmoHeavySnowShowers": "Averse de zăpadă puternice",
+  "@wmoHeavySnowShowers": {
+    "description": "WMO code 86"
+  },
+  "wmoThunderstorm": "Furtună",
+  "@wmoThunderstorm": {
+    "description": "WMO code 95"
+  },
+  "wmoThunderstormHail": "Furtună, grindină",
+  "@wmoThunderstormHail": {
+    "description": "WMO codes 96, 99"
+  },
+  "wmoUnknown": "Necunoscut",
+  "@wmoUnknown": {
+    "description": "Unknown WMO code"
+  }
+}

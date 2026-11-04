@@ -1,0 +1,554 @@
+{
+  "@@locale": "pl",
+  "appTitle": "Żaba Pogodowa Google (Froggy)",
+  "@appTitle": {
+    "description": "Application title"
+  },
+  "settings": "Ustawienia",
+  "@settings": {
+    "description": "Settings screen title and tooltip"
+  },
+  "resetToDefaults": "Przywróć domyślne",
+  "@resetToDefaults": {
+    "description": "Tooltip for the reset button"
+  },
+  "resetSettingsTitle": "Przywrócić ustawienia?",
+  "@resetSettingsTitle": {
+    "description": "Title of the reset confirmation dialog"
+  },
+  "resetSettingsBody": "Przywróć wszystkie ustawienia do wartości domyślnych. Zapisane lokalizacje zostaną zachowane.",
+  "@resetSettingsBody": {
+    "description": "Body of the reset confirmation dialog"
+  },
+  "cancel": "Anuluj",
+  "@cancel": {
+    "description": "Generic cancel button"
+  },
+  "reset": "Przywróć",
+  "@reset": {
+    "description": "Reset confirmation button"
+  },
+  "hidePreview": "Ukryj podgląd",
+  "@hidePreview": {
+    "description": "Tooltip to hide the settings preview"
+  },
+  "showPreview": "Pokaż podgląd",
+  "@showPreview": {
+    "description": "Tooltip to show the settings preview"
+  },
+  "sectionTiming": "Czas",
+  "@sectionTiming": {
+    "description": "Timing settings section title"
+  },
+  "sectionOverlaySize": "Rozmiar nakładki",
+  "@sectionOverlaySize": {
+    "description": "Overlay size settings section title"
+  },
+  "sectionTextShadow": "Cień tekstu",
+  "@sectionTextShadow": {
+    "description": "Text shadow settings section title"
+  },
+  "sectionDisplay": "Wyświetlanie",
+  "@sectionDisplay": {
+    "description": "Display settings section title"
+  },
+  "sectionDimming": "Przygaszanie",
+  "@sectionDimming": {
+    "description": "Dimming settings section title"
+  },
+  "sectionStatusIcons": "Ikony stanu",
+  "@sectionStatusIcons": {
+    "description": "Status icons settings section title"
+  },
+  "sectionKioskMode": "Tryb kiosku",
+  "@sectionKioskMode": {
+    "description": "Kiosk mode settings section title"
+  },
+  "sectionLauncher": "Launcher",
+  "@sectionLauncher": {
+    "description": "Launcher settings section title"
+  },
+  "sectionLocation": "Lokalizacja",
+  "@sectionLocation": {
+    "description": "Location settings section title"
+  },
+  "sectionLanguage": "Język",
+  "@sectionLanguage": {
+    "description": "Language settings section title"
+  },
+  "sectionAbout": "O aplikacji",
+  "@sectionAbout": {
+    "description": "About settings section title"
+  },
+  "sectionUnits": "Jednostki",
+  "@sectionUnits": {
+    "description": "Units settings section title"
+  },
+  "sectionTimeFormat": "Format czasu",
+  "@sectionTimeFormat": {
+    "description": "Time format settings section title"
+  },
+  "weatherRefresh": "Aktualizacja pogody",
+  "@weatherRefresh": {
+    "description": "Weather refresh interval label"
+  },
+  "minutesValue": "{count} min",
+  "@minutesValue": {
+    "description": "Value in minutes",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "sceneRotation": "Rotacja scen",
+  "@sceneRotation": {
+    "description": "Scene rotation interval label"
+  },
+  "off": "Wył.",
+  "@off": {
+    "description": "Disabled state"
+  },
+  "clockTextSize": "Rozmiar zegara i tekstu",
+  "@clockTextSize": {
+    "description": "Overlay scale label"
+  },
+  "showClock": "Pokaż zegar",
+  "@showClock": {
+    "description": "Toggle to show the clock"
+  },
+  "showClockSubtitle": "Czas na dole",
+  "@showClockSubtitle": {
+    "description": "Show clock toggle subtitle"
+  },
+  "showDate": "Pokaż datę",
+  "@showDate": {
+    "description": "Toggle to show the date"
+  },
+  "showWeather": "Pokaż pogodę",
+  "@showWeather": {
+    "description": "Toggle to show the weather"
+  },
+  "showWeatherSubtitle": "Temperatura i warunki",
+  "@showWeatherSubtitle": {
+    "description": "Show weather toggle subtitle"
+  },
+  "showLocation": "Pokaż lokalizację",
+  "@showLocation": {
+    "description": "Toggle to show the location name"
+  },
+  "showLocationSubtitle": "Nazwa miejsca u góry",
+  "@showLocationSubtitle": {
+    "description": "Show location toggle subtitle"
+  },
+  "dimOff": "Wył.",
+  "@dimOff": {
+    "description": "Dimming mode: off"
+  },
+  "dimAuto": "Auto",
+  "@dimAuto": {
+    "description": "Dimming mode: automatic"
+  },
+  "dimCustom": "Własne",
+  "@dimCustom": {
+    "description": "Dimming mode: scheduled"
+  },
+  "level": "Poziom",
+  "@level": {
+    "description": "Dim level label"
+  },
+  "from": "Od",
+  "@from": {
+    "description": "Dim schedule start label"
+  },
+  "to": "Do",
+  "@to": {
+    "description": "Dim schedule end label"
+  },
+  "showStatusIcons": "Pokaż ikony stanu",
+  "@showStatusIcons": {
+    "description": "Toggle to show status icons"
+  },
+  "wifi": "Wi-Fi",
+  "@wifi": {
+    "description": "Wi-Fi toggle label"
+  },
+  "bluetooth": "Bluetooth",
+  "@bluetooth": {
+    "description": "Bluetooth toggle label"
+  },
+  "music": "Muzyka",
+  "@music": {
+    "description": "Music toggle label"
+  },
+  "showMusicTitle": "Pokaż tytuł utworu",
+  "@showMusicTitle": {
+    "description": "Toggle to show the music track title"
+  },
+  "showMusicTitleSubtitle": "Nazwa utworu (wymaga dostępu do powiadomień)",
+  "@showMusicTitleSubtitle": {
+    "description": "Show music title toggle subtitle"
+  },
+  "kioskMode": "Tryb kiosku",
+  "@kioskMode": {
+    "description": "Kiosk mode toggle label"
+  },
+  "kioskModeSubtitle": "Wyświetlacz zawsze włączony dla urządzeń bez wygaszacza ekranu. Ukrywa przycisk ustawień (przytrzymaj ekran, aby otworzyć ponownie) i utrzymuje włączony ekran.",
+  "@kioskModeSubtitle": {
+    "description": "Kiosk mode toggle subtitle"
+  },
+  "homeApp": "Aplikacja domowa",
+  "@homeApp": {
+    "description": "Launcher home app tile title"
+  },
+  "isDefaultHomeApp": "Froggy jest Twoją domyślną aplikacją domową",
+  "@isDefaultHomeApp": {
+    "description": "Subtitle when Froggy is the default home app"
+  },
+  "setAsHomeApp": "Pokaż Froggy na ekranie głównym, zastępując launcher",
+  "@setAsHomeApp": {
+    "description": "Subtitle when Froggy is not the default home app"
+  },
+  "set": "Ustaw",
+  "@set": {
+    "description": "Button to open the home app picker"
+  },
+  "automaticLocation": "Automatycznie",
+  "@automaticLocation": {
+    "description": "Automatic location mode label"
+  },
+  "automaticLocationSubtitle": "Wykrywaj z sieci / GPS",
+  "@automaticLocationSubtitle": {
+    "description": "Automatic location mode subtitle"
+  },
+  "remove": "Usuń",
+  "@remove": {
+    "description": "Tooltip to remove a saved location"
+  },
+  "addLocation": "Dodaj lokalizację",
+  "@addLocation": {
+    "description": "Add location action and screen title"
+  },
+  "swipeToSwitch": "Przesuń, aby zmienić",
+  "@swipeToSwitch": {
+    "description": "Location swipe gesture setting label"
+  },
+  "swipeGestureSubtitle": "Gest na żabie",
+  "@swipeGestureSubtitle": {
+    "description": "Location swipe gesture setting subtitle"
+  },
+  "swipeLeftRight": "Lewo / prawo",
+  "@swipeLeftRight": {
+    "description": "Horizontal swipe option"
+  },
+  "swipeUpDown": "Góra / dół",
+  "@swipeUpDown": {
+    "description": "Vertical swipe option"
+  },
+  "switchLocations": "Zmiana lokalizacji",
+  "@switchLocations": {
+    "description": "Location rotation setting label"
+  },
+  "automaticRotationSubtitle": "Automatyczna rotacja",
+  "@automaticRotationSubtitle": {
+    "description": "Location rotation setting subtitle"
+  },
+  "manually": "Ręcznie",
+  "@manually": {
+    "description": "Location rotation: manually"
+  },
+  "withScene": "Ze sceną",
+  "@withScene": {
+    "description": "Location rotation: with scene"
+  },
+  "onATimer": "Co czas",
+  "@onATimer": {
+    "description": "Location rotation: on a timer"
+  },
+  "edgeArrows": "Strzałki na krawędziach",
+  "@edgeArrows": {
+    "description": "Location edge arrows toggle label"
+  },
+  "edgeArrowsSubtitle": "Przyciski wstecz / dalej po bokach",
+  "@edgeArrowsSubtitle": {
+    "description": "Location edge arrows toggle subtitle"
+  },
+  "locationRotation": "Rotacja lokalizacji",
+  "@locationRotation": {
+    "description": "Location rotation interval label"
+  },
+  "checkUpdatesOnStartup": "Sprawdzaj aktualizacje przy starcie",
+  "@checkUpdatesOnStartup": {
+    "description": "Toggle to check for updates on startup"
+  },
+  "checkForUpdates": "Sprawdź aktualizacje",
+  "@checkForUpdates": {
+    "description": "Check for updates tile title"
+  },
+  "checkFailed": "Nie można sprawdzić — spróbuj później",
+  "@checkFailed": {
+    "description": "Update check failed message"
+  },
+  "updateAvailableVersion": "Dostępna aktualizacja: v{version}",
+  "@updateAvailableVersion": {
+    "description": "Update available status with version",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "upToDate": "Masz najnowszą wersję",
+  "@upToDate": {
+    "description": "No update available message"
+  },
+  "downloadInstallUpdate": "Pobierz i zainstaluj aktualizację",
+  "@downloadInstallUpdate": {
+    "description": "Download and install update tile title"
+  },
+  "getLatestRelease": "Pobierz najnowszą wersję",
+  "@getLatestRelease": {
+    "description": "Open the latest release page tile title"
+  },
+  "sourceCode": "Kod źródłowy",
+  "@sourceCode": {
+    "description": "Source code tile title"
+  },
+  "notificationAccess": "Dostęp do powiadomień",
+  "@notificationAccess": {
+    "description": "Notification access tile title"
+  },
+  "notificationAccessSubtitle": "Wymagane do odczytania tytułu utworu",
+  "@notificationAccessSubtitle": {
+    "description": "Notification access tile subtitle"
+  },
+  "grant": "Przyznaj",
+  "@grant": {
+    "description": "Button to grant notification access"
+  },
+  "froggy": "Froggy",
+  "@froggy": {
+    "description": "About tile app name"
+  },
+  "googlesWeatherFrog": "Żaba Pogodowa Google",
+  "@googlesWeatherFrog": {
+    "description": "About tile app description"
+  },
+  "versionValue": "Wersja {version}",
+  "@versionValue": {
+    "description": "Version label",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "cityName": "Nazwa miasta",
+  "@cityName": {
+    "description": "City name input hint"
+  },
+  "search": "Szukaj",
+  "@search": {
+    "description": "Search tooltip"
+  },
+  "noMatchesFound": "Brak wyników",
+  "@noMatchesFound": {
+    "description": "Empty geocoding search result message"
+  },
+  "searchFailed": "Wyszukiwanie nie powiodło się — sprawdź połączenie",
+  "@searchFailed": {
+    "description": "Geocoding search failure message"
+  },
+  "updateAvailable": "Dostępna aktualizacja",
+  "@updateAvailable": {
+    "description": "Update dialog title"
+  },
+  "updateAvailableDetails": "Dostępna jest Froggy v{latest} — masz v{current}.",
+  "@updateAvailableDetails": {
+    "description": "Update dialog body",
+    "placeholders": {
+      "latest": {
+        "type": "String"
+      },
+      "current": {
+        "type": "String"
+      }
+    }
+  },
+  "skip": "Pomiń",
+  "@skip": {
+    "description": "Skip this update button"
+  },
+  "later": "Później",
+  "@later": {
+    "description": "Remind me later button"
+  },
+  "update": "Aktualizuj",
+  "@update": {
+    "description": "Start update button"
+  },
+  "view": "Wyświetl",
+  "@view": {
+    "description": "View release button"
+  },
+  "downloadingUpdate": "Pobieranie aktualizacji…",
+  "@downloadingUpdate": {
+    "description": "Update download started snackbar"
+  },
+  "couldNotStartUpdate": "Nie można rozpocząć aktualizacji",
+  "@couldNotStartUpdate": {
+    "description": "Update download failed snackbar"
+  },
+  "couldNotOpenLink": "Nie można otworzyć linku na tym urządzeniu",
+  "@couldNotOpenLink": {
+    "description": "Failed to open URL snackbar"
+  },
+  "couldNotStartUpdateAlt": "Nie można rozpocząć aktualizacji",
+  "@couldNotStartUpdateAlt": {
+    "description": "Update install failed snackbar (about section)"
+  },
+  "previousLocation": "Poprzednia lokalizacja",
+  "@previousLocation": {
+    "description": "Tooltip for the previous location arrow"
+  },
+  "nextLocation": "Następna lokalizacja",
+  "@nextLocation": {
+    "description": "Tooltip for the next location arrow"
+  },
+  "landscapeTitle": "Froggy najlepiej wygląda w poziomie",
+  "@landscapeTitle": {
+    "description": "Rotate hint title"
+  },
+  "landscapeBody": "Obróć telefon poziomo, aby zobaczyć pełny widok.",
+  "@landscapeBody": {
+    "description": "Rotate hint body"
+  },
+  "gotIt": "Rozumiem",
+  "@gotIt": {
+    "description": "Rotate hint dismiss button"
+  },
+  "locationBlocked": "Lokalizacja jest zablokowana, więc to Twój przybliżony obszar. Zezwól na lokalizację w przeglądarce i spróbuj ponownie.",
+  "@locationBlocked": {
+    "description": "Web location permission warning"
+  },
+  "retry": "Ponów",
+  "@retry": {
+    "description": "Retry button"
+  },
+  "dismiss": "Zamknij",
+  "@dismiss": {
+    "description": "Dismiss tooltip"
+  },
+  "systemLanguage": "Systemowy (auto)",
+  "@systemLanguage": {
+    "description": "Follow the system language option"
+  },
+  "languageSubtitle": "Język aplikacji",
+  "@languageSubtitle": {
+    "description": "Language setting subtitle"
+  },
+  "wmoClear": "Bezchmurnie",
+  "@wmoClear": {
+    "description": "WMO code 0"
+  },
+  "wmoMainlyClear": "Przeważnie bezchmurnie",
+  "@wmoMainlyClear": {
+    "description": "WMO code 1"
+  },
+  "wmoPartlyCloudy": "Częściowo pochmurno",
+  "@wmoPartlyCloudy": {
+    "description": "WMO code 2"
+  },
+  "wmoOvercast": "Pochmurno",
+  "@wmoOvercast": {
+    "description": "WMO code 3"
+  },
+  "wmoFog": "Mgła",
+  "@wmoFog": {
+    "description": "WMO code 45"
+  },
+  "wmoRimeFog": "Mgła osadzająca szadź",
+  "@wmoRimeFog": {
+    "description": "WMO code 48"
+  },
+  "wmoLightDrizzle": "Słaba mżawka",
+  "@wmoLightDrizzle": {
+    "description": "WMO code 51"
+  },
+  "wmoDrizzle": "Mżawka",
+  "@wmoDrizzle": {
+    "description": "WMO code 53"
+  },
+  "wmoHeavyDrizzle": "Silna mżawka",
+  "@wmoHeavyDrizzle": {
+    "description": "WMO code 55"
+  },
+  "wmoFreezingDrizzle": "Marznąca mżawka",
+  "@wmoFreezingDrizzle": {
+    "description": "WMO codes 56, 57"
+  },
+  "wmoLightRain": "Słaby deszcz",
+  "@wmoLightRain": {
+    "description": "WMO code 61"
+  },
+  "wmoRain": "Deszcz",
+  "@wmoRain": {
+    "description": "WMO code 63"
+  },
+  "wmoHeavyRain": "Silny deszcz",
+  "@wmoHeavyRain": {
+    "description": "WMO code 65"
+  },
+  "wmoFreezingRain": "Marznący deszcz",
+  "@wmoFreezingRain": {
+    "description": "WMO codes 66, 67"
+  },
+  "wmoLightSnow": "Słabe śniecenie",
+  "@wmoLightSnow": {
+    "description": "WMO code 71"
+  },
+  "wmoSnow": "Śnieg",
+  "@wmoSnow": {
+    "description": "WMO code 73"
+  },
+  "wmoHeavySnow": "Silny śnieg",
+  "@wmoHeavySnow": {
+    "description": "WMO code 75"
+  },
+  "wmoSnowGrains": "Kasza śnieżna",
+  "@wmoSnowGrains": {
+    "description": "WMO code 77"
+  },
+  "wmoLightShowers": "Słabe przelotne opady",
+  "@wmoLightShowers": {
+    "description": "WMO code 80"
+  },
+  "wmoShowers": "Przelotne opady",
+  "@wmoShowers": {
+    "description": "WMO code 81"
+  },
+  "wmoHeavyShowers": "Silne przelotne opady",
+  "@wmoHeavyShowers": {
+    "description": "WMO code 82"
+  },
+  "wmoSnowShowers": "Przelotne opady śniegu",
+  "@wmoSnowShowers": {
+    "description": "WMO code 85"
+  },
+  "wmoHeavySnowShowers": "Silne przelotne opady śniegu",
+  "@wmoHeavySnowShowers": {
+    "description": "WMO code 86"
+  },
+  "wmoThunderstorm": "Burza",
+  "@wmoThunderstorm": {
+    "description": "WMO code 95"
+  },
+  "wmoThunderstormHail": "Burza, grad",
+  "@wmoThunderstormHail": {
+    "description": "WMO codes 96, 99"
+  },
+  "wmoUnknown": "Nieznane",
+  "@wmoUnknown": {
+    "description": "Unknown WMO code"
+  }
+}

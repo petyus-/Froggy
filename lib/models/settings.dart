@@ -74,6 +74,7 @@ class Settings {
   final bool showBluetooth;
   final bool showMusic;
   final bool kioskMode;
+  final String? languageCode;
 
   const Settings({
     this.unit = TempUnit.celsius,
@@ -104,6 +105,7 @@ class Settings {
     this.showBluetooth = true,
     this.showMusic = true,
     this.kioskMode = false,
+    this.languageCode,
   });
 
   double dimAt(double nightFactor, DateTime localTime) {
@@ -203,6 +205,8 @@ class Settings {
     bool? showBluetooth,
     bool? showMusic,
     bool? kioskMode,
+    String? languageCode,
+    bool clearLanguage = false,
   }) {
     return Settings(
       unit: unit ?? this.unit,
@@ -237,6 +241,8 @@ class Settings {
       showBluetooth: showBluetooth ?? this.showBluetooth,
       showMusic: showMusic ?? this.showMusic,
       kioskMode: kioskMode ?? this.kioskMode,
+      languageCode:
+          clearLanguage ? null : (languageCode ?? this.languageCode),
     );
   }
 
@@ -269,6 +275,7 @@ class Settings {
         'showBluetooth': showBluetooth,
         'showMusic': showMusic,
         'kioskMode': kioskMode,
+        'languageCode': languageCode,
       };
 
   static Settings fromJson(Map<String, dynamic> j) => Settings(
@@ -308,6 +315,7 @@ class Settings {
         showBluetooth: (j['showBluetooth'] as bool?) ?? true,
         showMusic: (j['showMusic'] as bool?) ?? true,
         kioskMode: (j['kioskMode'] as bool?) ?? false,
+        languageCode: j['languageCode'] as String?,
       );
 
   static T _enumByName<T extends Enum>(

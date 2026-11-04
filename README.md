@@ -51,6 +51,22 @@ flutter pub get
 flutter run
 ```
 
+## Internationalization
+
+Froggy ships in English, German, French, Italian, Spanish, Polish, Romanian,
+Dutch and Hungarian. The app language can be changed in **Settings → Language**
+(by default it follows the system language).
+
+### Adding a new language
+
+1. Copy `lib/l10n/app_en.arb` to `lib/l10n/app_<locale>.arb` (e.g. `app_pt.arb`)
+   and translate every string value. Keep the `{placeholders}` intact and do not
+   touch the `@key` metadata entries.
+2. Add the new language (ISO code + native name) to `_languageOptions` in
+   `lib/ui/settings_screen.dart` so it appears in the language dropdown.
+3. Run `flutter gen-l10n`, then `flutter analyze` to verify nothing is missing,
+   and open a pull request.
+
 ## Notes
 
 Assets are Google's, reused under fair use. Not affiliated with Google.

@@ -108,6 +108,9 @@ class _FroggyAppState extends State<FroggyApp> with WidgetsBindingObserver {
       title: "Google's Weather Frog (Froggy)",
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(useMaterial3: true),
+      locale: _settings.settings.languageCode == null
+          ? null
+          : Locale(_settings.settings.languageCode!),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       builder: (context, child) {

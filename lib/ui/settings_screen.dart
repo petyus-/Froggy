@@ -143,6 +143,18 @@ class _Controls extends StatelessWidget {
   final SettingsController settings;
   final bool isTv;
 
+  static const _languageOptions = <(String, String)>[
+    ('en', 'English'),
+    ('de', 'Deutsch'),
+    ('fr', 'Français'),
+    ('it', 'Italiano'),
+    ('es', 'Español'),
+    ('pl', 'Polski'),
+    ('ro', 'Română'),
+    ('nl', 'Nederlands'),
+    ('hu', 'Magyar'),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
@@ -466,6 +478,25 @@ class _Controls extends StatelessWidget {
                   ),
                 ),
             ],
+            const Divider(),
+            _sectionTitle(context, l10n.sectionLanguage),
+            ListTile(
+              dense: true,
+              title: Text(l10n.sectionLanguage),
+              trailing: DropdownButton<String>(
+                value: s.languageCode ?? '',
+                onChanged: (v) =>
+                    settings.setLanguageCode(v == null || v.isEmpty ? null : v),
+                items: [
+                  DropdownMenuItem(
+                    value: '',
+                    child: Text(l10n.systemLanguage),
+                  ),
+                  for (final e in _languageOptions)
+                    DropdownMenuItem(value: e.$1, child: Text(e.$2)),
+                ],
+              ),
+            ),
             const Divider(),
             _sectionTitle(context, l10n.sectionAbout),
             if (!kIsWeb)
