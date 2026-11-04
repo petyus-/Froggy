@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+import '../l10n/app_localizations.dart';
 import '../models/settings.dart';
 import '../services/geocoding_service.dart';
 import '../services/system_status_service.dart';
@@ -32,21 +33,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Future<void> _confirmReset() async {
     final ok = await showDialog<bool>(
       context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Reset settings?'),
-        content: const Text(
-            'Restore all settings to defaults. Saved locations are kept.'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Reset'),
-          ),
-        ],
-      ),
+      builder: (ctx) {
+        final l10n = AppLocalizations.of(ctx)!;
+        return AlertDialog(
+          title: Text(l10n.resetSettingsTitle),
+          content: Text(l10n.resetSettingsBody),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: Text(l10n.cancel),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, true),
+              child: Text(l10n.reset),
+            ),
+          ],
+        );
+      },
     );
     if (ok == true) widget.settings.resetToDefaults();
   }
@@ -56,22 +59,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final isTv =
         MediaQuery.navigationModeOf(context) == NavigationMode.directional;
     final showPreview = _showPreview ?? !isTv;
+    final l10n = AppLocalizations.of(context)!;
     final preview = _Preview(settings: widget.settings, weather: widget.weather);
     final controls = _Controls(settings: widget.settings, isTv: isTv);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: Text(l10n.settings),
         actions: [
           IconButton(
             icon: const Icon(Icons.restart_alt),
-            tooltip: 'Reset to defaults',
+            tooltip: l10n.resetToDefaults,
             onPressed: _confirmReset,
           ),
           IconButton(
             autofocus: true,
             icon: Icon(showPreview ? Icons.visibility_off : Icons.visibility),
-            tooltip: showPreview ? 'Hide preview' : 'Show preview',
+            tooltip: showPreview ? l10n.hidePreview : l10n.showPreview,
             onPressed: () => setState(() => _showPreview = !showPreview),
           ),
         ],
@@ -145,6 +149,7 @@ class _Controls extends StatelessWidget {
       listenable: settings,
       builder: (context, _) {
         final s = settings.settings;
+        final l10n = AppLocalizations.of(context)!;
         return ListView(
           padding: const EdgeInsets.symmetric(vertical: 8),
           scrollCacheExtent:
@@ -170,11 +175,11 @@ class _Controls extends StatelessWidget {
               },
             ),
             const SizedBox(height: 8),
-            _sectionTitle(context, 'Timing'),
+            _sectionTitle(context, l10n.sectionTiming),
             ListTile(
               dense: true,
-              title: const Text('Weather refresh'),
-              trailing: Text('${s.refreshMinutes} min'),
+              title: Text(l10n.weatherRefresh),
+              trailing: Text(l10n.minutesValue(s.refreshMinutes)),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -183,15 +188,15 @@ class _Controls extends StatelessWidget {
                 min: 5,
                 max: 120,
                 divisions: 23,
-                label: '${s.refreshMinutes} min',
+                label: l10n.minutesValue(s.refreshMinutes),
                 onChanged: (v) => settings.setRefreshMinutes(v.round()),
               ),
             ),
             ListTile(
               dense: true,
-              title: const Text('Scene rotation'),
+              title: Text(l10n.sceneRotation),
               trailing: Text(
-                  s.rotateMinutes == 0 ? 'Off' : '${s.rotateMinutes} min'),
+                  s.rotateMinutes == 0 ? l10n.off : l10n.minutesValue(s.rotateMinutes)),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -200,15 +205,15 @@ class _Controls extends StatelessWidget {
                 min: 0,
                 max: 60,
                 divisions: 60,
-                label: s.rotateMinutes == 0 ? 'Off' : '${s.rotateMinutes} min',
+                label: s.rotateMinutes == 0 ? l10n.off : l10n.minutesValue(s.rotateMinutes),
                 onChanged: (v) => settings.setRotateMinutes(v.round()),
               ),
             ),
             const Divider(),
-            _sectionTitle(context, 'Overlay size'),
+            _sectionTitle(context, l10n.sectionOverlaySize),
             ListTile(
               dense: true,
-              title: const Text('Clock & text size'),
+              title: Text(l10n.clockTextSize),
               trailing: Text('${(s.overlayScale * 100).round()}%'),
             ),
             Padding(
@@ -223,7 +228,7 @@ class _Controls extends StatelessWidget {
               ),
             ),
             const Divider(),
-            _sectionTitle(context, 'Text shadow'),
+            _sectionTitle(context, l10n.sectionTextShadow),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Slider(
@@ -236,42 +241,44 @@ class _Controls extends StatelessWidget {
               ),
             ),
             const Divider(),
-            _sectionTitle(context, 'Display'),
+            _sectionTitle(context, l10n.sectionDisplay),
             SwitchListTile(
-              title: const Text('Show clock'),
-              subtitle: const Text('Time at the bottom'),
+              title: Text(l10n.showClock),
+              subtitle: Text(l10n.showClockSubtitle),
               value: s.showClock,
               onChanged: settings.setShowClock,
             ),
             SwitchListTile(
-              title: const Text('Show date'),
+              title: Text(l10n.showDate),
               value: s.showDate,
               onChanged: settings.setShowDate,
             ),
             SwitchListTile(
-              title: const Text('Show weather'),
-              subtitle: const Text('Temperature and conditions'),
+              title: Text(l10n.showWeather),
+              subtitle: Text(l10n.showWeatherSubtitle),
               value: s.showWeather,
               onChanged: settings.setShowWeather,
             ),
             SwitchListTile(
-              title: const Text('Show location'),
-              subtitle: const Text('Place name at the top'),
+              title: Text(l10n.showLocation),
+              subtitle: Text(l10n.showLocationSubtitle),
               value: s.showLocation,
               onChanged: settings.setShowLocation,
             ),
             const Divider(),
-            _sectionTitle(context, 'Dimming'),
+            _sectionTitle(context, l10n.sectionDimming),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: SegmentedButton<DimMode>(
-                  segments: const [
-                    ButtonSegment(value: DimMode.off, label: Text('Off')),
-                    ButtonSegment(value: DimMode.auto, label: Text('Auto')),
+                  segments: [
                     ButtonSegment(
-                        value: DimMode.scheduled, label: Text('Custom')),
+                        value: DimMode.off, label: Text(l10n.dimOff)),
+                    ButtonSegment(
+                        value: DimMode.auto, label: Text(l10n.dimAuto)),
+                    ButtonSegment(
+                        value: DimMode.scheduled, label: Text(l10n.dimCustom)),
                   ],
                   selected: {s.dimMode},
                   onSelectionChanged: (set) => settings.setDimMode(set.first),
@@ -283,7 +290,7 @@ class _Controls extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
                   children: [
-                    const Text('Level'),
+                    Text(l10n.level),
                     Expanded(
                       child: Slider(
                         value: s.nightDim,
@@ -301,7 +308,7 @@ class _Controls extends StatelessWidget {
               ListTile(
                 dense: true,
                 leading: const Icon(Icons.bedtime_outlined),
-                title: const Text('From'),
+                title: Text(l10n.from),
                 trailing: Text(_fmtTime(context, s.dimStart)),
                 onTap: () =>
                     _pickTime(context, s.dimStart, settings.setDimStart),
@@ -309,39 +316,39 @@ class _Controls extends StatelessWidget {
               ListTile(
                 dense: true,
                 leading: const Icon(Icons.wb_sunny_outlined),
-                title: const Text('To'),
+                title: Text(l10n.to),
                 trailing: Text(_fmtTime(context, s.dimEnd)),
                 onTap: () => _pickTime(context, s.dimEnd, settings.setDimEnd),
               ),
             ],
             if (!kIsWeb) ...[
             const Divider(),
-            _sectionTitle(context, 'Status icons'),
+            _sectionTitle(context, l10n.sectionStatusIcons),
             SwitchListTile(
-              title: const Text('Show status icons'),
+              title: Text(l10n.showStatusIcons),
               value: s.showStatus,
               onChanged: settings.setShowStatus,
             ),
             if (s.showStatus) ...[
               SwitchListTile(
-                title: const Text('Wi-Fi'),
+                title: Text(l10n.wifi),
                 value: s.showWifi,
                 onChanged: settings.setShowWifi,
               ),
               SwitchListTile(
-                title: const Text('Bluetooth'),
+                title: Text(l10n.bluetooth),
                 value: s.showBluetooth,
                 onChanged: settings.setShowBluetooth,
               ),
               SwitchListTile(
-                title: const Text('Music'),
+                title: Text(l10n.music),
                 value: s.showMusic,
                 onChanged: settings.setShowMusic,
               ),
               if (s.showMusic)
                 SwitchListTile(
-                  title: const Text('Show music title'),
-                  subtitle: const Text('Track name (needs notification access)'),
+                  title: Text(l10n.showMusicTitle),
+                  subtitle: Text(l10n.showMusicTitleSubtitle),
                   value: s.showMusicTitle,
                   onChanged: settings.setShowMusicTitle,
                 ),
@@ -349,28 +356,25 @@ class _Controls extends StatelessWidget {
                 const _NotificationAccessTile(),
             ],
             const Divider(),
-            _sectionTitle(context, 'Kiosk mode'),
+            _sectionTitle(context, l10n.sectionKioskMode),
             SwitchListTile(
-              title: const Text('Kiosk mode'),
-              subtitle: const Text(
-                  'Always-on display for devices without a screensaver. Hides '
-                  'the settings button (long-press the screen to reopen) and '
-                  'keeps the screen on.'),
+              title: Text(l10n.kioskMode),
+              subtitle: Text(l10n.kioskModeSubtitle),
               value: s.kioskMode,
               onChanged: settings.setKioskMode,
             ),
             const Divider(),
-            _sectionTitle(context, 'Launcher'),
+            _sectionTitle(context, l10n.sectionLauncher),
             const _LauncherTile(),
             ],
             const Divider(),
-            _sectionTitle(context, 'Location'),
+            _sectionTitle(context, l10n.sectionLocation),
             ListTile(
               leading: Icon(s.locationMode == LocationMode.automatic
                   ? Icons.radio_button_checked
                   : Icons.radio_button_unchecked),
-              title: const Text('Automatic'),
-              subtitle: const Text('Detect from network / GPS'),
+              title: Text(l10n.automaticLocation),
+              subtitle: Text(l10n.automaticLocationSubtitle),
               onTap: () => settings.setLocationMode(LocationMode.automatic),
             ),
             for (final loc in s.savedLocations)
@@ -383,72 +387,72 @@ class _Controls extends StatelessWidget {
                 subtitle: loc.region == null ? null : Text(loc.region!),
                 trailing: IconButton(
                   icon: const Icon(Icons.delete_outline),
-                  tooltip: 'Remove',
+                  tooltip: l10n.remove,
                   onPressed: () => settings.removeLocation(loc.id),
                 ),
                 onTap: () => settings.selectLocation(loc.id),
               ),
             ListTile(
               leading: const Icon(Icons.add_location_alt_outlined),
-              title: const Text('Add location'),
+              title: Text(l10n.addLocation),
               onTap: () => _addLocation(context),
             ),
             if (s.canCycleLocations) ...[
               ListTile(
-                title: const Text('Swipe to switch'),
-                subtitle: const Text('Gesture on the frog'),
+                title: Text(l10n.swipeToSwitch),
+                subtitle: Text(l10n.swipeGestureSubtitle),
                 trailing: DropdownButton<LocationSwipe>(
                   value: s.locationSwipe,
                   onChanged: (v) =>
                       v == null ? null : settings.setLocationSwipe(v),
-                  items: const [
+                  items: [
                     DropdownMenuItem(
                       value: LocationSwipe.horizontal,
-                      child: Text('Left / right'),
+                      child: Text(l10n.swipeLeftRight),
                     ),
                     DropdownMenuItem(
                       value: LocationSwipe.vertical,
-                      child: Text('Up / down'),
+                      child: Text(l10n.swipeUpDown),
                     ),
                     DropdownMenuItem(
                       value: LocationSwipe.off,
-                      child: Text('Off'),
+                      child: Text(l10n.off),
                     ),
                   ],
                 ),
               ),
               ListTile(
-                title: const Text('Switch locations'),
-                subtitle: const Text('Automatic rotation'),
+                title: Text(l10n.switchLocations),
+                subtitle: Text(l10n.automaticRotationSubtitle),
                 trailing: DropdownButton<LocationRotation>(
                   value: s.locationRotation,
                   onChanged: (v) =>
                       v == null ? null : settings.setLocationRotation(v),
-                  items: const [
+                  items: [
                     DropdownMenuItem(
                       value: LocationRotation.off,
-                      child: Text('Manually'),
+                      child: Text(l10n.manually),
                     ),
                     DropdownMenuItem(
                       value: LocationRotation.withScene,
-                      child: Text('With scene'),
+                      child: Text(l10n.withScene),
                     ),
                     DropdownMenuItem(
                       value: LocationRotation.timed,
-                      child: Text('On a timer'),
+                      child: Text(l10n.onATimer),
                     ),
                   ],
                 ),
               ),
               SwitchListTile(
-                title: const Text('Edge arrows'),
-                subtitle: const Text('Back / forward buttons at the sides'),
+                title: Text(l10n.edgeArrows),
+                subtitle: Text(l10n.edgeArrowsSubtitle),
                 value: s.showLocationArrows,
                 onChanged: settings.setShowLocationArrows,
               ),
               if (s.locationRotation == LocationRotation.timed)
                 ListTile(
-                  title: const Text('Location rotation'),
+                  title: Text(l10n.locationRotation),
                   trailing: DropdownButton<int>(
                     value: s.locationRotateMinutes,
                     onChanged: (v) =>
@@ -463,10 +467,10 @@ class _Controls extends StatelessWidget {
                 ),
             ],
             const Divider(),
-            _sectionTitle(context, 'About'),
+            _sectionTitle(context, l10n.sectionAbout),
             if (!kIsWeb)
               SwitchListTile(
-                title: const Text('Check for updates on startup'),
+                title: Text(l10n.checkUpdatesOnStartup),
                 value: s.checkUpdatesOnStartup,
                 onChanged: settings.setCheckUpdatesOnStartup,
               ),
@@ -481,7 +485,7 @@ class _Controls extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _sectionTitle(context, 'Units'),
+          _sectionTitle(context, AppLocalizations.of(context)!.sectionUnits),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Align(
@@ -503,7 +507,7 @@ class _Controls extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _sectionTitle(context, 'Time format'),
+          _sectionTitle(context, AppLocalizations.of(context)!.sectionTimeFormat),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Align(
@@ -589,17 +593,18 @@ class _LauncherTileState extends State<_LauncherTile>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return ListTile(
       leading: Icon(_isDefault ? Icons.home : Icons.home_outlined),
-      title: const Text('Home app'),
+      title: Text(l10n.homeApp),
       subtitle: Text(_isDefault
-          ? 'Froggy is your default home app'
-          : 'Show Froggy on the home screen, replacing your launcher'),
+          ? l10n.isDefaultHomeApp
+          : l10n.setAsHomeApp),
       trailing: _isDefault
           ? null
-          : const TextButton(
+          : TextButton(
               onPressed: WindowService.openHomeSettings,
-              child: Text('Set'),
+              child: Text(l10n.set),
             ),
     );
   }
@@ -647,12 +652,13 @@ class _AboutSectionState extends State<_AboutSection> {
     setState(() {
       _checking = false;
       if (info == null) {
-        _status = 'Could not check — try again later';
+        _status = AppLocalizations.of(context)!.checkFailed;
       } else if (info.updateAvailable) {
-        _status = 'Update available: v${info.latestVersion}';
+        _status = AppLocalizations.of(context)!
+            .updateAvailableVersion(info.latestVersion);
         _update = info;
       } else {
-        _status = "You're on the latest version";
+        _status = AppLocalizations.of(context)!.upToDate;
       }
     });
   }
@@ -664,10 +670,10 @@ class _AboutSectionState extends State<_AboutSection> {
     }
     final ok = await WindowService.installUpdate(info.apkUrl!);
     if (mounted) {
+      final l10n = AppLocalizations.of(context)!;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content:
-              Text(ok ? 'Downloading update…' : "Couldn't start the update"),
+          content: Text(ok ? l10n.downloadingUpdate : l10n.couldNotStartUpdateAlt),
         ),
       );
     }
@@ -679,30 +685,33 @@ class _AboutSectionState extends State<_AboutSection> {
         : await WindowService.openUrl(url);
     if (!ok && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Couldn't open the link on this device")),
+        SnackBar(
+            content:
+                Text(AppLocalizations.of(context)!.couldNotOpenLink)),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Column(
-      children: [
-        ListTile(
-          leading: const SizedBox(
-            width: 40,
-            height: 40,
-            child: Image(image: AssetImage('assets/app_icon.png')),
-          ),
-          title: const Text('Froggy'),
-          subtitle: Text(
-            _version.isEmpty ? "Google's Weather Frog" : 'Version $_version',
-          ),
-        ),
-        if (!kIsWeb) ...[
-          ListTile(
-            leading: const Icon(Icons.system_update_outlined),
-            title: const Text('Check for updates'),
+          children: [
+            ListTile(
+              leading: const SizedBox(
+                width: 40,
+                height: 40,
+                child: Image(image: AssetImage('assets/app_icon.png')),
+              ),
+              title: Text(l10n.froggy),
+              subtitle: Text(
+                _version.isEmpty ? l10n.googlesWeatherFrog : l10n.versionValue(_version),
+              ),
+            ),
+            if (!kIsWeb) ...[
+              ListTile(
+                leading: const Icon(Icons.system_update_outlined),
+                title: Text(l10n.checkForUpdates),
             subtitle: _status == null ? null : Text(_status!),
             trailing: _checking
                 ? const SizedBox(
@@ -717,14 +726,14 @@ class _AboutSectionState extends State<_AboutSection> {
             ListTile(
               leading: const Icon(Icons.download_outlined),
               title: Text(_update!.apkUrl != null
-                  ? 'Download & install update'
-                  : 'Get the latest release'),
+                  ? l10n.downloadInstallUpdate
+                  : l10n.getLatestRelease),
               onTap: () => _install(_update!),
             ),
         ],
         ListTile(
           leading: const Icon(Icons.code),
-          title: const Text('Source code'),
+          title: Text(l10n.sourceCode),
           subtitle: const Text('github.com/R0rt1z2/Froggy'),
           onTap: () => _open(UpdateService.repoUrl),
         ),
@@ -772,13 +781,14 @@ class _NotificationAccessTileState extends State<_NotificationAccessTile>
   @override
   Widget build(BuildContext context) {
     if (_granted) return const SizedBox.shrink();
+    final l10n = AppLocalizations.of(context)!;
     return ListTile(
       leading: const Icon(Icons.notifications_off_outlined),
-      title: const Text('Notification access'),
-      subtitle: const Text('Needed to read the track title'),
+      title: Text(l10n.notificationAccess),
+      subtitle: Text(l10n.notificationAccessSubtitle),
       trailing: TextButton(
         onPressed: _service.openNotificationAccess,
-        child: const Text('Grant'),
+        child: Text(l10n.grant),
       ),
     );
   }
@@ -814,13 +824,13 @@ class _AddLocationScreenState extends State<_AddLocationScreen> {
       setState(() {
         _results = results;
         _loading = false;
-        if (results.isEmpty) _error = 'No matches found';
+        if (results.isEmpty) _error = AppLocalizations.of(context)!.noMatchesFound;
       });
     } catch (_) {
       if (!mounted) return;
       setState(() {
         _loading = false;
-        _error = 'Search failed — check your connection';
+        _error = AppLocalizations.of(context)!.searchFailed;
       });
     }
   }
@@ -835,7 +845,7 @@ class _AddLocationScreenState extends State<_AddLocationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Add location')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.addLocation)),
       body: SafeArea(
         child: Column(
           children: [
@@ -846,12 +856,12 @@ class _AddLocationScreenState extends State<_AddLocationScreen> {
                 autofocus: true,
                 textInputAction: TextInputAction.search,
                 decoration: InputDecoration(
-                  hintText: 'City name',
+                  hintText: AppLocalizations.of(context)!.cityName,
                   border: const OutlineInputBorder(),
                   prefixIcon: const Icon(Icons.search),
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.arrow_forward),
-                    tooltip: 'Search',
+                    tooltip: AppLocalizations.of(context)!.search,
                     onPressed: _search,
                   ),
                 ),

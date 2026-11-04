@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'l10n/app_localizations.dart';
 import 'models/settings.dart';
 import 'services/system_status_service.dart';
 import 'services/update_service.dart';
@@ -107,6 +108,8 @@ class _FroggyAppState extends State<FroggyApp> with WidgetsBindingObserver {
       title: "Google's Weather Frog (Froggy)",
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(useMaterial3: true),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       builder: (context, child) {
         Widget result = Shortcuts(
           shortcuts: const <ShortcutActivator, Intent>{
@@ -196,49 +199,52 @@ class _HomeScreenState extends State<HomeScreen> {
   void _showUpdateDialog(UpdateInfo info) {
     showDialog<void>(
       context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Update available'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Froggy v${info.latestVersion} is available — '
-                'you have v${info.currentVersion}.'),
-            if (info.notes.isNotEmpty) ...[
-              const SizedBox(height: 12),
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxHeight: 160),
-                child: SingleChildScrollView(
-                  child: Text(
-                    info.notes,
-                    style: Theme.of(ctx).textTheme.bodySmall,
+      builder: (ctx) {
+        final l10n = AppLocalizations.of(ctx)!;
+        return AlertDialog(
+          title: Text(l10n.updateAvailable),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(l10n.updateAvailableDetails(
+                  info.latestVersion, info.currentVersion)),
+              if (info.notes.isNotEmpty) ...[
+                const SizedBox(height: 12),
+                ConstrainedBox(
+                  constraints: const BoxConstraints(maxHeight: 160),
+                  child: SingleChildScrollView(
+                    child: Text(
+                      info.notes,
+                      style: Theme.of(ctx).textTheme.bodySmall,
+                    ),
                   ),
                 ),
-              ),
+              ],
             ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                _updates.skipVersion(info.latestVersion);
+                Navigator.pop(ctx);
+              },
+              child: Text(l10n.skip),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: Text(l10n.later),
+            ),
+            FilledButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+                _startUpdate(info);
+              },
+              child: Text(info.apkUrl != null ? l10n.update : l10n.view),
+            ),
           ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              _updates.skipVersion(info.latestVersion);
-              Navigator.pop(ctx);
-            },
-            child: const Text('Skip'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('Later'),
-          ),
-          FilledButton(
-            onPressed: () {
-              Navigator.pop(ctx);
-              _startUpdate(info);
-            },
-            child: Text(info.apkUrl != null ? 'Update' : 'View'),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -249,9 +255,10 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     final ok = await WindowService.installUpdate(info.apkUrl!);
     if (!mounted) return;
+    final l10n = AppLocalizations.of(context)!;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(ok ? 'Downloading update…' : 'Could not start the update'),
+        content: Text(ok ? l10n.downloadingUpdate : l10n.couldNotStartUpdate),
       ),
     );
   }
@@ -363,7 +370,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         icon: const Icon(Icons.settings),
                         color: Colors.white,
                         iconSize: 28,
-                        tooltip: 'Settings',
+                        tooltip: AppLocalizations.of(context)!.settings,
                         onPressed: () => _openSettings(context),
                       ),
                     ),
@@ -469,12 +476,12 @@ class _LocationArrows extends StatelessWidget {
           children: [
             _EdgeArrow(
               icon: Icons.chevron_left,
-              tooltip: 'Previous location',
+              tooltip: AppLocalizations.of(context)!.previousLocation,
               onPressed: onBack,
             ),
             _EdgeArrow(
               icon: Icons.chevron_right,
-              tooltip: 'Next location',
+              tooltip: AppLocalizations.of(context)!.nextLocation,
               onPressed: onForward,
             ),
           ],
@@ -542,25 +549,25 @@ class _RotateHint extends StatelessWidget {
                 const Icon(Icons.screen_rotation,
                     color: Colors.white, size: 48),
                 const SizedBox(height: 20),
-                const Text(
-                  'Froggy looks best in landscape',
+                Text(
+                  AppLocalizations.of(context)!.landscapeTitle,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 const SizedBox(height: 10),
-                const Text(
-                  'Rotate your phone sideways for the full view.',
+                Text(
+                  AppLocalizations.of(context)!.landscapeBody,
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white70, fontSize: 14),
+                  style: const TextStyle(color: Colors.white70, fontSize: 14),
                 ),
                 const SizedBox(height: 24),
                 FilledButton(
                   onPressed: onDismiss,
-                  child: const Text('Got it'),
+                  child: Text(AppLocalizations.of(context)!.gotIt),
                 ),
               ],
             ),
@@ -594,20 +601,19 @@ class _LocationWarning extends StatelessWidget {
             children: [
               const Icon(Icons.location_off, color: Colors.amber, size: 22),
               const SizedBox(width: 12),
-              const Expanded(
+              Expanded(
                 child: Text(
-                  'Location is blocked, so this is your approximate area. '
-                  'Allow location in your browser, then Retry.',
-                  style: TextStyle(color: Colors.white, fontSize: 13),
+                  AppLocalizations.of(context)!.locationBlocked,
+                  style: const TextStyle(color: Colors.white, fontSize: 13),
                 ),
               ),
               TextButton(
                 onPressed: onRetry,
-                child: const Text('Retry'),
+                child: Text(AppLocalizations.of(context)!.retry),
               ),
               IconButton(
                 icon: const Icon(Icons.close, color: Colors.white70, size: 20),
-                tooltip: 'Dismiss',
+                tooltip: AppLocalizations.of(context)!.dismiss,
                 onPressed: onDismiss,
               ),
             ],

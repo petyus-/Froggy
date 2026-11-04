@@ -1,5 +1,7 @@
 library;
 
+import '../l10n/app_localizations.dart';
+
 enum WeatherCondition { sunny, cloudy, hazy, rainy, snowy }
 
 enum DayPart { morning, day, sunset, night }
@@ -51,13 +53,13 @@ class WeatherData {
   bool get isStale =>
       DateTime.now().difference(fetchedAt) > const Duration(hours: 2);
 
-  String get description => wmoDescription(weatherCode);
+  String description(AppLocalizations l10n) => wmoDescription(weatherCode, l10n);
 
-  String get summary {
+  String summary(AppLocalizations l10n) {
     final hl = (tempMaxC != null && tempMinC != null)
         ? ' · ↑${tempMaxC!.round()}° ↓${tempMinC!.round()}°'
         : '';
-    return '$description$hl';
+    return '${description(l10n)}$hl';
   }
 
   Map<String, dynamic> toJson() => {
@@ -100,66 +102,65 @@ WeatherCondition conditionFromWmo(int code) {
   return WeatherCondition.cloudy;
 }
 
-String wmoDescription(int code) {
+String wmoDescription(int code, AppLocalizations l10n) {
   switch (code) {
     case 0:
-      return 'Clear';
+      return l10n.wmoClear;
     case 1:
-      return 'Mainly clear';
+      return l10n.wmoMainlyClear;
     case 2:
-      return 'Partly cloudy';
+      return l10n.wmoPartlyCloudy;
     case 3:
-      return 'Overcast';
+      return l10n.wmoOvercast;
     case 45:
-      return 'Fog';
+      return l10n.wmoFog;
     case 48:
-      return 'Rime fog';
+      return l10n.wmoRimeFog;
     case 51:
-      return 'Light drizzle';
+      return l10n.wmoLightDrizzle;
     case 53:
-      return 'Drizzle';
+      return l10n.wmoDrizzle;
     case 55:
-      return 'Heavy drizzle';
+      return l10n.wmoHeavyDrizzle;
+    case 61:
+      return l10n.wmoLightRain;
+    case 63:
+      return l10n.wmoRain;
+    case 65:
+      return l10n.wmoHeavyRain;
+    case 71:
+      return l10n.wmoLightSnow;
+    case 73:
+      return l10n.wmoSnow;
+    case 75:
+      return l10n.wmoHeavySnow;
+    case 77:
+      return l10n.wmoSnowGrains;
+    case 80:
+      return l10n.wmoLightShowers;
+    case 81:
+      return l10n.wmoShowers;
+    case 82:
+      return l10n.wmoHeavyShowers;
+    case 85:
+      return l10n.wmoSnowShowers;
+    case 86:
+      return l10n.wmoHeavySnowShowers;
+    case 95:
+      return l10n.wmoThunderstorm;
     case 56:
     case 57:
-      return 'Freezing drizzle';
-    case 61:
-      return 'Light rain';
-    case 63:
-      return 'Rain';
-    case 65:
-      return 'Heavy rain';
+      return l10n.wmoFreezingDrizzle;
     case 66:
     case 67:
-      return 'Freezing rain';
-    case 71:
-      return 'Light snow';
-    case 73:
-      return 'Snow';
-    case 75:
-      return 'Heavy snow';
-    case 77:
-      return 'Snow grains';
-    case 80:
-      return 'Light showers';
-    case 81:
-      return 'Showers';
-    case 82:
-      return 'Heavy showers';
-    case 85:
-      return 'Snow showers';
-    case 86:
-      return 'Heavy snow showers';
-    case 95:
-      return 'Thunderstorm';
+      return l10n.wmoFreezingRain;
     case 96:
     case 99:
-      return 'Thunderstorm, hail';
+      return l10n.wmoThunderstormHail;
     default:
-      return 'Unknown';
+      return l10n.wmoUnknown;
   }
 }
-
 DayPart dayPartFor(DateTime now, DateTime? sunrise, DateTime? sunset) {
   if (sunrise != null && sunset != null) {
     final morningEnd = sunrise.add(const Duration(minutes: 150));

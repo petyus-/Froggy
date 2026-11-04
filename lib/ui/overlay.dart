@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../l10n/app_localizations.dart';
 import '../models/settings.dart';
 import '../models/weather.dart';
 import 'foreground.dart';
@@ -67,12 +68,12 @@ class _WeatherOverlayState extends State<WeatherOverlay>
     return DateFormat.MMMEd().format(now);
   }
 
-  String _summary(WeatherData w) {
+  String _summary(WeatherData w, AppLocalizations l10n) {
     final s = widget.settings;
     final hl = (w.tempMaxC != null && w.tempMinC != null)
         ? ' · ↑${s.formatTemp(w.tempMaxC!)} ↓${s.formatTemp(w.tempMinC!)}'
         : '';
-    return '${w.description}$hl';
+    return '${w.description(l10n)}$hl';
   }
 
   @override
@@ -83,6 +84,7 @@ class _WeatherOverlayState extends State<WeatherOverlay>
     if (!s.showClock && !s.showDate && !showWeather) {
       return const SizedBox.shrink();
     }
+    final l10n = AppLocalizations.of(context)!;
     final stale = w?.isStale ?? false;
     final tempColor = stale ? Colors.white.withValues(alpha: 0.6) : Colors.white;
     final summaryColor =
@@ -152,7 +154,7 @@ class _WeatherOverlayState extends State<WeatherOverlay>
                         ),
                         SizedBox(width: pad * 0.4),
                         Text(
-                          _summary(w),
+                          _summary(w, l10n),
                           style: TextStyle(
                             color: summaryColor,
                             fontSize: summarySize,
