@@ -13,6 +13,13 @@ analyzer:
   # Vendored, abandoned third-party runtime — not our code to lint.
   exclude:
     - third_party/**
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
 
 linter:
   # The lint rules applied to this project can be customized in the
