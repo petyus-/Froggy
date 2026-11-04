@@ -4,6 +4,8 @@ import 'package:flutter/gestures.dart'
     show kBackMouseButton, kForwardMouseButton;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart' show Intl;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'l10n/app_localizations.dart';
@@ -60,6 +62,7 @@ class _FroggyAppState extends State<FroggyApp> with WidgetsBindingObserver {
       allowLocationPrompt: !widget.screensaver,
     );
     _settings.addListener(_applyWakelock);
+    _settings.addListener(_applyIntlLocale);
     WidgetsBinding.instance.addObserver(this);
     _detectTv();
     _boot();
@@ -82,6 +85,19 @@ class _FroggyAppState extends State<FroggyApp> with WidgetsBindingObserver {
     WindowService.setKeepAwake(_settings.settings.kioskMode);
   }
 
+  /// DateFormat/intl use their own locale (Intl.defaultLocale), which
+  /// MaterialApp does not set — keep it in sync with the app language.
+  void _applyIntlLocale() {
+    final code = _settings.settings.languageCode;
+    if (code == null ||
+        !AppLocalizations.supportedLocales
+            .any((l) => l.languageCode == code)) {
+      return;
+    }
+    initializeDateFormatting(code);
+    Intl.defaultLocale = code;
+  }
+
   Future<void> _detectTv() async {
     final tv = await SystemStatusService().isTelevision();
     if (mounted && tv) setState(() => _isTv = tv);
@@ -96,6 +112,7 @@ class _FroggyAppState extends State<FroggyApp> with WidgetsBindingObserver {
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _settings.removeListener(_applyWakelock);
+    _settings.removeListener(_applyIntlLocale);
     if (!widget.screensaver) WindowService.setKeepAwake(false);
     _weather.dispose();
     _settings.dispose();
@@ -104,13 +121,15 @@ class _FroggyAppState extends State<FroggyApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Google's Weather Frog (Froggy)",
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(useMaterial3: true),
-      locale: _settings.settings.languageCode == null
-          ? null
-          : Locale(_settings.settings.languageCode!),
+    return ListenableBuilder(
+      listenable: _settings,
+      builder: (context, _) => MaterialApp(
+        title: "Google's Weather Frog (Froggy)",
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData.dark(useMaterial3: true),
+        locale: _settings.settings.languageCode == null
+            ? null
+            : Locale(_settings.settings.languageCode!),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       builder: (context, child) {
@@ -133,6 +152,7 @@ class _FroggyAppState extends State<FroggyApp> with WidgetsBindingObserver {
       home: widget.screensaver
           ? ScreensaverScreen(weather: _weather, settings: _settings)
           : HomeScreen(weather: _weather, settings: _settings),
+      ),
     );
   }
 }
