@@ -71,7 +71,7 @@ class _WeatherOverlayState extends State<WeatherOverlay>
   String _summary(WeatherData w, AppLocalizations l10n) {
     final s = widget.settings;
     final hl = (w.tempMaxC != null && w.tempMinC != null)
-        ? ' · ↑${s.formatTemp(w.tempMaxC!)} ↓${s.formatTemp(w.tempMinC!)}'
+        ? ' · ▲${s.formatTemp(w.tempMaxC!)} ▼${s.formatTemp(w.tempMinC!)}'
         : '';
     return '${w.description(l10n)}$hl';
   }
