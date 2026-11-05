@@ -416,4 +416,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get wmoUnknown => 'Onbekend';
+
+  @override
+  String get hourlyChart => '24-uurs grafiek';
 }

@@ -551,4 +551,7 @@
   "@wmoUnknown": {
     "description": "Unknown WMO code"
   }
+,
+  "hourlyChart": "Gráfico de 24 horas",
+  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" }
 }

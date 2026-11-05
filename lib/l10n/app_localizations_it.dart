@@ -419,4 +419,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get wmoUnknown => 'Sconosciuto';
+
+  @override
+  String get hourlyChart => 'Grafico 24 ore';
 }

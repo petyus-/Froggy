@@ -417,4 +417,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get wmoUnknown => 'Ismeretlen';
+
+  @override
+  String get hourlyChart => '24 órás grafikon';
 }

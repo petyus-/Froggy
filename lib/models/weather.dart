@@ -25,6 +25,8 @@ class WeatherData {
   final DateTime? sunset;
 
   final int? utcOffsetSeconds;
+  final List<double>? hourlyTemps;
+  final int? hourlyStartHour;
   final DateTime fetchedAt;
 
   const WeatherData({
@@ -36,6 +38,8 @@ class WeatherData {
     required this.sunrise,
     required this.sunset,
     required this.utcOffsetSeconds,
+    this.hourlyTemps,
+    this.hourlyStartHour,
     required this.fetchedAt,
   });
 
@@ -57,7 +61,7 @@ class WeatherData {
 
   String summary(AppLocalizations l10n) {
     final hl = (tempMaxC != null && tempMinC != null)
-        ? ' · ↑${tempMaxC!.round()}° ↓${tempMinC!.round()}°'
+        ? ' · ▲${tempMaxC!.round()}° ▼${tempMinC!.round()}°'
         : '';
     return '${description(l10n)}$hl';
   }
@@ -71,6 +75,8 @@ class WeatherData {
         'sunrise': sunrise?.toIso8601String(),
         'sunset': sunset?.toIso8601String(),
         'utcOffsetSeconds': utcOffsetSeconds,
+        'hourlyTemps': hourlyTemps,
+        'hourlyStartHour': hourlyStartHour,
         'fetchedAt': fetchedAt.toIso8601String(),
       };
 
@@ -83,6 +89,10 @@ class WeatherData {
         sunrise: _parseOrNull(json['sunrise']),
         sunset: _parseOrNull(json['sunset']),
         utcOffsetSeconds: (json['utcOffsetSeconds'] as num?)?.toInt(),
+        hourlyTemps: ((json['hourlyTemps'] as List?) ?? const [])
+            .map((e) => (e as num).toDouble())
+            .toList(),
+        hourlyStartHour: (json['hourlyStartHour'] as num?)?.toInt(),
         fetchedAt: DateTime.parse(json['fetchedAt'] as String),
       );
 

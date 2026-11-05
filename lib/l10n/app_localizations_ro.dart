@@ -420,4 +420,7 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get wmoUnknown => 'Necunoscut';
+
+  @override
+  String get hourlyChart => 'Grafic 24 de ore';
 }

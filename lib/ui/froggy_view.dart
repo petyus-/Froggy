@@ -9,6 +9,7 @@ import '../models/settings.dart';
 import '../models/weather.dart';
 import '../services/asset_catalog.dart';
 import 'foreground.dart';
+import 'hourly_chart.dart';
 import 'overlay.dart';
 import 'status_bar.dart';
 
@@ -142,6 +143,13 @@ class FroggyView extends StatelessWidget {
               ),
             ),
           if (showOverlay) WeatherOverlay(weather: weather, settings: settings),
+          if (showOverlay && settings.showHourlyChart)
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: HourlyChartStrip(weather: weather),
+            ),
           if (showOverlay && hasTopContent)
             Positioned(
               top: 0,

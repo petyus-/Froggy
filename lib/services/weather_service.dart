@@ -17,8 +17,9 @@ class WeatherService {
       'current': 'weather_code,temperature_2m',
       'daily':
           'weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset',
+      'hourly': 'temperature_2m',
       'timezone': 'auto',
-      'forecast_days': '1',
+      'forecast_days': '2',
     });
 
     final resp = await _client.get(uri).timeout(const Duration(seconds: 15));
@@ -34,6 +35,10 @@ class WeatherService {
 
     final daily = body['daily'] as Map<String, dynamic>?;
     final code = (current['weather_code'] as num).toInt();
+    final hourly = _hourlyFromNow(
+      body['hourly'] as Map<String, dynamic>?,
+      utcOffsetSeconds: (body['utc_offset_seconds'] as num?)?.toInt(),
+    );
     return WeatherData(
       condition: conditionFromWmo(code),
       weatherCode: code,
@@ -43,8 +48,52 @@ class WeatherService {
       sunrise: _firstDate(daily?['sunrise']),
       sunset: _firstDate(daily?['sunset']),
       utcOffsetSeconds: (body['utc_offset_seconds'] as num?)?.toInt(),
+      hourlyTemps: hourly?.$1,
+      hourlyStartHour: hourly?.$2,
       fetchedAt: DateTime.now(),
     );
+  }
+
+  /// Returns 24 hourly temperatures starting at the current local hour,
+  /// plus the starting hour-of-day. Null when data is unavailable.
+  static (List<double>, int)? _hourlyFromNow(
+    Map<String, dynamic>? hourly, {
+    int? utcOffsetSeconds,
+  }) {
+    if (hourly == null) return null;
+    final times = hourly['time'];
+    final temps = hourly['temperature_2m'];
+    if (times is! List || temps is! List || times.isEmpty) return null;
+    final n = times.length < temps.length ? times.length : temps.length;
+    final off = utcOffsetSeconds ?? 0;
+    final nowUtc = DateTime.now().toUtc();
+    final local =
+        nowUtc.add(Duration(seconds: off));
+    final startHour = local.hour;
+    // Times are local ISO strings without offset ("2026-11-05T21:00").
+    int best = -1;
+    int bestDelta = 1 << 60;
+    for (var i = 0; i < n; i++) {
+      final t = DateTime.tryParse(times[i] as String);
+      if (t == null) return null;
+      final delta =
+          (t.difference(DateTime.utc(local.year, local.month, local.day,
+                      local.hour))
+              .inMinutes)
+              .abs();
+      if (delta < bestDelta) {
+        bestDelta = delta;
+        best = i;
+      }
+    }
+    if (best < 0 || bestDelta > 90) return null;
+    final values = <double>[];
+    for (var i = best; i < n && values.length < 24; i++) {
+      final v = temps[i];
+      if (v is num) values.add(v.toDouble());
+    }
+    if (values.length < 24) return null;
+    return (values, startHour);
   }
 
   static DateTime? _firstDate(Object? list) {

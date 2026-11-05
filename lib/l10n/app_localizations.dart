@@ -903,6 +903,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unknown'**
   String get wmoUnknown;
+
+  /// Toggle to show the 24-hour temperature chart
+  ///
+  /// In en, this message translates to:
+  /// **'24-hour chart'**
+  String get hourlyChart;
 }
 
 class _AppLocalizationsDelegate

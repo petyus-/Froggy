@@ -74,6 +74,7 @@ class Settings {
   final bool showBluetooth;
   final bool showMusic;
   final bool kioskMode;
+  final bool showHourlyChart;
   final String? languageCode;
 
   const Settings({
@@ -105,6 +106,7 @@ class Settings {
     this.showBluetooth = true,
     this.showMusic = true,
     this.kioskMode = false,
+    this.showHourlyChart = true,
     this.languageCode,
   });
 
@@ -205,6 +207,7 @@ class Settings {
     bool? showBluetooth,
     bool? showMusic,
     bool? kioskMode,
+    bool? showHourlyChart,
     String? languageCode,
     bool clearLanguage = false,
   }) {
@@ -241,6 +244,7 @@ class Settings {
       showBluetooth: showBluetooth ?? this.showBluetooth,
       showMusic: showMusic ?? this.showMusic,
       kioskMode: kioskMode ?? this.kioskMode,
+      showHourlyChart: showHourlyChart ?? this.showHourlyChart,
       languageCode:
           clearLanguage ? null : (languageCode ?? this.languageCode),
     );
@@ -275,6 +279,7 @@ class Settings {
         'showBluetooth': showBluetooth,
         'showMusic': showMusic,
         'kioskMode': kioskMode,
+        'showHourlyChart': showHourlyChart,
         'languageCode': languageCode,
       };
 
@@ -315,6 +320,7 @@ class Settings {
         showBluetooth: (j['showBluetooth'] as bool?) ?? true,
         showMusic: (j['showMusic'] as bool?) ?? true,
         kioskMode: (j['kioskMode'] as bool?) ?? false,
+        showHourlyChart: (j['showHourlyChart'] as bool?) ?? true,
         languageCode: j['languageCode'] as String?,
       );
 
