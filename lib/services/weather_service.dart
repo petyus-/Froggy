@@ -70,7 +70,7 @@ class WeatherService {
     // with timezone=auto are location-local, offset-naive strings).
     final wall = DateTime.now().toUtc().add(Duration(seconds: off));
     int best = -1;
-    int bestDelta = 1 << 60;
+    int bestDelta = 1440; // larger than any hour-of-day difference
     for (var i = 0; i < n; i++) {
       final t = DateTime.tryParse(times[i] as String);
       if (t == null) return null;

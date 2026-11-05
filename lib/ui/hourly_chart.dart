@@ -132,6 +132,7 @@ class _HourlyChartPainter extends CustomPainter {
           color: Colors.white,
           fontSize: labelFontSize,
           fontWeight: FontWeight.bold,
+          fontFamilyFallback: ['ArrowGlyphs'],
         ),
       );
       labelStyle.layout();

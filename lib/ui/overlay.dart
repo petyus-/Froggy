@@ -160,6 +160,7 @@ class _WeatherOverlayState extends State<WeatherOverlay>
                             fontSize: summarySize,
                             fontWeight: FontWeight.w400,
                             shadows: shadow,
+                            fontFamilyFallback: const ['ArrowGlyphs'],
                           ),
                         ),
                       ],
