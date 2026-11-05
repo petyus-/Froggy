@@ -66,21 +66,16 @@ class WeatherService {
     if (times is! List || temps is! List || times.isEmpty) return null;
     final n = times.length < temps.length ? times.length : temps.length;
     final off = utcOffsetSeconds ?? 0;
-    final nowUtc = DateTime.now().toUtc();
-    final local =
-        nowUtc.add(Duration(seconds: off));
-    final startHour = local.hour;
-    // Times are local ISO strings without offset ("2026-11-05T21:00").
+    // Wall-clock time at the location (hourly timestamps from Open-Meteo
+    // with timezone=auto are location-local, offset-naive strings).
+    final wall = DateTime.now().toUtc().add(Duration(seconds: off));
     int best = -1;
     int bestDelta = 1 << 60;
     for (var i = 0; i < n; i++) {
       final t = DateTime.tryParse(times[i] as String);
       if (t == null) return null;
       final delta =
-          (t.difference(DateTime.utc(local.year, local.month, local.day,
-                      local.hour))
-              .inMinutes)
-              .abs();
+          ((t.hour * 60 + t.minute) - (wall.hour * 60 + wall.minute)).abs();
       if (delta < bestDelta) {
         bestDelta = delta;
         best = i;
@@ -93,7 +88,7 @@ class WeatherService {
       if (v is num) values.add(v.toDouble());
     }
     if (values.length < 24) return null;
-    return (values, startHour);
+    return (values, wall.hour);
   }
 
   static DateTime? _firstDate(Object? list) {
