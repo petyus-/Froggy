@@ -423,4 +423,7 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get hourlyChart => 'Grafic 24 de ore';
+
+  @override
+  String get alwaysShowFrog => 'Afișează mereu broscuța';
 }

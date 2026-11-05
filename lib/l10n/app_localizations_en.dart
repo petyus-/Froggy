@@ -418,4 +418,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hourlyChart => '24-hour chart';
+
+  @override
+  String get alwaysShowFrog => 'Always show the frog';
 }

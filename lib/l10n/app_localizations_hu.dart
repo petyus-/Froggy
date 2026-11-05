@@ -420,4 +420,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get hourlyChart => '24 órás grafikon';
+
+  @override
+  String get alwaysShowFrog => 'Mindig látszódjon a béka';
 }

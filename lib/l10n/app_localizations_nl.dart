@@ -419,4 +419,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get hourlyChart => '24-uurs grafiek';
+
+  @override
+  String get alwaysShowFrog => 'Kikker altijd tonen';
 }

@@ -50,6 +50,7 @@ class WeatherController extends ChangeNotifier {
   Timer? _locationTimer;
   int _sceneIndex = 0;
   String _lastLocationKey = 'auto';
+  String? _lastFrogSettingsKey;
   String _lastIntervals = '';
   bool _started = false;
   bool _active = true;
@@ -197,6 +198,13 @@ class WeatherController extends ChangeNotifier {
     _lastLocationKey = key;
     if (_started && changed) refresh();
 
+    final frogKey =
+        '$key|${_settings?.settings.alwaysShowFrog ?? false}';
+    if (_started && frogKey != _lastFrogSettingsKey) {
+      _lastFrogSettingsKey = frogKey;
+      _apply();
+    }
+
     final iv = _intervalsKey();
     if (_started && iv != _lastIntervals) {
       _lastIntervals = iv;
@@ -229,6 +237,7 @@ class WeatherController extends ChangeNotifier {
       scene: scene,
       dayPart: dayPart,
       condition: condition,
+      alwaysShowFrog: _settings?.settings.alwaysShowFrog ?? false,
     );
 
     if (_scene?.background != next.background || _scene?.frog != next.frog) {

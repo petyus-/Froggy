@@ -553,5 +553,7 @@
   }
 ,
   "hourlyChart": "Grafic 24 de ore",
-  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" }
+  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" },
+  "alwaysShowFrog": "Afișează mereu broscuța",
+  "@alwaysShowFrog": { "description": "Prefer scene animations where the frog is visible" }
 }

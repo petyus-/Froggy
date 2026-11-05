@@ -79,6 +79,9 @@ class SettingsController extends ChangeNotifier {
   Future<void> setShowHourlyChart(bool v) =>
       _update(_settings.copyWith(showHourlyChart: v));
 
+  Future<void> setAlwaysShowFrog(bool v) =>
+      _update(_settings.copyWith(alwaysShowFrog: v));
+
   Future<void> setLanguageCode(String? code) => _update(_settings.copyWith(
       languageCode: code, clearLanguage: code == null));
 

@@ -553,5 +553,7 @@
   }
 ,
   "hourlyChart": "Grafico 24 ore",
-  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" }
+  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" },
+  "alwaysShowFrog": "Mostra sempre la rana",
+  "@alwaysShowFrog": { "description": "Prefer scene animations where the frog is visible" }
 }

@@ -277,6 +277,11 @@ class _Controls extends StatelessWidget {
               onChanged: settings.setShowHourlyChart,
             ),
             SwitchListTile(
+              title: Text(l10n.alwaysShowFrog),
+              value: s.alwaysShowFrog,
+              onChanged: settings.setAlwaysShowFrog,
+            ),
+            SwitchListTile(
               title: Text(l10n.showLocation),
               subtitle: Text(l10n.showLocationSubtitle),
               value: s.showLocation,

@@ -84,7 +84,18 @@ class AssetCatalog {
     );
   }
 
-  String _resolveFrog(String scene, DayPart tod, WeatherCondition cond) {
+  String _resolveFrog(String scene, DayPart tod, WeatherCondition cond,
+      {bool preferVisible = false}) {
+    if (preferVisible && (tod == DayPart.night || tod == DayPart.sunset)) {
+      // Night and sunset animations often show the frog sleeping or hidden
+      // inside; day animations always feature the frog prominently.
+      final dayFrog = _frog(scene, DayPart.day, cond);
+      if (_available.contains(dayFrog)) return dayFrog;
+      for (final c in _neutralOrder) {
+        final cand = _frog(scene, DayPart.day, c);
+        if (_available.contains(cand)) return cand;
+      }
+    }
     final exact = _frog(scene, tod, cond);
     if (_available.contains(exact)) return exact;
     final alt = _frog(scene, _adjacentTod(tod), cond);
@@ -99,10 +110,12 @@ class AssetCatalog {
     required String scene,
     required DayPart dayPart,
     required WeatherCondition condition,
+    bool alwaysShowFrog = false,
   }) {
     return SceneAssets(
       _resolveBackground(scene, dayPart, condition),
-      _resolveFrog(scene, dayPart, condition),
+      _resolveFrog(scene, dayPart, condition,
+          preferVisible: alwaysShowFrog),
     );
   }
 }

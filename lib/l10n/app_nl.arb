@@ -553,5 +553,7 @@
   }
 ,
   "hourlyChart": "24-uurs grafiek",
-  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" }
+  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" },
+  "alwaysShowFrog": "Kikker altijd tonen",
+  "@alwaysShowFrog": { "description": "Prefer scene animations where the frog is visible" }
 }

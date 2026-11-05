@@ -424,4 +424,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get hourlyChart => 'Graphique 24 heures';
+
+  @override
+  String get alwaysShowFrog => 'Toujours afficher la grenouille';
 }

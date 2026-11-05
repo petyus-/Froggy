@@ -553,5 +553,7 @@
   }
 ,
   "hourlyChart": "Graphique 24 heures",
-  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" }
+  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" },
+  "alwaysShowFrog": "Toujours afficher la grenouille",
+  "@alwaysShowFrog": { "description": "Prefer scene animations where the frog is visible" }
 }

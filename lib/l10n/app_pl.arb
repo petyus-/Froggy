@@ -553,5 +553,7 @@
   }
 ,
   "hourlyChart": "Wykres 24-godzinny",
-  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" }
+  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" },
+  "alwaysShowFrog": "Zawsze pokazuj żabę",
+  "@alwaysShowFrog": { "description": "Prefer scene animations where the frog is visible" }
 }

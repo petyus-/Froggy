@@ -909,6 +909,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'24-hour chart'**
   String get hourlyChart;
+
+  /// Prefer scene animations where the frog is visible
+  ///
+  /// In en, this message translates to:
+  /// **'Always show the frog'**
+  String get alwaysShowFrog;
 }
 
 class _AppLocalizationsDelegate
