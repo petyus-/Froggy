@@ -10,14 +10,19 @@ class MoodCaption extends StatelessWidget {
     super.key,
     required this.dayPart,
     required this.condition,
+    this.alwaysShowFrog = false,
     this.shadows = const [],
   });
 
   final DayPart dayPart;
   final WeatherCondition condition;
+
+  /// When the frog is forced visible at night it plays outdoors, so
+  /// sleep-themed night phrases would be wrong; use awake ones instead.
+  final bool alwaysShowFrog;
   final List<Shadow> shadows;
 
-  static String _activity(AppLocalizations l10n, DayPart p, WeatherCondition c) {
+  String _activity(AppLocalizations l10n, DayPart p, WeatherCondition c) {
     switch (p) {
       case DayPart.morning:
         switch (c) {
@@ -59,6 +64,20 @@ class MoodCaption extends StatelessWidget {
             return l10n.moodSunsetSnowy;
         }
       case DayPart.night:
+        if (alwaysShowFrog) {
+          switch (c) {
+            case WeatherCondition.sunny:
+              return l10n.moodNightAwakeSunny;
+            case WeatherCondition.cloudy:
+              return l10n.moodNightAwakeCloudy;
+            case WeatherCondition.hazy:
+              return l10n.moodNightAwakeHazy;
+            case WeatherCondition.rainy:
+              return l10n.moodNightAwakeRainy;
+            case WeatherCondition.snowy:
+              return l10n.moodNightAwakeSnowy;
+          }
+        }
         switch (c) {
           case WeatherCondition.sunny:
             return l10n.moodNightSunny;
@@ -79,9 +98,11 @@ class MoodCaption extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     if (l10n == null) return const SizedBox.shrink();
     final text = _activity(l10n, dayPart, condition);
+    // Fixed size, larger than the date line (~24px on the 480x320 kiosk).
+    const fontSize = 28.0;
     return IgnorePointer(
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
         decoration: BoxDecoration(
           color: Colors.black.withValues(alpha: 0.45),
           borderRadius: BorderRadius.circular(999),
@@ -93,8 +114,8 @@ class MoodCaption extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
             color: Colors.white,
-            fontSize: 13,
-            fontWeight: FontWeight.w500,
+            fontSize: fontSize,
+            fontWeight: FontWeight.w600,
             shadows: shadows,
           ),
         ),

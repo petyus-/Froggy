@@ -69,9 +69,7 @@ class FroggyView extends StatelessWidget {
         ? 1.0
         : (dayPart == DayPart.sunset ? 0.5 : 0.0);
     final localTime = weather?.localTime ?? DateTime.now();
-    final dim = debugMode
-        ? 0.0
-        : settings.dimAt(nightFactor, localTime);
+    final dim = debugMode ? 0.0 : settings.dimAt(nightFactor, localTime);
     final showLoc = settings.showLocation &&
         locationName != null &&
         locationName!.isNotEmpty;
@@ -168,19 +166,15 @@ class FroggyView extends StatelessWidget {
             Positioned(
               // Sits on the settings-gear bottom row: same bottom edge as the
               // gear, centered against its 28px icon, immediately to its left.
-              bottom: statusPad,
+              // Pill heights ~52px (28px text + padding); shift down so its
+              // vertical center sits on the 28px gear icon at bottom:statusPad.
+              bottom: statusPad - 12,
               right: statusPad + (cornerGear ? 28.0 + 12.0 : 0.0),
-              child: SizedBox(
-                height: 28,
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: MoodCaption(
-                    dayPart: dayPart,
-                    condition:
-                        weather?.condition ?? WeatherCondition.cloudy,
-                    shadows: shadows,
-                  ),
-                ),
+              child: MoodCaption(
+                dayPart: dayPart,
+                condition: weather?.condition ?? WeatherCondition.cloudy,
+                alwaysShowFrog: settings.alwaysShowFrog,
+                shadows: shadows,
               ),
             ),
           if (overlay && hasTopContent)

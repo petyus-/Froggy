@@ -646,5 +646,10 @@
   "moodNightSnowy": "doarme la căldură",
   "@moodNightSnowy": {
     "description": "Frog mood activity for night / snowy"
-  }
+  },
+  "moodNightAwakeSunny": "privește stelele",
+  "moodNightAwakeCloudy": "face un picnic de noapte",
+  "moodNightAwakeHazy": "privește luna",
+  "moodNightAwakeRainy": "dansează în ploaia de noapte",
+  "moodNightAwakeSnowy": "se joacă în zăpada de noapte"
 }

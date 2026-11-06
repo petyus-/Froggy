@@ -492,4 +492,19 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get moodNightSnowy => 'doarme la căldură';
+
+  @override
+  String get moodNightAwakeSunny => 'privește stelele';
+
+  @override
+  String get moodNightAwakeCloudy => 'face un picnic de noapte';
+
+  @override
+  String get moodNightAwakeHazy => 'privește luna';
+
+  @override
+  String get moodNightAwakeRainy => 'dansează în ploaia de noapte';
+
+  @override
+  String get moodNightAwakeSnowy => 'se joacă în zăpada de noapte';
 }

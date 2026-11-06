@@ -487,4 +487,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get moodNightSnowy => 'sleeping snugly';
+
+  @override
+  String get moodNightAwakeSunny => 'stargazing';
+
+  @override
+  String get moodNightAwakeCloudy => 'on a night picnic';
+
+  @override
+  String get moodNightAwakeHazy => 'moon-gazing';
+
+  @override
+  String get moodNightAwakeRainy => 'dancing in the night rain';
+
+  @override
+  String get moodNightAwakeSnowy => 'playing in the night snow';
 }

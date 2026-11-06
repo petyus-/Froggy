@@ -646,5 +646,10 @@
   "moodNightSnowy": "duerme calentito",
   "@moodNightSnowy": {
     "description": "Frog mood activity for night / snowy"
-  }
+  },
+  "moodNightAwakeSunny": "mira las estrellas",
+  "moodNightAwakeCloudy": "hace un pícnic nocturno",
+  "moodNightAwakeHazy": "mira la luna",
+  "moodNightAwakeRainy": "baila bajo la lluvia nocturna",
+  "moodNightAwakeSnowy": "juega en la nieve nocturna"
 }

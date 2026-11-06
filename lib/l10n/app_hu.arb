@@ -646,5 +646,10 @@
   "moodNightSnowy": "melegben alszik",
   "@moodNightSnowy": {
     "description": "Frog mood activity for night / snowy"
-  }
+  },
+  "moodNightAwakeSunny": "csillagászik",
+  "moodNightAwakeCloudy": "éjjeli piknikelt",
+  "moodNightAwakeHazy": "holdnéző",
+  "moodNightAwakeRainy": "esőben táncol",
+  "moodNightAwakeSnowy": "hóembert épít"
 }

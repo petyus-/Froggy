@@ -489,4 +489,19 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get moodNightSnowy => 'melegben alszik';
+
+  @override
+  String get moodNightAwakeSunny => 'csillagászik';
+
+  @override
+  String get moodNightAwakeCloudy => 'éjjeli piknikelt';
+
+  @override
+  String get moodNightAwakeHazy => 'holdnéző';
+
+  @override
+  String get moodNightAwakeRainy => 'esőben táncol';
+
+  @override
+  String get moodNightAwakeSnowy => 'hóembert épít';
 }

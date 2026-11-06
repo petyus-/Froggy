@@ -646,5 +646,25 @@
   "moodNightSnowy": "sleeping snugly",
   "@moodNightSnowy": {
     "description": "Frog mood activity for night / snowy"
+  },
+  "moodNightAwakeSunny": "stargazing",
+  "@moodNightAwakeSunny": {
+    "description": "Awake night frog activity for night / sunny (used when alwaysShowFrog is on)"
+  },
+  "moodNightAwakeCloudy": "on a night picnic",
+  "@moodNightAwakeCloudy": {
+    "description": "Awake night frog activity for night / cloudy (used when alwaysShowFrog is on)"
+  },
+  "moodNightAwakeHazy": "moon-gazing",
+  "@moodNightAwakeHazy": {
+    "description": "Awake night frog activity for night / hazy (used when alwaysShowFrog is on)"
+  },
+  "moodNightAwakeRainy": "dancing in the night rain",
+  "@moodNightAwakeRainy": {
+    "description": "Awake night frog activity for night / rainy (used when alwaysShowFrog is on)"
+  },
+  "moodNightAwakeSnowy": "playing in the night snow",
+  "@moodNightAwakeSnowy": {
+    "description": "Awake night frog activity for night / snowy (used when alwaysShowFrog is on)"
   }
 }

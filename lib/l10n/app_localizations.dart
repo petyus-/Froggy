@@ -1047,6 +1047,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'sleeping snugly'**
   String get moodNightSnowy;
+
+  /// Awake night frog activity for night / sunny (used when alwaysShowFrog is on)
+  ///
+  /// In en, this message translates to:
+  /// **'stargazing'**
+  String get moodNightAwakeSunny;
+
+  /// Awake night frog activity for night / cloudy (used when alwaysShowFrog is on)
+  ///
+  /// In en, this message translates to:
+  /// **'on a night picnic'**
+  String get moodNightAwakeCloudy;
+
+  /// Awake night frog activity for night / hazy (used when alwaysShowFrog is on)
+  ///
+  /// In en, this message translates to:
+  /// **'moon-gazing'**
+  String get moodNightAwakeHazy;
+
+  /// Awake night frog activity for night / rainy (used when alwaysShowFrog is on)
+  ///
+  /// In en, this message translates to:
+  /// **'dancing in the night rain'**
+  String get moodNightAwakeRainy;
+
+  /// Awake night frog activity for night / snowy (used when alwaysShowFrog is on)
+  ///
+  /// In en, this message translates to:
+  /// **'playing in the night snow'**
+  String get moodNightAwakeSnowy;
 }
 
 class _AppLocalizationsDelegate
