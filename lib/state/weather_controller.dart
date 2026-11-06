@@ -6,6 +6,7 @@ import '../models/settings.dart';
 import '../models/weather.dart';
 import '../services/asset_catalog.dart';
 import '../services/cache.dart';
+import '../services/debug_params.dart';
 import '../services/location_service.dart';
 import '../services/system_status_service.dart';
 import '../services/weather_service.dart';
@@ -230,7 +231,7 @@ class WeatherController extends ChangeNotifier {
   }
 
   void _parseDebugParams() {
-    final q = Uri.base.queryParameters;
+    final q = debugQueryParams;
     if (q['debug'] != '1' || q['scene'] == null) return;
     DayPart? tod;
     for (final v in DayPart.values) {
