@@ -339,7 +339,8 @@ class _HomeScreenState extends State<HomeScreen> {
         listenable: Listenable.merge([weather, settings]),
         builder: (context, _) {
           if (!weather.ready) return const SplashScreen();
-          final kiosk = settings.settings.kioskMode;
+          final kiosk =
+              settings.settings.kioskMode || weather.debugMode;
           final swipe = weather.canCycleLocations
               ? settings.settings.locationSwipe
               : LocationSwipe.off;
@@ -375,7 +376,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     weather: weather.weather,
                     settings: settings.settings,
                     locationName: weather.locationName,
-                    cornerGear: !kiosk,
+                    cornerGear: !kiosk, debugMode: weather.debugMode,
                   ),
                 ),
               ),

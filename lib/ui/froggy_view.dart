@@ -24,6 +24,7 @@ class FroggyView extends StatelessWidget {
     this.showOverlay = true,
     this.showTopBar = true,
     this.cornerGear = true,
+    this.debugMode = false,
   });
 
   final SceneAssets? scene;
@@ -36,6 +37,9 @@ class FroggyView extends StatelessWidget {
   /// Whether a settings gear button occupies the bottom-right corner above
   /// this view (non-kiosk layouts); the mood caption is lifted above it.
   final bool cornerGear;
+
+  /// Debug capture mode: no overlay, no dimming — just the raw combo.
+  final bool debugMode;
 
   static const _animationName = 'Hero-Action';
 
@@ -65,10 +69,13 @@ class FroggyView extends StatelessWidget {
         ? 1.0
         : (dayPart == DayPart.sunset ? 0.5 : 0.0);
     final localTime = weather?.localTime ?? DateTime.now();
-    final dim = settings.dimAt(nightFactor, localTime);
+    final dim = debugMode
+        ? 0.0
+        : settings.dimAt(nightFactor, localTime);
     final showLoc = settings.showLocation &&
         locationName != null &&
         locationName!.isNotEmpty;
+    final overlay = showOverlay && !debugMode;
     final hasTopContent =
         showTopBar && ((!kIsWeb && settings.showStatus) || showLoc);
     final hasBottomContent = settings.showClock ||
@@ -103,10 +110,11 @@ class FroggyView extends StatelessWidget {
                   key: ValueKey(s.frog),
                   asset: s.frog,
                   animation: _animationName,
+                  loop: debugMode,
                 ),
               ),
             ),
-          if (showOverlay && hasTopContent)
+          if (overlay && hasTopContent)
             Positioned(
               top: 0,
               left: 0,
@@ -127,7 +135,7 @@ class FroggyView extends StatelessWidget {
                 ),
               ),
             ),
-          if (showOverlay && hasBottomContent)
+          if (overlay && hasBottomContent)
             Positioned(
               bottom: 0,
               left: 0,
@@ -148,15 +156,15 @@ class FroggyView extends StatelessWidget {
                 ),
               ),
             ),
-          if (showOverlay) WeatherOverlay(weather: weather, settings: settings),
-          if (showOverlay && settings.showHourlyChart)
+          if (overlay) WeatherOverlay(weather: weather, settings: settings),
+          if (overlay && settings.showHourlyChart)
             Positioned(
               top: 0,
               left: 0,
               right: 0,
               child: HourlyChartStrip(weather: weather),
             ),
-          if (showOverlay && settings.showMoodCaption)
+          if (overlay && settings.showMoodCaption)
             Positioned(
               bottom:
                   statusPad + (cornerGear ? statusIcon * 1.5 + 8 : 0),
@@ -168,7 +176,7 @@ class FroggyView extends StatelessWidget {
                 shadows: shadows,
               ),
             ),
-          if (showOverlay && hasTopContent)
+          if (overlay && hasTopContent)
             Positioned(
               top: 0,
               left: 0,
@@ -271,10 +279,19 @@ class _LocationLabel extends StatelessWidget {
 }
 
 class _LoopingFrog extends StatefulWidget {
-  const _LoopingFrog({super.key, required this.asset, required this.animation});
+  const _LoopingFrog({
+    super.key,
+    required this.asset,
+    required this.animation,
+    this.loop = false,
+  });
 
   final String asset;
   final String animation;
+
+  /// When true the animation restarts immediately after it completes
+  /// (debug capture mode) instead of waiting for a random idle gap.
+  final bool loop;
 
   @override
   State<_LoopingFrog> createState() => _LoopingFrogState();
@@ -296,6 +313,14 @@ class _LoopingFrogState extends State<_LoopingFrog>
   void _scheduleNextPlay() {
     _timer?.cancel();
     if (!foreground) return;
+    if (widget.loop) {
+      // Debug capture: keep the animation running without idle gaps.
+      _timer = Timer(const Duration(milliseconds: 16), () {
+        if (!mounted) return;
+        setState(() => _current = widget.animation);
+      });
+      return;
+    }
     final gapMs = 2500 + _rng.nextInt(7500);
     _timer = Timer(Duration(milliseconds: gapMs), () {
       if (!mounted) return;

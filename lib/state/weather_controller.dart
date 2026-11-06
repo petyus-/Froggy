@@ -78,8 +78,25 @@ class WeatherController extends ChangeNotifier {
   bool get usingApproximateLocation => _usingApproximateLocation;
   List<String> get scenes => _catalog?.scenes ?? const [];
 
+  String? _debugScene;
+  DayPart? _debugTod;
+  WeatherCondition? _debugCond;
+
+  /// True when the app was launched with explicit debug scene params
+  /// (e.g. ?debug=1&scene=fields&tod=day&cond=sunny); skips weather
+  /// fetching and renders exactly that combo.
+  bool get debugMode => _debugScene != null;
+
   Future<void> init() async {
     _catalog ??= await AssetCatalog.load();
+    if (kIsWeb) _parseDebugParams();
+    if (debugMode) {
+      final idx = _catalog!.scenes.indexOf(_debugScene!);
+      _sceneIndex = idx >= 0 ? idx : 0;
+      _started = true;
+      _apply();
+      return;
+    }
     _useDeviceLocation = !await SystemStatusService().isTelevision();
     _data = await _cache.loadWeather();
     _apply();
@@ -212,6 +229,22 @@ class WeatherController extends ChangeNotifier {
     }
   }
 
+  void _parseDebugParams() {
+    final q = Uri.base.queryParameters;
+    if (q['debug'] != '1' || q['scene'] == null) return;
+    DayPart? tod;
+    for (final v in DayPart.values) {
+      if (v.name == q['tod']) tod = v;
+    }
+    WeatherCondition? cond;
+    for (final v in WeatherCondition.values) {
+      if (v.name == q['cond']) cond = v;
+    }
+    _debugScene = q['scene'];
+    _debugTod = tod ?? DayPart.day;
+    _debugCond = cond ?? WeatherCondition.sunny;
+  }
+
   bool get canCycleLocations =>
       _settings?.settings.canCycleLocations ?? false;
 
@@ -229,9 +262,13 @@ class WeatherController extends ChangeNotifier {
     final catalog = _catalog;
     if (catalog == null || catalog.scenes.isEmpty) return;
 
-    final dayPart = _data?.dayPart ?? dayPartFor(DateTime.now(), null, null);
-    final condition = _data?.condition ?? WeatherCondition.sunny;
-    final scene = catalog.scenes[_sceneIndex % catalog.scenes.length];
+    final dayPart =
+        _debugTod ?? _data?.dayPart ?? dayPartFor(DateTime.now(), null, null);
+    final condition =
+        _debugCond ?? _data?.condition ?? WeatherCondition.sunny;
+    final scene = debugMode
+        ? _debugScene!
+        : catalog.scenes[_sceneIndex % catalog.scenes.length];
 
     final next = catalog.resolve(
       scene: scene,
