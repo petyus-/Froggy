@@ -78,7 +78,7 @@ class MoodCaption extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     if (l10n == null) return const SizedBox.shrink();
-    final text = '${l10n.moodLabel}: ${_activity(l10n, dayPart, condition)}';
+    final text = _activity(l10n, dayPart, condition);
     return IgnorePointer(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),

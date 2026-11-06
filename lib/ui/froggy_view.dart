@@ -166,14 +166,21 @@ class FroggyView extends StatelessWidget {
             ),
           if (overlay && settings.showMoodCaption)
             Positioned(
-              bottom:
-                  statusPad + (cornerGear ? statusIcon * 1.5 + 8 : 0),
-              right: statusPad,
-              child: MoodCaption(
-                dayPart: dayPart,
-                condition:
-                    weather?.condition ?? WeatherCondition.cloudy,
-                shadows: shadows,
+              // Sits on the settings-gear bottom row: same bottom edge as the
+              // gear, centered against its 28px icon, immediately to its left.
+              bottom: statusPad,
+              right: statusPad + (cornerGear ? 28.0 + 12.0 : 0.0),
+              child: SizedBox(
+                height: 28,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: MoodCaption(
+                    dayPart: dayPart,
+                    condition:
+                        weather?.condition ?? WeatherCondition.cloudy,
+                    shadows: shadows,
+                  ),
+                ),
               ),
             ),
           if (overlay && hasTopContent)
