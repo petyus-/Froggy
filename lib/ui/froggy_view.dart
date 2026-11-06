@@ -164,12 +164,12 @@ class FroggyView extends StatelessWidget {
             ),
           if (overlay && settings.showMoodCaption)
             Positioned(
-              // Sits on the settings-gear bottom row: same bottom edge as the
-              // gear, centered against its 28px icon, immediately to its left.
-              // Pill heights ~52px (28px text + padding); shift down so its
-              // vertical center sits on the 28px gear icon at bottom:statusPad.
-              bottom: statusPad - 12,
-              right: statusPad + (cornerGear ? 28.0 + 12.0 : 0.0),
+              // Sits top-right, directly under the location name: the status
+              // row starts at statusPad and is statusIcon*1.5 tall, so the
+              // pill's top edge aligns with the row's bottom edge. A slight
+              // overlap with the top of the chart band is acceptable.
+              top: statusPad + statusIcon * 1.5,
+              right: statusPad,
               child: MoodCaption(
                 dayPart: dayPart,
                 condition: weather?.condition ?? WeatherCondition.cloudy,
