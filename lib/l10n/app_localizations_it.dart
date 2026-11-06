@@ -425,4 +425,70 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get alwaysShowFrog => 'Mostra sempre la rana';
+
+  @override
+  String get moodCaption => 'Umore della rana';
+
+  @override
+  String get moodLabel => 'Rana';
+
+  @override
+  String get moodMorningSunny => 'si stira';
+
+  @override
+  String get moodMorningCloudy => 'si sveglia';
+
+  @override
+  String get moodMorningHazy => 'gode la nebbia';
+
+  @override
+  String get moodMorningRainy => 'canta sotto la pioggia';
+
+  @override
+  String get moodMorningSnowy => 'acchiappa fiocchi';
+
+  @override
+  String get moodDaySunny => 'prend il sole';
+
+  @override
+  String get moodDayCloudy => 'fa un picnic';
+
+  @override
+  String get moodDayHazy => 'sogna ad occhi aperti';
+
+  @override
+  String get moodDayRainy => 'balla sotto la pioggia';
+
+  @override
+  String get moodDaySnowy => 'fa palle di neve';
+
+  @override
+  String get moodSunsetSunny => 'guarda il tramonto';
+
+  @override
+  String get moodSunsetCloudy => 'guarda il tramonto';
+
+  @override
+  String get moodSunsetHazy => 'guarda il tramonto';
+
+  @override
+  String get moodSunsetRainy => 'ascolta la pioggia';
+
+  @override
+  String get moodSunsetSnowy => 'si scalda';
+
+  @override
+  String get moodNightSunny => 'ammira le stelle';
+
+  @override
+  String get moodNightCloudy => 'sogna';
+
+  @override
+  String get moodNightHazy => 'sogna';
+
+  @override
+  String get moodNightRainy => 'sonnecchia con la pioggia';
+
+  @override
+  String get moodNightSnowy => 'dorme al caldo';
 }

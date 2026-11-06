@@ -423,4 +423,70 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get alwaysShowFrog => 'Mindig látszódjon a béka';
+
+  @override
+  String get moodCaption => 'Béka hangulata';
+
+  @override
+  String get moodLabel => 'Béka';
+
+  @override
+  String get moodMorningSunny => 'nyújtózkodik';
+
+  @override
+  String get moodMorningCloudy => 'ébredezik';
+
+  @override
+  String get moodMorningHazy => 'ködöt szív';
+
+  @override
+  String get moodMorningRainy => 'esőben énekel';
+
+  @override
+  String get moodMorningSnowy => 'hópihét fog';
+
+  @override
+  String get moodDaySunny => 'napozik';
+
+  @override
+  String get moodDayCloudy => 'piknikelt';
+
+  @override
+  String get moodDayHazy => 'ábrándozik';
+
+  @override
+  String get moodDayRainy => 'esőtáncol';
+
+  @override
+  String get moodDaySnowy => 'hólabdázik';
+
+  @override
+  String get moodSunsetSunny => 'naplementét néz';
+
+  @override
+  String get moodSunsetCloudy => 'naplementét néz';
+
+  @override
+  String get moodSunsetHazy => 'naplementét néz';
+
+  @override
+  String get moodSunsetRainy => 'esőcseppeket hallgat';
+
+  @override
+  String get moodSunsetSnowy => 'melegedik';
+
+  @override
+  String get moodNightSunny => 'csillagászik';
+
+  @override
+  String get moodNightCloudy => 'álmodik';
+
+  @override
+  String get moodNightHazy => 'álmodik';
+
+  @override
+  String get moodNightRainy => 'szunyókál';
+
+  @override
+  String get moodNightSnowy => 'melegben alszik';
 }

@@ -282,6 +282,11 @@ class _Controls extends StatelessWidget {
               onChanged: settings.setAlwaysShowFrog,
             ),
             SwitchListTile(
+              title: Text(l10n.moodCaption),
+              value: s.showMoodCaption,
+              onChanged: settings.setShowMoodCaption,
+            ),
+            SwitchListTile(
               title: Text(l10n.showLocation),
               subtitle: Text(l10n.showLocationSubtitle),
               value: s.showLocation,

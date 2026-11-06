@@ -426,4 +426,70 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get alwaysShowFrog => 'Afișează mereu broscuța';
+
+  @override
+  String get moodCaption => 'Starea broscuței';
+
+  @override
+  String get moodLabel => 'Broscuța';
+
+  @override
+  String get moodMorningSunny => 'se întinde';
+
+  @override
+  String get moodMorningCloudy => 'se trezește';
+
+  @override
+  String get moodMorningHazy => 'se bucură de ceață';
+
+  @override
+  String get moodMorningRainy => 'cântă în ploaie';
+
+  @override
+  String get moodMorningSnowy => 'prinde fulgi';
+
+  @override
+  String get moodDaySunny => 'stă la soare';
+
+  @override
+  String get moodDayCloudy => 'face un picnic';
+
+  @override
+  String get moodDayHazy => 'visează';
+
+  @override
+  String get moodDayRainy => 'dansează în ploaie';
+
+  @override
+  String get moodDaySnowy => 'se joacă cu bulgări';
+
+  @override
+  String get moodSunsetSunny => 'privește apusul';
+
+  @override
+  String get moodSunsetCloudy => 'privește apusul';
+
+  @override
+  String get moodSunsetHazy => 'privește apusul';
+
+  @override
+  String get moodSunsetRainy => 'ascultă ploaia';
+
+  @override
+  String get moodSunsetSnowy => 'se încălzește';
+
+  @override
+  String get moodNightSunny => 'privește stelele';
+
+  @override
+  String get moodNightCloudy => 'visează';
+
+  @override
+  String get moodNightHazy => 'visează';
+
+  @override
+  String get moodNightRainy => 'face pui de somn';
+
+  @override
+  String get moodNightSnowy => 'doarme la căldură';
 }

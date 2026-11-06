@@ -425,4 +425,70 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get alwaysShowFrog => 'Frosch immer anzeigen';
+
+  @override
+  String get moodCaption => 'Frosch-Laune anzeigen';
+
+  @override
+  String get moodLabel => 'Frosch';
+
+  @override
+  String get moodMorningSunny => 'reckt sich';
+
+  @override
+  String get moodMorningCloudy => 'wacht auf';
+
+  @override
+  String get moodMorningHazy => 'genießt den Nebel';
+
+  @override
+  String get moodMorningRainy => 'singt im Regen';
+
+  @override
+  String get moodMorningSnowy => 'fängt Schneeflocken';
+
+  @override
+  String get moodDaySunny => 'sonnt sich';
+
+  @override
+  String get moodDayCloudy => 'picknickt';
+
+  @override
+  String get moodDayHazy => 'träumt';
+
+  @override
+  String get moodDayRainy => 'Regentanz';
+
+  @override
+  String get moodDaySnowy => 'wirft Schneebälle';
+
+  @override
+  String get moodSunsetSunny => 'schaut den Sonnenuntergang';
+
+  @override
+  String get moodSunsetCloudy => 'schaut den Sonnenuntergang';
+
+  @override
+  String get moodSunsetHazy => 'schaut den Sonnenuntergang';
+
+  @override
+  String get moodSunsetRainy => 'lauscht dem Regen';
+
+  @override
+  String get moodSunsetSnowy => 'wärmt sich';
+
+  @override
+  String get moodNightSunny => 'beobachtet Sterne';
+
+  @override
+  String get moodNightCloudy => 'träumt';
+
+  @override
+  String get moodNightHazy => 'träumt';
+
+  @override
+  String get moodNightRainy => 'döst im Regen';
+
+  @override
+  String get moodNightSnowy => 'schläft gemütlich';
 }

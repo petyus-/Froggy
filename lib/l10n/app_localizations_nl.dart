@@ -422,4 +422,70 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get alwaysShowFrog => 'Kikker altijd tonen';
+
+  @override
+  String get moodCaption => 'Kikkerstemming';
+
+  @override
+  String get moodLabel => 'Kikker';
+
+  @override
+  String get moodMorningSunny => 'rekt zich';
+
+  @override
+  String get moodMorningCloudy => 'wordt wakker';
+
+  @override
+  String get moodMorningHazy => 'geniet van de mist';
+
+  @override
+  String get moodMorningRainy => 'zingt in de regen';
+
+  @override
+  String get moodMorningSnowy => 'vangt sneeuwvlokken';
+
+  @override
+  String get moodDaySunny => 'zonnet';
+
+  @override
+  String get moodDayCloudy => 'picknickt';
+
+  @override
+  String get moodDayHazy => 'droomt';
+
+  @override
+  String get moodDayRainy => 'danst in de regen';
+
+  @override
+  String get moodDaySnowy => 'gooit sneeuwballen';
+
+  @override
+  String get moodSunsetSunny => 'kijkt naar de zonsondergang';
+
+  @override
+  String get moodSunsetCloudy => 'kijkt naar de zonsondergang';
+
+  @override
+  String get moodSunsetHazy => 'kijkt naar de zonsondergang';
+
+  @override
+  String get moodSunsetRainy => 'luistert naar de regen';
+
+  @override
+  String get moodSunsetSnowy => 'warmt zich';
+
+  @override
+  String get moodNightSunny => 'kijkt naar sterren';
+
+  @override
+  String get moodNightCloudy => 'droomt';
+
+  @override
+  String get moodNightHazy => 'droomt';
+
+  @override
+  String get moodNightRainy => 'doezelt in de regen';
+
+  @override
+  String get moodNightSnowy => 'slaapt knus';
 }

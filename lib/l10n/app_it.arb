@@ -550,10 +550,101 @@
   "wmoUnknown": "Sconosciuto",
   "@wmoUnknown": {
     "description": "Unknown WMO code"
-  }
-,
+  },
   "hourlyChart": "Grafico 24 ore",
-  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" },
+  "@hourlyChart": {
+    "description": "Toggle to show the 24-hour temperature chart"
+  },
   "alwaysShowFrog": "Mostra sempre la rana",
-  "@alwaysShowFrog": { "description": "Prefer scene animations where the frog is visible" }
+  "@alwaysShowFrog": {
+    "description": "Prefer scene animations where the frog is visible"
+  },
+  "moodCaption": "Umore della rana",
+  "@moodCaption": {
+    "description": "Toggle to show the frog mood/activity caption in the bottom-right corner"
+  },
+  "moodLabel": "Rana",
+  "@moodLabel": {
+    "description": "Prefix label of the mood caption, e.g. 'Frog'"
+  },
+  "moodMorningSunny": "si stira",
+  "@moodMorningSunny": {
+    "description": "Frog mood activity for morning / sunny"
+  },
+  "moodMorningCloudy": "si sveglia",
+  "@moodMorningCloudy": {
+    "description": "Frog mood activity for morning / cloudy"
+  },
+  "moodMorningHazy": "gode la nebbia",
+  "@moodMorningHazy": {
+    "description": "Frog mood activity for morning / hazy"
+  },
+  "moodMorningRainy": "canta sotto la pioggia",
+  "@moodMorningRainy": {
+    "description": "Frog mood activity for morning / rainy"
+  },
+  "moodMorningSnowy": "acchiappa fiocchi",
+  "@moodMorningSnowy": {
+    "description": "Frog mood activity for morning / snowy"
+  },
+  "moodDaySunny": "prend il sole",
+  "@moodDaySunny": {
+    "description": "Frog mood activity for day / sunny"
+  },
+  "moodDayCloudy": "fa un picnic",
+  "@moodDayCloudy": {
+    "description": "Frog mood activity for day / cloudy"
+  },
+  "moodDayHazy": "sogna ad occhi aperti",
+  "@moodDayHazy": {
+    "description": "Frog mood activity for day / hazy"
+  },
+  "moodDayRainy": "balla sotto la pioggia",
+  "@moodDayRainy": {
+    "description": "Frog mood activity for day / rainy"
+  },
+  "moodDaySnowy": "fa palle di neve",
+  "@moodDaySnowy": {
+    "description": "Frog mood activity for day / snowy"
+  },
+  "moodSunsetSunny": "guarda il tramonto",
+  "@moodSunsetSunny": {
+    "description": "Frog mood activity for sunset / sunny"
+  },
+  "moodSunsetCloudy": "guarda il tramonto",
+  "@moodSunsetCloudy": {
+    "description": "Frog mood activity for sunset / cloudy"
+  },
+  "moodSunsetHazy": "guarda il tramonto",
+  "@moodSunsetHazy": {
+    "description": "Frog mood activity for sunset / hazy"
+  },
+  "moodSunsetRainy": "ascolta la pioggia",
+  "@moodSunsetRainy": {
+    "description": "Frog mood activity for sunset / rainy"
+  },
+  "moodSunsetSnowy": "si scalda",
+  "@moodSunsetSnowy": {
+    "description": "Frog mood activity for sunset / snowy"
+  },
+  "moodNightSunny": "ammira le stelle",
+  "@moodNightSunny": {
+    "description": "Frog mood activity for night / sunny"
+  },
+  "moodNightCloudy": "sogna",
+  "@moodNightCloudy": {
+    "description": "Frog mood activity for night / cloudy"
+  },
+  "moodNightHazy": "sogna",
+  "@moodNightHazy": {
+    "description": "Frog mood activity for night / hazy"
+  },
+  "moodNightRainy": "sonnecchia con la pioggia",
+  "@moodNightRainy": {
+    "description": "Frog mood activity for night / rainy"
+  },
+  "moodNightSnowy": "dorme al caldo",
+  "@moodNightSnowy": {
+    "description": "Frog mood activity for night / snowy"
+  }
 }

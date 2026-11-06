@@ -427,4 +427,70 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get alwaysShowFrog => 'Toujours afficher la grenouille';
+
+  @override
+  String get moodCaption => 'Humeur de la grenouille';
+
+  @override
+  String get moodLabel => 'Grenouille';
+
+  @override
+  String get moodMorningSunny => 's\'étire';
+
+  @override
+  String get moodMorningCloudy => 'se réveille';
+
+  @override
+  String get moodMorningHazy => 'profite de la brume';
+
+  @override
+  String get moodMorningRainy => 'chante sous la pluie';
+
+  @override
+  String get moodMorningSnowy => 'attrape des flocons';
+
+  @override
+  String get moodDaySunny => 'prend le soleil';
+
+  @override
+  String get moodDayCloudy => 'pique-nique';
+
+  @override
+  String get moodDayHazy => 'rêvasse';
+
+  @override
+  String get moodDayRainy => 'danse sous la pluie';
+
+  @override
+  String get moodDaySnowy => 'lance des boules de neige';
+
+  @override
+  String get moodSunsetSunny => 'regarde le coucher du soleil';
+
+  @override
+  String get moodSunsetCloudy => 'regarde le coucher du soleil';
+
+  @override
+  String get moodSunsetHazy => 'regarde le coucher du soleil';
+
+  @override
+  String get moodSunsetRainy => 'écoute la pluie';
+
+  @override
+  String get moodSunsetSnowy => 'se réchauffe';
+
+  @override
+  String get moodNightSunny => 'observe les étoiles';
+
+  @override
+  String get moodNightCloudy => 'rêve';
+
+  @override
+  String get moodNightHazy => 'rêve';
+
+  @override
+  String get moodNightRainy => 'somnole sous la pluie';
+
+  @override
+  String get moodNightSnowy => 'dort au chaud';
 }

@@ -421,4 +421,70 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get alwaysShowFrog => 'Always show the frog';
+
+  @override
+  String get moodCaption => 'Frog mood caption';
+
+  @override
+  String get moodLabel => 'Frog';
+
+  @override
+  String get moodMorningSunny => 'stretching';
+
+  @override
+  String get moodMorningCloudy => 'waking up';
+
+  @override
+  String get moodMorningHazy => 'enjoying the mist';
+
+  @override
+  String get moodMorningRainy => 'singing in the rain';
+
+  @override
+  String get moodMorningSnowy => 'catching snowflakes';
+
+  @override
+  String get moodDaySunny => 'sunbathing';
+
+  @override
+  String get moodDayCloudy => 'having a picnic';
+
+  @override
+  String get moodDayHazy => 'daydreaming';
+
+  @override
+  String get moodDayRainy => 'rain dancing';
+
+  @override
+  String get moodDaySnowy => 'having a snowball fight';
+
+  @override
+  String get moodSunsetSunny => 'watching the sunset';
+
+  @override
+  String get moodSunsetCloudy => 'watching the sunset';
+
+  @override
+  String get moodSunsetHazy => 'watching the sunset';
+
+  @override
+  String get moodSunsetRainy => 'listening to raindrops';
+
+  @override
+  String get moodSunsetSnowy => 'keeping warm';
+
+  @override
+  String get moodNightSunny => 'stargazing';
+
+  @override
+  String get moodNightCloudy => 'dreaming';
+
+  @override
+  String get moodNightHazy => 'dreaming';
+
+  @override
+  String get moodNightRainy => 'dozing to the rain';
+
+  @override
+  String get moodNightSnowy => 'sleeping snugly';
 }

@@ -915,6 +915,138 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Always show the frog'**
   String get alwaysShowFrog;
+
+  /// Toggle to show the frog mood/activity caption in the bottom-right corner
+  ///
+  /// In en, this message translates to:
+  /// **'Frog mood caption'**
+  String get moodCaption;
+
+  /// Prefix label of the mood caption, e.g. 'Frog'
+  ///
+  /// In en, this message translates to:
+  /// **'Frog'**
+  String get moodLabel;
+
+  /// Frog mood activity for morning / sunny
+  ///
+  /// In en, this message translates to:
+  /// **'stretching'**
+  String get moodMorningSunny;
+
+  /// Frog mood activity for morning / cloudy
+  ///
+  /// In en, this message translates to:
+  /// **'waking up'**
+  String get moodMorningCloudy;
+
+  /// Frog mood activity for morning / hazy
+  ///
+  /// In en, this message translates to:
+  /// **'enjoying the mist'**
+  String get moodMorningHazy;
+
+  /// Frog mood activity for morning / rainy
+  ///
+  /// In en, this message translates to:
+  /// **'singing in the rain'**
+  String get moodMorningRainy;
+
+  /// Frog mood activity for morning / snowy
+  ///
+  /// In en, this message translates to:
+  /// **'catching snowflakes'**
+  String get moodMorningSnowy;
+
+  /// Frog mood activity for day / sunny
+  ///
+  /// In en, this message translates to:
+  /// **'sunbathing'**
+  String get moodDaySunny;
+
+  /// Frog mood activity for day / cloudy
+  ///
+  /// In en, this message translates to:
+  /// **'having a picnic'**
+  String get moodDayCloudy;
+
+  /// Frog mood activity for day / hazy
+  ///
+  /// In en, this message translates to:
+  /// **'daydreaming'**
+  String get moodDayHazy;
+
+  /// Frog mood activity for day / rainy
+  ///
+  /// In en, this message translates to:
+  /// **'rain dancing'**
+  String get moodDayRainy;
+
+  /// Frog mood activity for day / snowy
+  ///
+  /// In en, this message translates to:
+  /// **'having a snowball fight'**
+  String get moodDaySnowy;
+
+  /// Frog mood activity for sunset / sunny
+  ///
+  /// In en, this message translates to:
+  /// **'watching the sunset'**
+  String get moodSunsetSunny;
+
+  /// Frog mood activity for sunset / cloudy
+  ///
+  /// In en, this message translates to:
+  /// **'watching the sunset'**
+  String get moodSunsetCloudy;
+
+  /// Frog mood activity for sunset / hazy
+  ///
+  /// In en, this message translates to:
+  /// **'watching the sunset'**
+  String get moodSunsetHazy;
+
+  /// Frog mood activity for sunset / rainy
+  ///
+  /// In en, this message translates to:
+  /// **'listening to raindrops'**
+  String get moodSunsetRainy;
+
+  /// Frog mood activity for sunset / snowy
+  ///
+  /// In en, this message translates to:
+  /// **'keeping warm'**
+  String get moodSunsetSnowy;
+
+  /// Frog mood activity for night / sunny
+  ///
+  /// In en, this message translates to:
+  /// **'stargazing'**
+  String get moodNightSunny;
+
+  /// Frog mood activity for night / cloudy
+  ///
+  /// In en, this message translates to:
+  /// **'dreaming'**
+  String get moodNightCloudy;
+
+  /// Frog mood activity for night / hazy
+  ///
+  /// In en, this message translates to:
+  /// **'dreaming'**
+  String get moodNightHazy;
+
+  /// Frog mood activity for night / rainy
+  ///
+  /// In en, this message translates to:
+  /// **'dozing to the rain'**
+  String get moodNightRainy;
+
+  /// Frog mood activity for night / snowy
+  ///
+  /// In en, this message translates to:
+  /// **'sleeping snugly'**
+  String get moodNightSnowy;
 }
 
 class _AppLocalizationsDelegate

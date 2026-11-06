@@ -375,6 +375,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     weather: weather.weather,
                     settings: settings.settings,
                     locationName: weather.locationName,
+                    cornerGear: !kiosk,
                   ),
                 ),
               ),

@@ -550,10 +550,101 @@
   "wmoUnknown": "Ismeretlen",
   "@wmoUnknown": {
     "description": "Unknown WMO code"
-  }
-,
+  },
   "hourlyChart": "24 órás grafikon",
-  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" },
+  "@hourlyChart": {
+    "description": "Toggle to show the 24-hour temperature chart"
+  },
   "alwaysShowFrog": "Mindig látszódjon a béka",
-  "@alwaysShowFrog": { "description": "Prefer scene animations where the frog is visible" }
+  "@alwaysShowFrog": {
+    "description": "Prefer scene animations where the frog is visible"
+  },
+  "moodCaption": "Béka hangulata",
+  "@moodCaption": {
+    "description": "Toggle to show the frog mood/activity caption in the bottom-right corner"
+  },
+  "moodLabel": "Béka",
+  "@moodLabel": {
+    "description": "Prefix label of the mood caption, e.g. 'Frog'"
+  },
+  "moodMorningSunny": "nyújtózkodik",
+  "@moodMorningSunny": {
+    "description": "Frog mood activity for morning / sunny"
+  },
+  "moodMorningCloudy": "ébredezik",
+  "@moodMorningCloudy": {
+    "description": "Frog mood activity for morning / cloudy"
+  },
+  "moodMorningHazy": "ködöt szív",
+  "@moodMorningHazy": {
+    "description": "Frog mood activity for morning / hazy"
+  },
+  "moodMorningRainy": "esőben énekel",
+  "@moodMorningRainy": {
+    "description": "Frog mood activity for morning / rainy"
+  },
+  "moodMorningSnowy": "hópihét fog",
+  "@moodMorningSnowy": {
+    "description": "Frog mood activity for morning / snowy"
+  },
+  "moodDaySunny": "napozik",
+  "@moodDaySunny": {
+    "description": "Frog mood activity for day / sunny"
+  },
+  "moodDayCloudy": "piknikelt",
+  "@moodDayCloudy": {
+    "description": "Frog mood activity for day / cloudy"
+  },
+  "moodDayHazy": "ábrándozik",
+  "@moodDayHazy": {
+    "description": "Frog mood activity for day / hazy"
+  },
+  "moodDayRainy": "esőtáncol",
+  "@moodDayRainy": {
+    "description": "Frog mood activity for day / rainy"
+  },
+  "moodDaySnowy": "hólabdázik",
+  "@moodDaySnowy": {
+    "description": "Frog mood activity for day / snowy"
+  },
+  "moodSunsetSunny": "naplementét néz",
+  "@moodSunsetSunny": {
+    "description": "Frog mood activity for sunset / sunny"
+  },
+  "moodSunsetCloudy": "naplementét néz",
+  "@moodSunsetCloudy": {
+    "description": "Frog mood activity for sunset / cloudy"
+  },
+  "moodSunsetHazy": "naplementét néz",
+  "@moodSunsetHazy": {
+    "description": "Frog mood activity for sunset / hazy"
+  },
+  "moodSunsetRainy": "esőcseppeket hallgat",
+  "@moodSunsetRainy": {
+    "description": "Frog mood activity for sunset / rainy"
+  },
+  "moodSunsetSnowy": "melegedik",
+  "@moodSunsetSnowy": {
+    "description": "Frog mood activity for sunset / snowy"
+  },
+  "moodNightSunny": "csillagászik",
+  "@moodNightSunny": {
+    "description": "Frog mood activity for night / sunny"
+  },
+  "moodNightCloudy": "álmodik",
+  "@moodNightCloudy": {
+    "description": "Frog mood activity for night / cloudy"
+  },
+  "moodNightHazy": "álmodik",
+  "@moodNightHazy": {
+    "description": "Frog mood activity for night / hazy"
+  },
+  "moodNightRainy": "szunyókál",
+  "@moodNightRainy": {
+    "description": "Frog mood activity for night / rainy"
+  },
+  "moodNightSnowy": "melegben alszik",
+  "@moodNightSnowy": {
+    "description": "Frog mood activity for night / snowy"
+  }
 }

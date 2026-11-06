@@ -10,6 +10,7 @@ import '../models/weather.dart';
 import '../services/asset_catalog.dart';
 import 'foreground.dart';
 import 'hourly_chart.dart';
+import 'mood_caption.dart';
 import 'overlay.dart';
 import 'status_bar.dart';
 
@@ -22,6 +23,7 @@ class FroggyView extends StatelessWidget {
     this.locationName,
     this.showOverlay = true,
     this.showTopBar = true,
+    this.cornerGear = true,
   });
 
   final SceneAssets? scene;
@@ -30,6 +32,10 @@ class FroggyView extends StatelessWidget {
   final String? locationName;
   final bool showOverlay;
   final bool showTopBar;
+
+  /// Whether a settings gear button occupies the bottom-right corner above
+  /// this view (non-kiosk layouts); the mood caption is lifted above it.
+  final bool cornerGear;
 
   static const _animationName = 'Hero-Action';
 
@@ -149,6 +155,18 @@ class FroggyView extends StatelessWidget {
               left: 0,
               right: 0,
               child: HourlyChartStrip(weather: weather),
+            ),
+          if (showOverlay && settings.showMoodCaption)
+            Positioned(
+              bottom:
+                  statusPad + (cornerGear ? statusIcon * 1.5 + 8 : 0),
+              right: statusPad,
+              child: MoodCaption(
+                dayPart: dayPart,
+                condition:
+                    weather?.condition ?? WeatherCondition.cloudy,
+                shadows: shadows,
+              ),
             ),
           if (showOverlay && hasTopContent)
             Positioned(

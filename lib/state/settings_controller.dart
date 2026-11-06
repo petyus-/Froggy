@@ -82,6 +82,9 @@ class SettingsController extends ChangeNotifier {
   Future<void> setAlwaysShowFrog(bool v) =>
       _update(_settings.copyWith(alwaysShowFrog: v));
 
+  Future<void> setShowMoodCaption(bool v) =>
+      _update(_settings.copyWith(showMoodCaption: v));
+
   Future<void> setLanguageCode(String? code) => _update(_settings.copyWith(
       languageCode: code, clearLanguage: code == null));
 

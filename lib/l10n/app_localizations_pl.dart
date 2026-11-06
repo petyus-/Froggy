@@ -425,4 +425,70 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get alwaysShowFrog => 'Zawsze pokazuj żabę';
+
+  @override
+  String get moodCaption => 'Nastrój żaby';
+
+  @override
+  String get moodLabel => 'Żaba';
+
+  @override
+  String get moodMorningSunny => 'rozciąga się';
+
+  @override
+  String get moodMorningCloudy => 'budzi się';
+
+  @override
+  String get moodMorningHazy => 'cieszy się mgłą';
+
+  @override
+  String get moodMorningRainy => 'śpiewa w deszczu';
+
+  @override
+  String get moodMorningSnowy => 'łapie płatki śniegu';
+
+  @override
+  String get moodDaySunny => 'opala się';
+
+  @override
+  String get moodDayCloudy => 'robi piknik';
+
+  @override
+  String get moodDayHazy => 'marzy';
+
+  @override
+  String get moodDayRainy => 'tańczy w deszczu';
+
+  @override
+  String get moodDaySnowy => 'gra w śnieżki';
+
+  @override
+  String get moodSunsetSunny => 'podziwia zachód słońca';
+
+  @override
+  String get moodSunsetCloudy => 'podziwia zachód słońca';
+
+  @override
+  String get moodSunsetHazy => 'podziwia zachód słońca';
+
+  @override
+  String get moodSunsetRainy => 'słucha deszczu';
+
+  @override
+  String get moodSunsetSnowy => 'ogrzewa się';
+
+  @override
+  String get moodNightSunny => 'patrzy na gwiazdy';
+
+  @override
+  String get moodNightCloudy => 'śni';
+
+  @override
+  String get moodNightHazy => 'śni';
+
+  @override
+  String get moodNightRainy => 'drzemie przy deszczu';
+
+  @override
+  String get moodNightSnowy => 'śpi w cieple';
 }
