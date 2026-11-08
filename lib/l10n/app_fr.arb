@@ -563,6 +563,10 @@
   "@moodCaption": {
     "description": "Toggle to show the frog mood/activity caption in the bottom-right corner"
   },
+  "nightDimming": "Atténuation nocturne",
+  "@nightDimming": {
+    "description": "Bascule pour assombrir la scène et le graphique la nuit (23h-6h)"
+  },
   "moodLabel": "Grenouille",
   "@moodLabel": {
     "description": "Prefix label of the mood caption, e.g. 'Frog'"

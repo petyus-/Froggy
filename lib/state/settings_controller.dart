@@ -85,6 +85,9 @@ class SettingsController extends ChangeNotifier {
   Future<void> setShowMoodCaption(bool v) =>
       _update(_settings.copyWith(showMoodCaption: v));
 
+  Future<void> setAutoNightDim(bool v) =>
+      _update(_settings.copyWith(autoNightDim: v));
+
   Future<void> setLanguageCode(String? code) => _update(_settings.copyWith(
       languageCode: code, clearLanguage: code == null));
 

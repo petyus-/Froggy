@@ -426,6 +426,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get moodCaption => 'Frog mood caption';
 
   @override
+  String get nightDimming => 'Night dimming';
+
+  @override
   String get moodLabel => 'Frog';
 
   @override

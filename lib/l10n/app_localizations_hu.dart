@@ -428,6 +428,9 @@ class AppLocalizationsHu extends AppLocalizations {
   String get moodCaption => 'Béka hangulata';
 
   @override
+  String get nightDimming => 'Éjszakai halványítás';
+
+  @override
   String get moodLabel => 'Béka';
 
   @override

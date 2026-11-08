@@ -563,6 +563,10 @@
   "@moodCaption": {
     "description": "Toggle to show the frog mood/activity caption in the bottom-right corner"
   },
+  "nightDimming": "Nachtverduistering",
+  "@nightDimming": {
+    "description": "Schakelaar om de scène en grafiek 's nachs te dimmen (23:00–06:00)"
+  },
   "moodLabel": "Kikker",
   "@moodLabel": {
     "description": "Prefix label of the mood caption, e.g. 'Frog'"

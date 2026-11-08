@@ -77,6 +77,7 @@ class Settings {
   final bool showHourlyChart;
   final bool alwaysShowFrog;
   final bool showMoodCaption;
+  final bool autoNightDim;
   final String? languageCode;
 
   const Settings({
@@ -111,6 +112,7 @@ class Settings {
     this.showHourlyChart = true,
     this.alwaysShowFrog = true,
     this.showMoodCaption = false,
+    this.autoNightDim = true,
     this.languageCode,
   });
 
@@ -214,6 +216,7 @@ class Settings {
     bool? showHourlyChart,
     bool? alwaysShowFrog,
     bool? showMoodCaption,
+    bool? autoNightDim,
     String? languageCode,
     bool clearLanguage = false,
   }) {
@@ -253,6 +256,7 @@ class Settings {
       showHourlyChart: showHourlyChart ?? this.showHourlyChart,
       alwaysShowFrog: alwaysShowFrog ?? this.alwaysShowFrog,
       showMoodCaption: showMoodCaption ?? this.showMoodCaption,
+      autoNightDim: autoNightDim ?? this.autoNightDim,
       languageCode:
           clearLanguage ? null : (languageCode ?? this.languageCode),
     );
@@ -290,6 +294,7 @@ class Settings {
         'showHourlyChart': showHourlyChart,
         'alwaysShowFrog': alwaysShowFrog,
         'showMoodCaption': showMoodCaption,
+        'autoNightDim': autoNightDim,
         'languageCode': languageCode,
       };
 
@@ -333,6 +338,7 @@ class Settings {
         showHourlyChart: (j['showHourlyChart'] as bool?) ?? true,
         alwaysShowFrog: (j['alwaysShowFrog'] as bool?) ?? true,
         showMoodCaption: (j['showMoodCaption'] as bool?) ?? false,
+        autoNightDim: (j['autoNightDim'] as bool?) ?? true,
         languageCode: j['languageCode'] as String?,
       );
 

@@ -922,6 +922,12 @@ abstract class AppLocalizations {
   /// **'Frog mood caption'**
   String get moodCaption;
 
+  /// Toggle to dim the scene and chart at night (23:00-06:00)
+  ///
+  /// In en, this message translates to:
+  /// **'Night dimming'**
+  String get nightDimming;
+
   /// Prefix label of the mood caption, e.g. 'Frog'
   ///
   /// In en, this message translates to:

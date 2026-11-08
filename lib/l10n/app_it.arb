@@ -563,6 +563,10 @@
   "@moodCaption": {
     "description": "Toggle to show the frog mood/activity caption in the bottom-right corner"
   },
+  "nightDimming": "Oscuramento notturno",
+  "@nightDimming": {
+    "description": "Interruttore per oscurare scena e grafico di notte (23:00-06:00)"
+  },
   "moodLabel": "Rana",
   "@moodLabel": {
     "description": "Prefix label of the mood caption, e.g. 'Frog'"

@@ -430,6 +430,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get moodCaption => 'Humor de la rana';
 
   @override
+  String get nightDimming => 'Atenuación nocturna';
+
+  @override
   String get moodLabel => 'Rana';
 
   @override

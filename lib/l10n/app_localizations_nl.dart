@@ -427,6 +427,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get moodCaption => 'Kikkerstemming';
 
   @override
+  String get nightDimming => 'Nachtverduistering';
+
+  @override
   String get moodLabel => 'Kikker';
 
   @override

@@ -287,6 +287,11 @@ class _Controls extends StatelessWidget {
               onChanged: settings.setShowMoodCaption,
             ),
             SwitchListTile(
+              title: Text(l10n.nightDimming),
+              value: s.autoNightDim,
+              onChanged: settings.setAutoNightDim,
+            ),
+            SwitchListTile(
               title: Text(l10n.showLocation),
               subtitle: Text(l10n.showLocationSubtitle),
               value: s.showLocation,

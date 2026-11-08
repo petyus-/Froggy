@@ -46,6 +46,8 @@ class FroggyView extends StatelessWidget {
   static const _maxDecodeSize = 2048;
   static const _decodeBucket = 256;
 
+  static bool _isNightTime(DateTime t) => t.hour >= 23 || t.hour < 6;
+
   static int _decodeWidth(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     final needed =
@@ -161,6 +163,17 @@ class FroggyView extends StatelessWidget {
               left: 0,
               right: 0,
               child: HourlyChartStrip(weather: weather),
+            ),
+          // Automatic night dimming: a gentle full-screen veil over the scene,
+          // frog, chart and caption when it is late (23:00-06:00 local time).
+          // Sits below the top bar / pill widgets so they stay readable.
+          if (overlay && settings.autoNightDim && _isNightTime(localTime))
+            Positioned.fill(
+              child: IgnorePointer(
+                child: ColoredBox(
+                  color: Colors.black.withValues(alpha: 0.45),
+                ),
+              ),
             ),
           if (overlay && settings.showMoodCaption)
             Positioned(

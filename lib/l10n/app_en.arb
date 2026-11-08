@@ -563,6 +563,10 @@
   "@moodCaption": {
     "description": "Toggle to show the frog mood/activity caption in the bottom-right corner"
   },
+  "nightDimming": "Night dimming",
+  "@nightDimming": {
+    "description": "Toggle to dim the scene and chart at night (23:00-06:00)"
+  },
   "moodLabel": "Frog",
   "@moodLabel": {
     "description": "Prefix label of the mood caption, e.g. 'Frog'"

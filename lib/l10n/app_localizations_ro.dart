@@ -431,6 +431,9 @@ class AppLocalizationsRo extends AppLocalizations {
   String get moodCaption => 'Starea broscuței';
 
   @override
+  String get nightDimming => 'Atenuare nocturnă';
+
+  @override
   String get moodLabel => 'Broscuța';
 
   @override

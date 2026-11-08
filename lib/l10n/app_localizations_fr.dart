@@ -432,6 +432,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get moodCaption => 'Humeur de la grenouille';
 
   @override
+  String get nightDimming => 'Atténuation nocturne';
+
+  @override
   String get moodLabel => 'Grenouille';
 
   @override

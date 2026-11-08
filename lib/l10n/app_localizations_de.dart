@@ -430,6 +430,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get moodCaption => 'Frosch-Laune anzeigen';
 
   @override
+  String get nightDimming => 'Nachtabdunklung';
+
+  @override
   String get moodLabel => 'Frosch';
 
   @override

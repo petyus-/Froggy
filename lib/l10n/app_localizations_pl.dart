@@ -430,6 +430,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get moodCaption => 'Nastrój żaby';
 
   @override
+  String get nightDimming => 'Przygaszanie w nocy';
+
+  @override
   String get moodLabel => 'Żaba';
 
   @override
