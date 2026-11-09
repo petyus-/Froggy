@@ -1,0 +1,1934 @@
+From c342736a2d7c040db8337a906d8f06b3ac9f91f6 Mon Sep 17 00:00:00 2001
+From: Hermes <hermes@localhost>
+Date: Wed, 4 Nov 2026 04:31:40 +0200
+Subject: [PATCH 01/13] Add i18n infrastructure (flutter_localizations,
+ l10n.yaml, app_en.arb)
+
+- flutter_localizations dependency, generate: true, l10n.yaml
+- app_en.arb template with ~110 strings incl. settings labels,
+  update dialog, rotate hint, location warning, snackbars,
+  tooltips and all WMO weather descriptions, with @-metadata
+  (flat placeholder types)
+---
+ analysis_options.yaml              |   7 +
+ l10n.yaml                          |   3 +
+ lib/l10n/app_en.arb                | 420 +++++++++++++
+ lib/l10n/app_localizations.dart    | 919 +++++++++++++++++++++++++++++
+ lib/l10n/app_localizations_en.dart | 418 +++++++++++++
+ pubspec.lock                       |  25 +-
+ pubspec.yaml                       |   5 +-
+ 7 files changed, 1786 insertions(+), 11 deletions(-)
+ create mode 100644 l10n.yaml
+ create mode 100644 lib/l10n/app_en.arb
+ create mode 100644 lib/l10n/app_localizations.dart
+ create mode 100644 lib/l10n/app_localizations_en.dart
+
+diff --git a/analysis_options.yaml b/analysis_options.yaml
+index e8eff53..209ca17 100644
+--- a/analysis_options.yaml
++++ b/analysis_options.yaml
+@@ -13,6 +13,13 @@ analyzer:
+   # Vendored, abandoned third-party runtime — not our code to lint.
+   exclude:
+     - third_party/**
++    - build/**
++    - android/**
++    - ios/**
++    - web/**
++    - windows/**
++    - macos/**
++    - linux/**
+ 
+ linter:
+   # The lint rules applied to this project can be customized in the
+diff --git a/l10n.yaml b/l10n.yaml
+new file mode 100644
+index 0000000..15338f2
+--- /dev/null
++++ b/l10n.yaml
+@@ -0,0 +1,3 @@
++arb-dir: lib/l10n
++template-arb-file: app_en.arb
++output-localization-file: app_localizations.dart
+diff --git a/lib/l10n/app_en.arb b/lib/l10n/app_en.arb
+new file mode 100644
+index 0000000..7e12451
+--- /dev/null
++++ b/lib/l10n/app_en.arb
+@@ -0,0 +1,420 @@
++{
++  "@@locale": "en",
++
++  "appTitle": "Google's Weather Frog (Froggy)",
++  "@appTitle": { "description": "Application title" },
++
++  "settings": "Settings",
++  "@settings": { "description": "Settings screen title and tooltip" },
++
++  "resetToDefaults": "Reset to defaults",
++  "@resetToDefaults": { "description": "Tooltip for the reset button" },
++
++  "resetSettingsTitle": "Reset settings?",
++  "@resetSettingsTitle": { "description": "Title of the reset confirmation dialog" },
++
++  "resetSettingsBody": "Restore all settings to defaults. Saved locations are kept.",
++  "@resetSettingsBody": { "description": "Body of the reset confirmation dialog" },
++
++  "cancel": "Cancel",
++  "@cancel": { "description": "Generic cancel button" },
++
++  "reset": "Reset",
++  "@reset": { "description": "Reset confirmation button" },
++
++  "hidePreview": "Hide preview",
++  "@hidePreview": { "description": "Tooltip to hide the settings preview" },
++
++  "showPreview": "Show preview",
++  "@showPreview": { "description": "Tooltip to show the settings preview" },
++
++  "sectionTiming": "Timing",
++  "@sectionTiming": { "description": "Timing settings section title" },
++
++  "sectionOverlaySize": "Overlay size",
++  "@sectionOverlaySize": { "description": "Overlay size settings section title" },
++
++  "sectionTextShadow": "Text shadow",
++  "@sectionTextShadow": { "description": "Text shadow settings section title" },
++
++  "sectionDisplay": "Display",
++  "@sectionDisplay": { "description": "Display settings section title" },
++
++  "sectionDimming": "Dimming",
++  "@sectionDimming": { "description": "Dimming settings section title" },
++
++  "sectionStatusIcons": "Status icons",
++  "@sectionStatusIcons": { "description": "Status icons settings section title" },
++
++  "sectionKioskMode": "Kiosk mode",
++  "@sectionKioskMode": { "description": "Kiosk mode settings section title" },
++
++  "sectionLauncher": "Launcher",
++  "@sectionLauncher": { "description": "Launcher settings section title" },
++
++  "sectionLocation": "Location",
++  "@sectionLocation": { "description": "Location settings section title" },
++
++  "sectionLanguage": "Language",
++  "@sectionLanguage": { "description": "Language settings section title" },
++
++  "sectionAbout": "About",
++  "@sectionAbout": { "description": "About settings section title" },
++
++  "sectionUnits": "Units",
++  "@sectionUnits": { "description": "Units settings section title" },
++
++  "sectionTimeFormat": "Time format",
++  "@sectionTimeFormat": { "description": "Time format settings section title" },
++
++  "weatherRefresh": "Weather refresh",
++  "@weatherRefresh": { "description": "Weather refresh interval label" },
++
++  "minutesValue": "{count} min",
++  "@minutesValue": {
++    "description": "Value in minutes",
++    "placeholders": {
++      "count": { "type": "int" }
++    }
++  },
++
++  "sceneRotation": "Scene rotation",
++  "@sceneRotation": { "description": "Scene rotation interval label" },
++
++  "off": "Off",
++  "@off": { "description": "Disabled state" },
++
++  "clockTextSize": "Clock & text size",
++  "@clockTextSize": { "description": "Overlay scale label" },
++
++  "showClock": "Show clock",
++  "@showClock": { "description": "Toggle to show the clock" },
++
++  "showClockSubtitle": "Time at the bottom",
++  "@showClockSubtitle": { "description": "Show clock toggle subtitle" },
++
++  "showDate": "Show date",
++  "@showDate": { "description": "Toggle to show the date" },
++
++  "showWeather": "Show weather",
++  "@showWeather": { "description": "Toggle to show the weather" },
++
++  "showWeatherSubtitle": "Temperature and conditions",
++  "@showWeatherSubtitle": { "description": "Show weather toggle subtitle" },
++
++  "showLocation": "Show location",
++  "@showLocation": { "description": "Toggle to show the location name" },
++
++  "showLocationSubtitle": "Place name at the top",
++  "@showLocationSubtitle": { "description": "Show location toggle subtitle" },
++
++  "dimOff": "Off",
++  "@dimOff": { "description": "Dimming mode: off" },
++
++  "dimAuto": "Auto",
++  "@dimAuto": { "description": "Dimming mode: automatic" },
++
++  "dimCustom": "Custom",
++  "@dimCustom": { "description": "Dimming mode: scheduled" },
++
++  "level": "Level",
++  "@level": { "description": "Dim level label" },
++
++  "from": "From",
++  "@from": { "description": "Dim schedule start label" },
++
++  "to": "To",
++  "@to": { "description": "Dim schedule end label" },
++
++  "showStatusIcons": "Show status icons",
++  "@showStatusIcons": { "description": "Toggle to show status icons" },
++
++  "wifi": "Wi-Fi",
++  "@wifi": { "description": "Wi-Fi toggle label" },
++
++  "bluetooth": "Bluetooth",
++  "@bluetooth": { "description": "Bluetooth toggle label" },
++
++  "music": "Music",
++  "@music": { "description": "Music toggle label" },
++
++  "showMusicTitle": "Show music title",
++  "@showMusicTitle": { "description": "Toggle to show the music track title" },
++
++  "showMusicTitleSubtitle": "Track name (needs notification access)",
++  "@showMusicTitleSubtitle": { "description": "Show music title toggle subtitle" },
++
++  "kioskMode": "Kiosk mode",
++  "@kioskMode": { "description": "Kiosk mode toggle label" },
++
++  "kioskModeSubtitle": "Always-on display for devices without a screensaver. Hides the settings button (long-press the screen to reopen) and keeps the screen on.",
++  "@kioskModeSubtitle": { "description": "Kiosk mode toggle subtitle" },
++
++  "homeApp": "Home app",
++  "@homeApp": { "description": "Launcher home app tile title" },
++
++  "isDefaultHomeApp": "Froggy is your default home app",
++  "@isDefaultHomeApp": { "description": "Subtitle when Froggy is the default home app" },
++
++  "setAsHomeApp": "Show Froggy on the home screen, replacing your launcher",
++  "@setAsHomeApp": { "description": "Subtitle when Froggy is not the default home app" },
++
++  "set": "Set",
++  "@set": { "description": "Button to open the home app picker" },
++
++  "automaticLocation": "Automatic",
++  "@automaticLocation": { "description": "Automatic location mode label" },
++
++  "automaticLocationSubtitle": "Detect from network / GPS",
++  "@automaticLocationSubtitle": { "description": "Automatic location mode subtitle" },
++
++  "remove": "Remove",
++  "@remove": { "description": "Tooltip to remove a saved location" },
++
++  "addLocation": "Add location",
++  "@addLocation": { "description": "Add location action and screen title" },
++
++  "swipeToSwitch": "Swipe to switch",
++  "@swipeToSwitch": { "description": "Location swipe gesture setting label" },
++
++  "swipeGestureSubtitle": "Gesture on the frog",
++  "@swipeGestureSubtitle": { "description": "Location swipe gesture setting subtitle" },
++
++  "swipeLeftRight": "Left / right",
++  "@swipeLeftRight": { "description": "Horizontal swipe option" },
++
++  "swipeUpDown": "Up / down",
++  "@swipeUpDown": { "description": "Vertical swipe option" },
++
++  "switchLocations": "Switch locations",
++  "@switchLocations": { "description": "Location rotation setting label" },
++
++  "automaticRotationSubtitle": "Automatic rotation",
++  "@automaticRotationSubtitle": { "description": "Location rotation setting subtitle" },
++
++  "manually": "Manually",
++  "@manually": { "description": "Location rotation: manually" },
++
++  "withScene": "With scene",
++  "@withScene": { "description": "Location rotation: with scene" },
++
++  "onATimer": "On a timer",
++  "@onATimer": { "description": "Location rotation: on a timer" },
++
++  "edgeArrows": "Edge arrows",
++  "@edgeArrows": { "description": "Location edge arrows toggle label" },
++
++  "edgeArrowsSubtitle": "Back / forward buttons at the sides",
++  "@edgeArrowsSubtitle": { "description": "Location edge arrows toggle subtitle" },
++
++  "locationRotation": "Location rotation",
++  "@locationRotation": { "description": "Location rotation interval label" },
++
++  "checkUpdatesOnStartup": "Check for updates on startup",
++  "@checkUpdatesOnStartup": { "description": "Toggle to check for updates on startup" },
++
++  "checkForUpdates": "Check for updates",
++  "@checkForUpdates": { "description": "Check for updates tile title" },
++
++  "checkFailed": "Could not check — try again later",
++  "@checkFailed": { "description": "Update check failed message" },
++
++  "updateAvailableVersion": "Update available: v{version}",
++  "@updateAvailableVersion": {
++    "description": "Update available status with version",
++    "placeholders": {
++      "version": { "type": "String" }
++    }
++  },
++
++  "upToDate": "You're on the latest version",
++  "@upToDate": { "description": "No update available message" },
++
++  "downloadInstallUpdate": "Download & install update",
++  "@downloadInstallUpdate": { "description": "Download and install update tile title" },
++
++  "getLatestRelease": "Get the latest release",
++  "@getLatestRelease": { "description": "Open the latest release page tile title" },
++
++  "sourceCode": "Source code",
++  "@sourceCode": { "description": "Source code tile title" },
++
++  "notificationAccess": "Notification access",
++  "@notificationAccess": { "description": "Notification access tile title" },
++
++  "notificationAccessSubtitle": "Needed to read the track title",
++  "@notificationAccessSubtitle": { "description": "Notification access tile subtitle" },
++
++  "grant": "Grant",
++  "@grant": { "description": "Button to grant notification access" },
++
++  "froggy": "Froggy",
++  "@froggy": { "description": "About tile app name" },
++
++  "googlesWeatherFrog": "Google's Weather Frog",
++  "@googlesWeatherFrog": { "description": "About tile app description" },
++
++  "versionValue": "Version {version}",
++  "@versionValue": {
++    "description": "Version label",
++    "placeholders": {
++      "version": { "type": "String" }
++    }
++  },
++
++  "cityName": "City name",
++  "@cityName": { "description": "City name input hint" },
++
++  "search": "Search",
++  "@search": { "description": "Search tooltip" },
++
++  "noMatchesFound": "No matches found",
++  "@noMatchesFound": { "description": "Empty geocoding search result message" },
++
++  "searchFailed": "Search failed — check your connection",
++  "@searchFailed": { "description": "Geocoding search failure message" },
++
++  "updateAvailable": "Update available",
++  "@updateAvailable": { "description": "Update dialog title" },
++
++  "updateAvailableDetails": "Froggy v{latest} is available — you have v{current}.",
++  "@updateAvailableDetails": {
++    "description": "Update dialog body",
++    "placeholders": {
++      "latest": { "type": "String" },
++      "current": { "type": "String" }
++    }
++  },
++
++  "skip": "Skip",
++  "@skip": { "description": "Skip this update button" },
++
++  "later": "Later",
++  "@later": { "description": "Remind me later button" },
++
++  "update": "Update",
++  "@update": { "description": "Start update button" },
++
++  "view": "View",
++  "@view": { "description": "View release button" },
++
++  "downloadingUpdate": "Downloading update…",
++  "@downloadingUpdate": { "description": "Update download started snackbar" },
++
++  "couldNotStartUpdate": "Could not start the update",
++  "@couldNotStartUpdate": { "description": "Update download failed snackbar" },
++
++  "couldNotOpenLink": "Couldn't open the link on this device",
++  "@couldNotOpenLink": { "description": "Failed to open URL snackbar" },
++
++  "couldNotStartUpdateAlt": "Couldn't start the update",
++  "@couldNotStartUpdateAlt": { "description": "Update install failed snackbar (about section)" },
++
++  "previousLocation": "Previous location",
++  "@previousLocation": { "description": "Tooltip for the previous location arrow" },
++
++  "nextLocation": "Next location",
++  "@nextLocation": { "description": "Tooltip for the next location arrow" },
++
++  "landscapeTitle": "Froggy looks best in landscape",
++  "@landscapeTitle": { "description": "Rotate hint title" },
++
++  "landscapeBody": "Rotate your phone sideways for the full view.",
++  "@landscapeBody": { "description": "Rotate hint body" },
++
++  "gotIt": "Got it",
++  "@gotIt": { "description": "Rotate hint dismiss button" },
++
++  "locationBlocked": "Location is blocked, so this is your approximate area. Allow location in your browser, then Retry.",
++  "@locationBlocked": { "description": "Web location permission warning" },
++
++  "retry": "Retry",
++  "@retry": { "description": "Retry button" },
++
++  "dismiss": "Dismiss",
++  "@dismiss": { "description": "Dismiss tooltip" },
++
++  "systemLanguage": "System (auto)",
++  "@systemLanguage": { "description": "Follow the system language option" },
++
++  "languageSubtitle": "App language",
++  "@languageSubtitle": { "description": "Language setting subtitle" },
++
++  "wmoClear": "Clear",
++  "@wmoClear": { "description": "WMO code 0" },
++
++  "wmoMainlyClear": "Mainly clear",
++  "@wmoMainlyClear": { "description": "WMO code 1" },
++
++  "wmoPartlyCloudy": "Partly cloudy",
++  "@wmoPartlyCloudy": { "description": "WMO code 2" },
++
++  "wmoOvercast": "Overcast",
++  "@wmoOvercast": { "description": "WMO code 3" },
++
++  "wmoFog": "Fog",
++  "@wmoFog": { "description": "WMO code 45" },
++
++  "wmoRimeFog": "Rime fog",
++  "@wmoRimeFog": { "description": "WMO code 48" },
++
++  "wmoLightDrizzle": "Light drizzle",
++  "@wmoLightDrizzle": { "description": "WMO code 51" },
++
++  "wmoDrizzle": "Drizzle",
++  "@wmoDrizzle": { "description": "WMO code 53" },
++
++  "wmoHeavyDrizzle": "Heavy drizzle",
++  "@wmoHeavyDrizzle": { "description": "WMO code 55" },
++
++  "wmoFreezingDrizzle": "Freezing drizzle",
++  "@wmoFreezingDrizzle": { "description": "WMO codes 56, 57" },
++
++  "wmoLightRain": "Light rain",
++  "@wmoLightRain": { "description": "WMO code 61" },
++
++  "wmoRain": "Rain",
++  "@wmoRain": { "description": "WMO code 63" },
++
++  "wmoHeavyRain": "Heavy rain",
++  "@wmoHeavyRain": { "description": "WMO code 65" },
++
++  "wmoFreezingRain": "Freezing rain",
++  "@wmoFreezingRain": { "description": "WMO codes 66, 67" },
++
++  "wmoLightSnow": "Light snow",
++  "@wmoLightSnow": { "description": "WMO code 71" },
++
++  "wmoSnow": "Snow",
++  "@wmoSnow": { "description": "WMO code 73" },
++
++  "wmoHeavySnow": "Heavy snow",
++  "@wmoHeavySnow": { "description": "WMO code 75" },
++
++  "wmoSnowGrains": "Snow grains",
++  "@wmoSnowGrains": { "description": "WMO code 77" },
++
++  "wmoLightShowers": "Light showers",
++  "@wmoLightShowers": { "description": "WMO code 80" },
++
++  "wmoShowers": "Showers",
++  "@wmoShowers": { "description": "WMO code 81" },
++
++  "wmoHeavyShowers": "Heavy showers",
++  "@wmoHeavyShowers": { "description": "WMO code 82" },
++
++  "wmoSnowShowers": "Snow showers",
++  "@wmoSnowShowers": { "description": "WMO code 85" },
++
++  "wmoHeavySnowShowers": "Heavy snow showers",
++  "@wmoHeavySnowShowers": { "description": "WMO code 86" },
++
++  "wmoThunderstorm": "Thunderstorm",
++  "@wmoThunderstorm": { "description": "WMO code 95" },
++
++  "wmoThunderstormHail": "Thunderstorm, hail",
++  "@wmoThunderstormHail": { "description": "WMO codes 96, 99" },
++
++  "wmoUnknown": "Unknown",
++  "@wmoUnknown": { "description": "Unknown WMO code" }
++}
+diff --git a/lib/l10n/app_localizations.dart b/lib/l10n/app_localizations.dart
+new file mode 100644
+index 0000000..0dcd7b0
+--- /dev/null
++++ b/lib/l10n/app_localizations.dart
+@@ -0,0 +1,919 @@
++import 'dart:async';
++
++import 'package:flutter/foundation.dart';
++import 'package:flutter/widgets.dart';
++import 'package:flutter_localizations/flutter_localizations.dart';
++import 'package:intl/intl.dart' as intl;
++
++import 'app_localizations_en.dart';
++
++// ignore_for_file: type=lint
++
++/// Callers can lookup localized strings with an instance of AppLocalizations
++/// returned by `AppLocalizations.of(context)`.
++///
++/// Applications need to include `AppLocalizations.delegate()` in their app's
++/// `localizationDelegates` list, and the locales they support in the app's
++/// `supportedLocales` list. For example:
++///
++/// ```dart
++/// import 'l10n/app_localizations.dart';
++///
++/// return MaterialApp(
++///   localizationsDelegates: AppLocalizations.localizationsDelegates,
++///   supportedLocales: AppLocalizations.supportedLocales,
++///   home: MyApplicationHome(),
++/// );
++/// ```
++///
++/// ## Update pubspec.yaml
++///
++/// Please make sure to update your pubspec.yaml to include the following
++/// packages:
++///
++/// ```yaml
++/// dependencies:
++///   # Internationalization support.
++///   flutter_localizations:
++///     sdk: flutter
++///   intl: any # Use the pinned version from flutter_localizations
++///
++///   # Rest of dependencies
++/// ```
++///
++/// ## iOS Applications
++///
++/// iOS applications define key application metadata, including supported
++/// locales, in an Info.plist file that is built into the application bundle.
++/// To configure the locales supported by your app, you’ll need to edit this
++/// file.
++///
++/// First, open your project’s ios/Runner.xcworkspace Xcode workspace file.
++/// Then, in the Project Navigator, open the Info.plist file under the Runner
++/// project’s Runner folder.
++///
++/// Next, select the Information Property List item, select Add Item from the
++/// Editor menu, then select Localizations from the pop-up menu.
++///
++/// Select and expand the newly-created Localizations item then, for each
++/// locale your application supports, add a new item and select the locale
++/// you wish to add from the pop-up menu in the Value field. This list should
++/// be consistent with the languages listed in the AppLocalizations.supportedLocales
++/// property.
++abstract class AppLocalizations {
++  AppLocalizations(String locale)
++      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
++
++  final String localeName;
++
++  static AppLocalizations? of(BuildContext context) {
++    return Localizations.of<AppLocalizations>(context, AppLocalizations);
++  }
++
++  static const LocalizationsDelegate<AppLocalizations> delegate =
++      _AppLocalizationsDelegate();
++
++  /// A list of this localizations delegate along with the default localizations
++  /// delegates.
++  ///
++  /// Returns a list of localizations delegates containing this delegate along with
++  /// GlobalMaterialLocalizations.delegate, GlobalCupertinoLocalizations.delegate,
++  /// and GlobalWidgetsLocalizations.delegate.
++  ///
++  /// Additional delegates can be added by appending to this list in
++  /// MaterialApp. This list does not have to be used at all if a custom list
++  /// of delegates is preferred or required.
++  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
++      <LocalizationsDelegate<dynamic>>[
++    delegate,
++    GlobalMaterialLocalizations.delegate,
++    GlobalCupertinoLocalizations.delegate,
++    GlobalWidgetsLocalizations.delegate,
++  ];
++
++  /// A list of this localizations delegate's supported locales.
++  static const List<Locale> supportedLocales = <Locale>[Locale('en')];
++
++  /// Application title
++  ///
++  /// In en, this message translates to:
++  /// **'Google\'s Weather Frog (Froggy)'**
++  String get appTitle;
++
++  /// Settings screen title and tooltip
++  ///
++  /// In en, this message translates to:
++  /// **'Settings'**
++  String get settings;
++
++  /// Tooltip for the reset button
++  ///
++  /// In en, this message translates to:
++  /// **'Reset to defaults'**
++  String get resetToDefaults;
++
++  /// Title of the reset confirmation dialog
++  ///
++  /// In en, this message translates to:
++  /// **'Reset settings?'**
++  String get resetSettingsTitle;
++
++  /// Body of the reset confirmation dialog
++  ///
++  /// In en, this message translates to:
++  /// **'Restore all settings to defaults. Saved locations are kept.'**
++  String get resetSettingsBody;
++
++  /// Generic cancel button
++  ///
++  /// In en, this message translates to:
++  /// **'Cancel'**
++  String get cancel;
++
++  /// Reset confirmation button
++  ///
++  /// In en, this message translates to:
++  /// **'Reset'**
++  String get reset;
++
++  /// Tooltip to hide the settings preview
++  ///
++  /// In en, this message translates to:
++  /// **'Hide preview'**
++  String get hidePreview;
++
++  /// Tooltip to show the settings preview
++  ///
++  /// In en, this message translates to:
++  /// **'Show preview'**
++  String get showPreview;
++
++  /// Timing settings section title
++  ///
++  /// In en, this message translates to:
++  /// **'Timing'**
++  String get sectionTiming;
++
++  /// Overlay size settings section title
++  ///
++  /// In en, this message translates to:
++  /// **'Overlay size'**
++  String get sectionOverlaySize;
++
++  /// Text shadow settings section title
++  ///
++  /// In en, this message translates to:
++  /// **'Text shadow'**
++  String get sectionTextShadow;
++
++  /// Display settings section title
++  ///
++  /// In en, this message translates to:
++  /// **'Display'**
++  String get sectionDisplay;
++
++  /// Dimming settings section title
++  ///
++  /// In en, this message translates to:
++  /// **'Dimming'**
++  String get sectionDimming;
++
++  /// Status icons settings section title
++  ///
++  /// In en, this message translates to:
++  /// **'Status icons'**
++  String get sectionStatusIcons;
++
++  /// Kiosk mode settings section title
++  ///
++  /// In en, this message translates to:
++  /// **'Kiosk mode'**
++  String get sectionKioskMode;
++
++  /// Launcher settings section title
++  ///
++  /// In en, this message translates to:
++  /// **'Launcher'**
++  String get sectionLauncher;
++
++  /// Location settings section title
++  ///
++  /// In en, this message translates to:
++  /// **'Location'**
++  String get sectionLocation;
++
++  /// Language settings section title
++  ///
++  /// In en, this message translates to:
++  /// **'Language'**
++  String get sectionLanguage;
++
++  /// About settings section title
++  ///
++  /// In en, this message translates to:
++  /// **'About'**
++  String get sectionAbout;
++
++  /// Units settings section title
++  ///
++  /// In en, this message translates to:
++  /// **'Units'**
++  String get sectionUnits;
++
++  /// Time format settings section title
++  ///
++  /// In en, this message translates to:
++  /// **'Time format'**
++  String get sectionTimeFormat;
++
++  /// Weather refresh interval label
++  ///
++  /// In en, this message translates to:
++  /// **'Weather refresh'**
++  String get weatherRefresh;
++
++  /// Value in minutes
++  ///
++  /// In en, this message translates to:
++  /// **'{count} min'**
++  String minutesValue(int count);
++
++  /// Scene rotation interval label
++  ///
++  /// In en, this message translates to:
++  /// **'Scene rotation'**
++  String get sceneRotation;
++
++  /// Disabled state
++  ///
++  /// In en, this message translates to:
++  /// **'Off'**
++  String get off;
++
++  /// Overlay scale label
++  ///
++  /// In en, this message translates to:
++  /// **'Clock & text size'**
++  String get clockTextSize;
++
++  /// Toggle to show the clock
++  ///
++  /// In en, this message translates to:
++  /// **'Show clock'**
++  String get showClock;
++
++  /// Show clock toggle subtitle
++  ///
++  /// In en, this message translates to:
++  /// **'Time at the bottom'**
++  String get showClockSubtitle;
++
++  /// Toggle to show the date
++  ///
++  /// In en, this message translates to:
++  /// **'Show date'**
++  String get showDate;
++
++  /// Toggle to show the weather
++  ///
++  /// In en, this message translates to:
++  /// **'Show weather'**
++  String get showWeather;
++
++  /// Show weather toggle subtitle
++  ///
++  /// In en, this message translates to:
++  /// **'Temperature and conditions'**
++  String get showWeatherSubtitle;
++
++  /// Toggle to show the location name
++  ///
++  /// In en, this message translates to:
++  /// **'Show location'**
++  String get showLocation;
++
++  /// Show location toggle subtitle
++  ///
++  /// In en, this message translates to:
++  /// **'Place name at the top'**
++  String get showLocationSubtitle;
++
++  /// Dimming mode: off
++  ///
++  /// In en, this message translates to:
++  /// **'Off'**
++  String get dimOff;
++
++  /// Dimming mode: automatic
++  ///
++  /// In en, this message translates to:
++  /// **'Auto'**
++  String get dimAuto;
++
++  /// Dimming mode: scheduled
++  ///
++  /// In en, this message translates to:
++  /// **'Custom'**
++  String get dimCustom;
++
++  /// Dim level label
++  ///
++  /// In en, this message translates to:
++  /// **'Level'**
++  String get level;
++
++  /// Dim schedule start label
++  ///
++  /// In en, this message translates to:
++  /// **'From'**
++  String get from;
++
++  /// Dim schedule end label
++  ///
++  /// In en, this message translates to:
++  /// **'To'**
++  String get to;
++
++  /// Toggle to show status icons
++  ///
++  /// In en, this message translates to:
++  /// **'Show status icons'**
++  String get showStatusIcons;
++
++  /// Wi-Fi toggle label
++  ///
++  /// In en, this message translates to:
++  /// **'Wi-Fi'**
++  String get wifi;
++
++  /// Bluetooth toggle label
++  ///
++  /// In en, this message translates to:
++  /// **'Bluetooth'**
++  String get bluetooth;
++
++  /// Music toggle label
++  ///
++  /// In en, this message translates to:
++  /// **'Music'**
++  String get music;
++
++  /// Toggle to show the music track title
++  ///
++  /// In en, this message translates to:
++  /// **'Show music title'**
++  String get showMusicTitle;
++
++  /// Show music title toggle subtitle
++  ///
++  /// In en, this message translates to:
++  /// **'Track name (needs notification access)'**
++  String get showMusicTitleSubtitle;
++
++  /// Kiosk mode toggle label
++  ///
++  /// In en, this message translates to:
++  /// **'Kiosk mode'**
++  String get kioskMode;
++
++  /// Kiosk mode toggle subtitle
++  ///
++  /// In en, this message translates to:
++  /// **'Always-on display for devices without a screensaver. Hides the settings button (long-press the screen to reopen) and keeps the screen on.'**
++  String get kioskModeSubtitle;
++
++  /// Launcher home app tile title
++  ///
++  /// In en, this message translates to:
++  /// **'Home app'**
++  String get homeApp;
++
++  /// Subtitle when Froggy is the default home app
++  ///
++  /// In en, this message translates to:
++  /// **'Froggy is your default home app'**
++  String get isDefaultHomeApp;
++
++  /// Subtitle when Froggy is not the default home app
++  ///
++  /// In en, this message translates to:
++  /// **'Show Froggy on the home screen, replacing your launcher'**
++  String get setAsHomeApp;
++
++  /// Button to open the home app picker
++  ///
++  /// In en, this message translates to:
++  /// **'Set'**
++  String get set;
++
++  /// Automatic location mode label
++  ///
++  /// In en, this message translates to:
++  /// **'Automatic'**
++  String get automaticLocation;
++
++  /// Automatic location mode subtitle
++  ///
++  /// In en, this message translates to:
++  /// **'Detect from network / GPS'**
++  String get automaticLocationSubtitle;
++
++  /// Tooltip to remove a saved location
++  ///
++  /// In en, this message translates to:
++  /// **'Remove'**
++  String get remove;
++
++  /// Add location action and screen title
++  ///
++  /// In en, this message translates to:
++  /// **'Add location'**
++  String get addLocation;
++
++  /// Location swipe gesture setting label
++  ///
++  /// In en, this message translates to:
++  /// **'Swipe to switch'**
++  String get swipeToSwitch;
++
++  /// Location swipe gesture setting subtitle
++  ///
++  /// In en, this message translates to:
++  /// **'Gesture on the frog'**
++  String get swipeGestureSubtitle;
++
++  /// Horizontal swipe option
++  ///
++  /// In en, this message translates to:
++  /// **'Left / right'**
++  String get swipeLeftRight;
++
++  /// Vertical swipe option
++  ///
++  /// In en, this message translates to:
++  /// **'Up / down'**
++  String get swipeUpDown;
++
++  /// Location rotation setting label
++  ///
++  /// In en, this message translates to:
++  /// **'Switch locations'**
++  String get switchLocations;
++
++  /// Location rotation setting subtitle
++  ///
++  /// In en, this message translates to:
++  /// **'Automatic rotation'**
++  String get automaticRotationSubtitle;
++
++  /// Location rotation: manually
++  ///
++  /// In en, this message translates to:
++  /// **'Manually'**
++  String get manually;
++
++  /// Location rotation: with scene
++  ///
++  /// In en, this message translates to:
++  /// **'With scene'**
++  String get withScene;
++
++  /// Location rotation: on a timer
++  ///
++  /// In en, this message translates to:
++  /// **'On a timer'**
++  String get onATimer;
++
++  /// Location edge arrows toggle label
++  ///
++  /// In en, this message translates to:
++  /// **'Edge arrows'**
++  String get edgeArrows;
++
++  /// Location edge arrows toggle subtitle
++  ///
++  /// In en, this message translates to:
++  /// **'Back / forward buttons at the sides'**
++  String get edgeArrowsSubtitle;
++
++  /// Location rotation interval label
++  ///
++  /// In en, this message translates to:
++  /// **'Location rotation'**
++  String get locationRotation;
++
++  /// Toggle to check for updates on startup
++  ///
++  /// In en, this message translates to:
++  /// **'Check for updates on startup'**
++  String get checkUpdatesOnStartup;
++
++  /// Check for updates tile title
++  ///
++  /// In en, this message translates to:
++  /// **'Check for updates'**
++  String get checkForUpdates;
++
++  /// Update check failed message
++  ///
++  /// In en, this message translates to:
++  /// **'Could not check — try again later'**
++  String get checkFailed;
++
++  /// Update available status with version
++  ///
++  /// In en, this message translates to:
++  /// **'Update available: v{version}'**
++  String updateAvailableVersion(String version);
++
++  /// No update available message
++  ///
++  /// In en, this message translates to:
++  /// **'You\'re on the latest version'**
++  String get upToDate;
++
++  /// Download and install update tile title
++  ///
++  /// In en, this message translates to:
++  /// **'Download & install update'**
++  String get downloadInstallUpdate;
++
++  /// Open the latest release page tile title
++  ///
++  /// In en, this message translates to:
++  /// **'Get the latest release'**
++  String get getLatestRelease;
++
++  /// Source code tile title
++  ///
++  /// In en, this message translates to:
++  /// **'Source code'**
++  String get sourceCode;
++
++  /// Notification access tile title
++  ///
++  /// In en, this message translates to:
++  /// **'Notification access'**
++  String get notificationAccess;
++
++  /// Notification access tile subtitle
++  ///
++  /// In en, this message translates to:
++  /// **'Needed to read the track title'**
++  String get notificationAccessSubtitle;
++
++  /// Button to grant notification access
++  ///
++  /// In en, this message translates to:
++  /// **'Grant'**
++  String get grant;
++
++  /// About tile app name
++  ///
++  /// In en, this message translates to:
++  /// **'Froggy'**
++  String get froggy;
++
++  /// About tile app description
++  ///
++  /// In en, this message translates to:
++  /// **'Google\'s Weather Frog'**
++  String get googlesWeatherFrog;
++
++  /// Version label
++  ///
++  /// In en, this message translates to:
++  /// **'Version {version}'**
++  String versionValue(String version);
++
++  /// City name input hint
++  ///
++  /// In en, this message translates to:
++  /// **'City name'**
++  String get cityName;
++
++  /// Search tooltip
++  ///
++  /// In en, this message translates to:
++  /// **'Search'**
++  String get search;
++
++  /// Empty geocoding search result message
++  ///
++  /// In en, this message translates to:
++  /// **'No matches found'**
++  String get noMatchesFound;
++
++  /// Geocoding search failure message
++  ///
++  /// In en, this message translates to:
++  /// **'Search failed — check your connection'**
++  String get searchFailed;
++
++  /// Update dialog title
++  ///
++  /// In en, this message translates to:
++  /// **'Update available'**
++  String get updateAvailable;
++
++  /// Update dialog body
++  ///
++  /// In en, this message translates to:
++  /// **'Froggy v{latest} is available — you have v{current}.'**
++  String updateAvailableDetails(String latest, String current);
++
++  /// Skip this update button
++  ///
++  /// In en, this message translates to:
++  /// **'Skip'**
++  String get skip;
++
++  /// Remind me later button
++  ///
++  /// In en, this message translates to:
++  /// **'Later'**
++  String get later;
++
++  /// Start update button
++  ///
++  /// In en, this message translates to:
++  /// **'Update'**
++  String get update;
++
++  /// View release button
++  ///
++  /// In en, this message translates to:
++  /// **'View'**
++  String get view;
++
++  /// Update download started snackbar
++  ///
++  /// In en, this message translates to:
++  /// **'Downloading update…'**
++  String get downloadingUpdate;
++
++  /// Update download failed snackbar
++  ///
++  /// In en, this message translates to:
++  /// **'Could not start the update'**
++  String get couldNotStartUpdate;
++
++  /// Failed to open URL snackbar
++  ///
++  /// In en, this message translates to:
++  /// **'Couldn\'t open the link on this device'**
++  String get couldNotOpenLink;
++
++  /// Update install failed snackbar (about section)
++  ///
++  /// In en, this message translates to:
++  /// **'Couldn\'t start the update'**
++  String get couldNotStartUpdateAlt;
++
++  /// Tooltip for the previous location arrow
++  ///
++  /// In en, this message translates to:
++  /// **'Previous location'**
++  String get previousLocation;
++
++  /// Tooltip for the next location arrow
++  ///
++  /// In en, this message translates to:
++  /// **'Next location'**
++  String get nextLocation;
++
++  /// Rotate hint title
++  ///
++  /// In en, this message translates to:
++  /// **'Froggy looks best in landscape'**
++  String get landscapeTitle;
++
++  /// Rotate hint body
++  ///
++  /// In en, this message translates to:
++  /// **'Rotate your phone sideways for the full view.'**
++  String get landscapeBody;
++
++  /// Rotate hint dismiss button
++  ///
++  /// In en, this message translates to:
++  /// **'Got it'**
++  String get gotIt;
++
++  /// Web location permission warning
++  ///
++  /// In en, this message translates to:
++  /// **'Location is blocked, so this is your approximate area. Allow location in your browser, then Retry.'**
++  String get locationBlocked;
++
++  /// Retry button
++  ///
++  /// In en, this message translates to:
++  /// **'Retry'**
++  String get retry;
++
++  /// Dismiss tooltip
++  ///
++  /// In en, this message translates to:
++  /// **'Dismiss'**
++  String get dismiss;
++
++  /// Follow the system language option
++  ///
++  /// In en, this message translates to:
++  /// **'System (auto)'**
++  String get systemLanguage;
++
++  /// Language setting subtitle
++  ///
++  /// In en, this message translates to:
++  /// **'App language'**
++  String get languageSubtitle;
++
++  /// WMO code 0
++  ///
++  /// In en, this message translates to:
++  /// **'Clear'**
++  String get wmoClear;
++
++  /// WMO code 1
++  ///
++  /// In en, this message translates to:
++  /// **'Mainly clear'**
++  String get wmoMainlyClear;
++
++  /// WMO code 2
++  ///
++  /// In en, this message translates to:
++  /// **'Partly cloudy'**
++  String get wmoPartlyCloudy;
++
++  /// WMO code 3
++  ///
++  /// In en, this message translates to:
++  /// **'Overcast'**
++  String get wmoOvercast;
++
++  /// WMO code 45
++  ///
++  /// In en, this message translates to:
++  /// **'Fog'**
++  String get wmoFog;
++
++  /// WMO code 48
++  ///
++  /// In en, this message translates to:
++  /// **'Rime fog'**
++  String get wmoRimeFog;
++
++  /// WMO code 51
++  ///
++  /// In en, this message translates to:
++  /// **'Light drizzle'**
++  String get wmoLightDrizzle;
++
++  /// WMO code 53
++  ///
++  /// In en, this message translates to:
++  /// **'Drizzle'**
++  String get wmoDrizzle;
++
++  /// WMO code 55
++  ///
++  /// In en, this message translates to:
++  /// **'Heavy drizzle'**
++  String get wmoHeavyDrizzle;
++
++  /// WMO codes 56, 57
++  ///
++  /// In en, this message translates to:
++  /// **'Freezing drizzle'**
++  String get wmoFreezingDrizzle;
++
++  /// WMO code 61
++  ///
++  /// In en, this message translates to:
++  /// **'Light rain'**
++  String get wmoLightRain;
++
++  /// WMO code 63
++  ///
++  /// In en, this message translates to:
++  /// **'Rain'**
++  String get wmoRain;
++
++  /// WMO code 65
++  ///
++  /// In en, this message translates to:
++  /// **'Heavy rain'**
++  String get wmoHeavyRain;
++
++  /// WMO codes 66, 67
++  ///
++  /// In en, this message translates to:
++  /// **'Freezing rain'**
++  String get wmoFreezingRain;
++
++  /// WMO code 71
++  ///
++  /// In en, this message translates to:
++  /// **'Light snow'**
++  String get wmoLightSnow;
++
++  /// WMO code 73
++  ///
++  /// In en, this message translates to:
++  /// **'Snow'**
++  String get wmoSnow;
++
++  /// WMO code 75
++  ///
++  /// In en, this message translates to:
++  /// **'Heavy snow'**
++  String get wmoHeavySnow;
++
++  /// WMO code 77
++  ///
++  /// In en, this message translates to:
++  /// **'Snow grains'**
++  String get wmoSnowGrains;
++
++  /// WMO code 80
++  ///
++  /// In en, this message translates to:
++  /// **'Light showers'**
++  String get wmoLightShowers;
++
++  /// WMO code 81
++  ///
++  /// In en, this message translates to:
++  /// **'Showers'**
++  String get wmoShowers;
++
++  /// WMO code 82
++  ///
++  /// In en, this message translates to:
++  /// **'Heavy showers'**
++  String get wmoHeavyShowers;
++
++  /// WMO code 85
++  ///
++  /// In en, this message translates to:
++  /// **'Snow showers'**
++  String get wmoSnowShowers;
++
++  /// WMO code 86
++  ///
++  /// In en, this message translates to:
++  /// **'Heavy snow showers'**
++  String get wmoHeavySnowShowers;
++
++  /// WMO code 95
++  ///
++  /// In en, this message translates to:
++  /// **'Thunderstorm'**
++  String get wmoThunderstorm;
++
++  /// WMO codes 96, 99
++  ///
++  /// In en, this message translates to:
++  /// **'Thunderstorm, hail'**
++  String get wmoThunderstormHail;
++
++  /// Unknown WMO code
++  ///
++  /// In en, this message translates to:
++  /// **'Unknown'**
++  String get wmoUnknown;
++}
++
++class _AppLocalizationsDelegate
++    extends LocalizationsDelegate<AppLocalizations> {
++  const _AppLocalizationsDelegate();
++
++  @override
++  Future<AppLocalizations> load(Locale locale) {
++    return SynchronousFuture<AppLocalizations>(lookupAppLocalizations(locale));
++  }
++
++  @override
++  bool isSupported(Locale locale) =>
++      <String>['en'].contains(locale.languageCode);
++
++  @override
++  bool shouldReload(_AppLocalizationsDelegate old) => false;
++}
++
++AppLocalizations lookupAppLocalizations(Locale locale) {
++  // Lookup logic when only language code is specified.
++  switch (locale.languageCode) {
++    case 'en':
++      return AppLocalizationsEn();
++  }
++
++  throw FlutterError(
++      'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
++      'an issue with the localizations generation tool. Please file an issue '
++      'on GitHub with a reproducible sample app and the gen-l10n configuration '
++      'that was used.');
++}
+diff --git a/lib/l10n/app_localizations_en.dart b/lib/l10n/app_localizations_en.dart
+new file mode 100644
+index 0000000..8a33921
+--- /dev/null
++++ b/lib/l10n/app_localizations_en.dart
+@@ -0,0 +1,418 @@
++// ignore: unused_import
++import 'package:intl/intl.dart' as intl;
++import 'app_localizations.dart';
++
++// ignore_for_file: type=lint
++
++/// The translations for English (`en`).
++class AppLocalizationsEn extends AppLocalizations {
++  AppLocalizationsEn([String locale = 'en']) : super(locale);
++
++  @override
++  String get appTitle => 'Google\'s Weather Frog (Froggy)';
++
++  @override
++  String get settings => 'Settings';
++
++  @override
++  String get resetToDefaults => 'Reset to defaults';
++
++  @override
++  String get resetSettingsTitle => 'Reset settings?';
++
++  @override
++  String get resetSettingsBody =>
++      'Restore all settings to defaults. Saved locations are kept.';
++
++  @override
++  String get cancel => 'Cancel';
++
++  @override
++  String get reset => 'Reset';
++
++  @override
++  String get hidePreview => 'Hide preview';
++
++  @override
++  String get showPreview => 'Show preview';
++
++  @override
++  String get sectionTiming => 'Timing';
++
++  @override
++  String get sectionOverlaySize => 'Overlay size';
++
++  @override
++  String get sectionTextShadow => 'Text shadow';
++
++  @override
++  String get sectionDisplay => 'Display';
++
++  @override
++  String get sectionDimming => 'Dimming';
++
++  @override
++  String get sectionStatusIcons => 'Status icons';
++
++  @override
++  String get sectionKioskMode => 'Kiosk mode';
++
++  @override
++  String get sectionLauncher => 'Launcher';
++
++  @override
++  String get sectionLocation => 'Location';
++
++  @override
++  String get sectionLanguage => 'Language';
++
++  @override
++  String get sectionAbout => 'About';
++
++  @override
++  String get sectionUnits => 'Units';
++
++  @override
++  String get sectionTimeFormat => 'Time format';
++
++  @override
++  String get weatherRefresh => 'Weather refresh';
++
++  @override
++  String minutesValue(int count) {
++    return '$count min';
++  }
++
++  @override
++  String get sceneRotation => 'Scene rotation';
++
++  @override
++  String get off => 'Off';
++
++  @override
++  String get clockTextSize => 'Clock & text size';
++
++  @override
++  String get showClock => 'Show clock';
++
++  @override
++  String get showClockSubtitle => 'Time at the bottom';
++
++  @override
++  String get showDate => 'Show date';
++
++  @override
++  String get showWeather => 'Show weather';
++
++  @override
++  String get showWeatherSubtitle => 'Temperature and conditions';
++
++  @override
++  String get showLocation => 'Show location';
++
++  @override
++  String get showLocationSubtitle => 'Place name at the top';
++
++  @override
++  String get dimOff => 'Off';
++
++  @override
++  String get dimAuto => 'Auto';
++
++  @override
++  String get dimCustom => 'Custom';
++
++  @override
++  String get level => 'Level';
++
++  @override
++  String get from => 'From';
++
++  @override
++  String get to => 'To';
++
++  @override
++  String get showStatusIcons => 'Show status icons';
++
++  @override
++  String get wifi => 'Wi-Fi';
++
++  @override
++  String get bluetooth => 'Bluetooth';
++
++  @override
++  String get music => 'Music';
++
++  @override
++  String get showMusicTitle => 'Show music title';
++
++  @override
++  String get showMusicTitleSubtitle => 'Track name (needs notification access)';
++
++  @override
++  String get kioskMode => 'Kiosk mode';
++
++  @override
++  String get kioskModeSubtitle =>
++      'Always-on display for devices without a screensaver. Hides the settings button (long-press the screen to reopen) and keeps the screen on.';
++
++  @override
++  String get homeApp => 'Home app';
++
++  @override
++  String get isDefaultHomeApp => 'Froggy is your default home app';
++
++  @override
++  String get setAsHomeApp =>
++      'Show Froggy on the home screen, replacing your launcher';
++
++  @override
++  String get set => 'Set';
++
++  @override
++  String get automaticLocation => 'Automatic';
++
++  @override
++  String get automaticLocationSubtitle => 'Detect from network / GPS';
++
++  @override
++  String get remove => 'Remove';
++
++  @override
++  String get addLocation => 'Add location';
++
++  @override
++  String get swipeToSwitch => 'Swipe to switch';
++
++  @override
++  String get swipeGestureSubtitle => 'Gesture on the frog';
++
++  @override
++  String get swipeLeftRight => 'Left / right';
++
++  @override
++  String get swipeUpDown => 'Up / down';
++
++  @override
++  String get switchLocations => 'Switch locations';
++
++  @override
++  String get automaticRotationSubtitle => 'Automatic rotation';
++
++  @override
++  String get manually => 'Manually';
++
++  @override
++  String get withScene => 'With scene';
++
++  @override
++  String get onATimer => 'On a timer';
++
++  @override
++  String get edgeArrows => 'Edge arrows';
++
++  @override
++  String get edgeArrowsSubtitle => 'Back / forward buttons at the sides';
++
++  @override
++  String get locationRotation => 'Location rotation';
++
++  @override
++  String get checkUpdatesOnStartup => 'Check for updates on startup';
++
++  @override
++  String get checkForUpdates => 'Check for updates';
++
++  @override
++  String get checkFailed => 'Could not check — try again later';
++
++  @override
++  String updateAvailableVersion(String version) {
++    return 'Update available: v$version';
++  }
++
++  @override
++  String get upToDate => 'You\'re on the latest version';
++
++  @override
++  String get downloadInstallUpdate => 'Download & install update';
++
++  @override
++  String get getLatestRelease => 'Get the latest release';
++
++  @override
++  String get sourceCode => 'Source code';
++
++  @override
++  String get notificationAccess => 'Notification access';
++
++  @override
++  String get notificationAccessSubtitle => 'Needed to read the track title';
++
++  @override
++  String get grant => 'Grant';
++
++  @override
++  String get froggy => 'Froggy';
++
++  @override
++  String get googlesWeatherFrog => 'Google\'s Weather Frog';
++
++  @override
++  String versionValue(String version) {
++    return 'Version $version';
++  }
++
++  @override
++  String get cityName => 'City name';
++
++  @override
++  String get search => 'Search';
++
++  @override
++  String get noMatchesFound => 'No matches found';
++
++  @override
++  String get searchFailed => 'Search failed — check your connection';
++
++  @override
++  String get updateAvailable => 'Update available';
++
++  @override
++  String updateAvailableDetails(String latest, String current) {
++    return 'Froggy v$latest is available — you have v$current.';
++  }
++
++  @override
++  String get skip => 'Skip';
++
++  @override
++  String get later => 'Later';
++
++  @override
++  String get update => 'Update';
++
++  @override
++  String get view => 'View';
++
++  @override
++  String get downloadingUpdate => 'Downloading update…';
++
++  @override
++  String get couldNotStartUpdate => 'Could not start the update';
++
++  @override
++  String get couldNotOpenLink => 'Couldn\'t open the link on this device';
++
++  @override
++  String get couldNotStartUpdateAlt => 'Couldn\'t start the update';
++
++  @override
++  String get previousLocation => 'Previous location';
++
++  @override
++  String get nextLocation => 'Next location';
++
++  @override
++  String get landscapeTitle => 'Froggy looks best in landscape';
++
++  @override
++  String get landscapeBody => 'Rotate your phone sideways for the full view.';
++
++  @override
++  String get gotIt => 'Got it';
++
++  @override
++  String get locationBlocked =>
++      'Location is blocked, so this is your approximate area. Allow location in your browser, then Retry.';
++
++  @override
++  String get retry => 'Retry';
++
++  @override
++  String get dismiss => 'Dismiss';
++
++  @override
++  String get systemLanguage => 'System (auto)';
++
++  @override
++  String get languageSubtitle => 'App language';
++
++  @override
++  String get wmoClear => 'Clear';
++
++  @override
++  String get wmoMainlyClear => 'Mainly clear';
++
++  @override
++  String get wmoPartlyCloudy => 'Partly cloudy';
++
++  @override
++  String get wmoOvercast => 'Overcast';
++
++  @override
++  String get wmoFog => 'Fog';
++
++  @override
++  String get wmoRimeFog => 'Rime fog';
++
++  @override
++  String get wmoLightDrizzle => 'Light drizzle';
++
++  @override
++  String get wmoDrizzle => 'Drizzle';
++
++  @override
++  String get wmoHeavyDrizzle => 'Heavy drizzle';
++
++  @override
++  String get wmoFreezingDrizzle => 'Freezing drizzle';
++
++  @override
++  String get wmoLightRain => 'Light rain';
++
++  @override
++  String get wmoRain => 'Rain';
++
++  @override
++  String get wmoHeavyRain => 'Heavy rain';
++
++  @override
++  String get wmoFreezingRain => 'Freezing rain';
++
++  @override
++  String get wmoLightSnow => 'Light snow';
++
++  @override
++  String get wmoSnow => 'Snow';
++
++  @override
++  String get wmoHeavySnow => 'Heavy snow';
++
++  @override
++  String get wmoSnowGrains => 'Snow grains';
++
++  @override
++  String get wmoLightShowers => 'Light showers';
++
++  @override
++  String get wmoShowers => 'Showers';
++
++  @override
++  String get wmoHeavyShowers => 'Heavy showers';
++
++  @override
++  String get wmoSnowShowers => 'Snow showers';
++
++  @override
++  String get wmoHeavySnowShowers => 'Heavy snow showers';
++
++  @override
++  String get wmoThunderstorm => 'Thunderstorm';
++
++  @override
++  String get wmoThunderstormHail => 'Thunderstorm, hail';
++
++  @override
++  String get wmoUnknown => 'Unknown';
++}
+diff --git a/pubspec.lock b/pubspec.lock
+index feaabdf..1672080 100644
+--- a/pubspec.lock
++++ b/pubspec.lock
+@@ -149,6 +149,11 @@ packages:
+       url: "https://pub.dev"
+     source: hosted
+     version: "2.0.3"
++  flutter_localizations:
++    dependency: "direct main"
++    description: flutter
++    source: sdk
++    version: "0.0.0"
+   flutter_test:
+     dependency: "direct dev"
+     description: flutter
+@@ -235,10 +240,10 @@ packages:
+     dependency: "direct main"
+     description:
+       name: intl
+-      sha256: d6f56758b7d3014a48af9701c085700aac781a92a87a62b1333b46d8879661cf
++      sha256: "1ca20c894b1717686a2319b8548763d812bc0aabdac580420a44c5178c57a867"
+       url: "https://pub.dev"
+     source: hosted
+-    version: "0.19.0"
++    version: "0.20.3"
+   json_annotation:
+     dependency: transitive
+     description:
+@@ -283,10 +288,10 @@ packages:
+     dependency: transitive
+     description:
+       name: matcher
+-      sha256: dc0b7dc7651697ea4ff3e69ef44b0407ea32c487a39fff6a4004fa585e901861
++      sha256: "31bd099b47c10cd1aeb55146a2d46ce0277630ecef3f7dae54ad7873f36696cd"
+       url: "https://pub.dev"
+     source: hosted
+-    version: "0.12.19"
++    version: "0.12.20"
+   material_color_utilities:
+     dependency: transitive
+     description:
+@@ -299,10 +304,10 @@ packages:
+     dependency: transitive
+     description:
+       name: meta
+-      sha256: "1741988757a65eb6b36abe716829688cf01910bbf91c34354ff7ec1c3de2b349"
++      sha256: "307249ce4ff29d58a18e97f6345f539382eb9c9c29ecda628900f31de0443dd9"
+       url: "https://pub.dev"
+     source: hosted
+-    version: "1.18.0"
++    version: "1.19.0"
+   path:
+     dependency: transitive
+     description:
+@@ -472,10 +477,10 @@ packages:
+     dependency: transitive
+     description:
+       name: test_api
+-      sha256: "949a932224383300f01be9221c39180316445ecb8e7547f70a41a35bf421fb9e"
++      sha256: "2a122cbe059f8b610d3a5415f42e255b6c17b1f21eee1d960f31080237fb4f11"
+       url: "https://pub.dev"
+     source: hosted
+-    version: "0.7.11"
++    version: "0.7.12"
+   typed_data:
+     dependency: transitive
+     description:
+@@ -496,10 +501,10 @@ packages:
+     dependency: transitive
+     description:
+       name: vector_math
+-      sha256: d530bd74fea330e6e364cda7a85019c434070188383e1cd8d9777ee586914c5b
++      sha256: fa49e1674cb84acb900141714e6c6e1f9ae099827c24d141430ff6819db4e1bc
+       url: "https://pub.dev"
+     source: hosted
+-    version: "2.2.0"
++    version: "2.4.4"
+   vm_service:
+     dependency: transitive
+     description:
+diff --git a/pubspec.yaml b/pubspec.yaml
+index 9914ecd..b6b3a7c 100644
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+@@ -41,7 +41,9 @@ dependencies:
+   http: ^1.2.2
+   geolocator: ^13.0.1
+   shared_preferences: ^2.3.2
+-  intl: ^0.19.0
++  intl: ^0.20.3
++  flutter_localizations:
++    sdk: flutter
+ 
+ dev_dependencies:
+   flutter_test:
+@@ -78,6 +80,7 @@ flutter_icons:
+ 
+ # The following section is specific to Flutter packages.
+ flutter:
++  generate: true
+ 
+   # The following line ensures that the Material Icons font is
+   # included with your application, so that you can use the icons in
+-- 
+2.43.0
+

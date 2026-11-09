@@ -1,0 +1,133 @@
+From 7868c20674692392fee68b5ed759c2307d35930d Mon Sep 17 00:00:00 2001
+From: PeterChamp <peter@maszatai.com>
+Date: Thu, 5 Nov 2026 04:20:04 +0200
+Subject: [PATCH 08/13] Fix dart2js sentinel fold and bundle local font for
+ trend arrows
+
+- dart2js constant-folds 1<<60 to 0, so hourly window selection never
+  matched; use 1440-minute sentinel
+- Pi kiosk cannot fetch CanvasKit fallback fonts from gstatic, rendering
+  trend arrows as tofu; bundle a subset DejaVu font with the arrow glyphs
+  and use it as fontFamilyFallback
+---
+ assets/fonts/ArrowGlyphs.ttf      | Bin 0 -> 3684 bytes
+ lib/services/weather_service.dart |   2 +-
+ lib/ui/hourly_chart.dart          |   1 +
+ lib/ui/overlay.dart               |   1 +
+ pubspec.yaml                      |   6 +++++-
+ 5 files changed, 8 insertions(+), 2 deletions(-)
+ create mode 100644 assets/fonts/ArrowGlyphs.ttf
+
+diff --git a/assets/fonts/ArrowGlyphs.ttf b/assets/fonts/ArrowGlyphs.ttf
+new file mode 100644
+index 0000000000000000000000000000000000000000..2acdb28552ac6dc784d5d3a3a67ac27ef06aaf07
+GIT binary patch
+literal 3684
+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
+IhIJG4HFYvYL;wH)
+
+literal 0
+HcmV?d00001
+
+diff --git a/lib/services/weather_service.dart b/lib/services/weather_service.dart
+index cac6077..e6f7638 100644
+--- a/lib/services/weather_service.dart
++++ b/lib/services/weather_service.dart
+@@ -70,7 +70,7 @@ class WeatherService {
+     // with timezone=auto are location-local, offset-naive strings).
+     final wall = DateTime.now().toUtc().add(Duration(seconds: off));
+     int best = -1;
+-    int bestDelta = 1 << 60;
++    int bestDelta = 1440; // larger than any hour-of-day difference
+     for (var i = 0; i < n; i++) {
+       final t = DateTime.tryParse(times[i] as String);
+       if (t == null) return null;
+diff --git a/lib/ui/hourly_chart.dart b/lib/ui/hourly_chart.dart
+index 8f1ddf3..0984915 100644
+--- a/lib/ui/hourly_chart.dart
++++ b/lib/ui/hourly_chart.dart
+@@ -132,6 +132,7 @@ class _HourlyChartPainter extends CustomPainter {
+           color: Colors.white,
+           fontSize: labelFontSize,
+           fontWeight: FontWeight.bold,
++          fontFamilyFallback: ['ArrowGlyphs'],
+         ),
+       );
+       labelStyle.layout();
+diff --git a/lib/ui/overlay.dart b/lib/ui/overlay.dart
+index 04a4be8..8b61aa2 100644
+--- a/lib/ui/overlay.dart
++++ b/lib/ui/overlay.dart
+@@ -160,6 +160,7 @@ class _WeatherOverlayState extends State<WeatherOverlay>
+                             fontSize: summarySize,
+                             fontWeight: FontWeight.w400,
+                             shadows: shadow,
++                            fontFamilyFallback: const ['ArrowGlyphs'],
+                           ),
+                         ),
+                       ],
+diff --git a/pubspec.yaml b/pubspec.yaml
+index b6b3a7c..c8a7dbb 100644
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+@@ -231,8 +231,12 @@ flutter:
+   #   - family: Trajan Pro
+   #     fonts:
+   #       - asset: fonts/TrajanPro.ttf
+-  #       - asset: fonts/TrajanPro_Bold.ttf
+   #         weight: 700
+   #
+   # For details regarding fonts from package dependencies,
+   # see https://flutter.dev/custom-fonts/#from-packages
++
++  fonts:
++    - family: ArrowGlyphs
++      fonts:
++        - asset: assets/fonts/ArrowGlyphs.ttf
+-- 
+2.43.0
+

@@ -1,0 +1,66 @@
+From a202755c74e2a591dc931316584c1211a05043d2 Mon Sep 17 00:00:00 2001
+From: petyus- <petyus-@users.noreply.github.com>
+Date: Fri, 6 Nov 2026 14:10:47 +0200
+Subject: [PATCH 13/13] Move mood caption onto the settings-gear bottom row and
+ drop the label prefix
+
+The pill now sits on the same line as the settings gear, right-aligned
+immediately to its left (12px gap, vertically centered against the 28px
+icon) in non-kiosk layouts; in kiosk mode it stays bottom-right with the
+same margin the gear would use. The 'Frog:'/'Beka:' label prefix is
+removed - only the localized activity word(s) are rendered.
+---
+ lib/ui/froggy_view.dart  | 23 +++++++++++++++--------
+ lib/ui/mood_caption.dart |  2 +-
+ 2 files changed, 16 insertions(+), 9 deletions(-)
+
+diff --git a/lib/ui/froggy_view.dart b/lib/ui/froggy_view.dart
+index 18465f1..e5136db 100644
+--- a/lib/ui/froggy_view.dart
++++ b/lib/ui/froggy_view.dart
+@@ -166,14 +166,21 @@ class FroggyView extends StatelessWidget {
+             ),
+           if (overlay && settings.showMoodCaption)
+             Positioned(
+-              bottom:
+-                  statusPad + (cornerGear ? statusIcon * 1.5 + 8 : 0),
+-              right: statusPad,
+-              child: MoodCaption(
+-                dayPart: dayPart,
+-                condition:
+-                    weather?.condition ?? WeatherCondition.cloudy,
+-                shadows: shadows,
++              // Sits on the settings-gear bottom row: same bottom edge as the
++              // gear, centered against its 28px icon, immediately to its left.
++              bottom: statusPad,
++              right: statusPad + (cornerGear ? 28.0 + 12.0 : 0.0),
++              child: SizedBox(
++                height: 28,
++                child: Align(
++                  alignment: Alignment.centerLeft,
++                  child: MoodCaption(
++                    dayPart: dayPart,
++                    condition:
++                        weather?.condition ?? WeatherCondition.cloudy,
++                    shadows: shadows,
++                  ),
++                ),
+               ),
+             ),
+           if (overlay && hasTopContent)
+diff --git a/lib/ui/mood_caption.dart b/lib/ui/mood_caption.dart
+index 678e353..64d6336 100644
+--- a/lib/ui/mood_caption.dart
++++ b/lib/ui/mood_caption.dart
+@@ -78,7 +78,7 @@ class MoodCaption extends StatelessWidget {
+   Widget build(BuildContext context) {
+     final l10n = AppLocalizations.of(context);
+     if (l10n == null) return const SizedBox.shrink();
+-    final text = '${l10n.moodLabel}: ${_activity(l10n, dayPart, condition)}';
++    final text = _activity(l10n, dayPart, condition);
+     return IgnorePointer(
+       child: Container(
+         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+-- 
+2.43.0
+

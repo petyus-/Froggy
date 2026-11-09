@@ -1,0 +1,694 @@
+From 2e683c8e1dbfdd58753619674e368fae4ef8deb8 Mon Sep 17 00:00:00 2001
+From: PeterChamp <peter@maszatai.com>
+Date: Thu, 5 Nov 2026 03:41:50 +0200
+Subject: [PATCH 05/13] Add 24h hourly temperature band chart overlay with
+ settings toggle
+
+- Fetch hourly=temperature_2m from Open-Meteo (2-day window), slice 24h from current local hour
+- Band chart: colored bands (blue->warm yellow by normalized temp, 35% alpha), dots, thin white line, temp labels every hour, hour numbers every 3rd hour
+- Transparent black strip (rgba 0,0,0,0.35) at top of scene, hidden when data missing or toggle off
+- Settings toggle '24-hour chart' localized in all 9 languages, default ON, persisted
+---
+ lib/l10n/app_de.arb                |   3 +
+ lib/l10n/app_en.arb                |   3 +
+ lib/l10n/app_es.arb                |   3 +
+ lib/l10n/app_fr.arb                |   3 +
+ lib/l10n/app_hu.arb                |   3 +
+ lib/l10n/app_it.arb                |   3 +
+ lib/l10n/app_localizations.dart    |   6 +
+ lib/l10n/app_localizations_de.dart |   3 +
+ lib/l10n/app_localizations_en.dart |   3 +
+ lib/l10n/app_localizations_es.dart |   3 +
+ lib/l10n/app_localizations_fr.dart |   3 +
+ lib/l10n/app_localizations_hu.dart |   3 +
+ lib/l10n/app_localizations_it.dart |   3 +
+ lib/l10n/app_localizations_nl.dart |   3 +
+ lib/l10n/app_localizations_pl.dart |   3 +
+ lib/l10n/app_localizations_ro.dart |   3 +
+ lib/l10n/app_nl.arb                |   3 +
+ lib/l10n/app_pl.arb                |   3 +
+ lib/l10n/app_ro.arb                |   3 +
+ lib/models/settings.dart           |   6 +
+ lib/models/weather.dart            |  12 +-
+ lib/services/weather_service.dart  |  51 ++++++++-
+ lib/state/settings_controller.dart |   3 +
+ lib/ui/froggy_view.dart            |   8 ++
+ lib/ui/hourly_chart.dart           | 172 +++++++++++++++++++++++++++++
+ lib/ui/settings_screen.dart        |   5 +
+ 26 files changed, 315 insertions(+), 2 deletions(-)
+ create mode 100644 lib/ui/hourly_chart.dart
+
+diff --git a/lib/l10n/app_de.arb b/lib/l10n/app_de.arb
+index 0fe0cdd..a789261 100644
+--- a/lib/l10n/app_de.arb
++++ b/lib/l10n/app_de.arb
+@@ -551,4 +551,7 @@
+   "@wmoUnknown": {
+     "description": "Unknown WMO code"
+   }
++,
++  "hourlyChart": "24-Stunden-Diagramm",
++  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" }
+ }
+diff --git a/lib/l10n/app_en.arb b/lib/l10n/app_en.arb
+index 7e12451..5249fc0 100644
+--- a/lib/l10n/app_en.arb
++++ b/lib/l10n/app_en.arb
+@@ -417,4 +417,7 @@
+ 
+   "wmoUnknown": "Unknown",
+   "@wmoUnknown": { "description": "Unknown WMO code" }
++,
++  "hourlyChart": "24-hour chart",
++  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" }
+ }
+diff --git a/lib/l10n/app_es.arb b/lib/l10n/app_es.arb
+index 3a0634c..515c419 100644
+--- a/lib/l10n/app_es.arb
++++ b/lib/l10n/app_es.arb
+@@ -551,4 +551,7 @@
+   "@wmoUnknown": {
+     "description": "Unknown WMO code"
+   }
++,
++  "hourlyChart": "Gráfico de 24 horas",
++  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" }
+ }
+diff --git a/lib/l10n/app_fr.arb b/lib/l10n/app_fr.arb
+index dc3cd44..7195e29 100644
+--- a/lib/l10n/app_fr.arb
++++ b/lib/l10n/app_fr.arb
+@@ -551,4 +551,7 @@
+   "@wmoUnknown": {
+     "description": "Unknown WMO code"
+   }
++,
++  "hourlyChart": "Graphique 24 heures",
++  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" }
+ }
+diff --git a/lib/l10n/app_hu.arb b/lib/l10n/app_hu.arb
+index a95029d..29a926b 100644
+--- a/lib/l10n/app_hu.arb
++++ b/lib/l10n/app_hu.arb
+@@ -551,4 +551,7 @@
+   "@wmoUnknown": {
+     "description": "Unknown WMO code"
+   }
++,
++  "hourlyChart": "24 órás grafikon",
++  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" }
+ }
+diff --git a/lib/l10n/app_it.arb b/lib/l10n/app_it.arb
+index 77d2b73..9b40b36 100644
+--- a/lib/l10n/app_it.arb
++++ b/lib/l10n/app_it.arb
+@@ -551,4 +551,7 @@
+   "@wmoUnknown": {
+     "description": "Unknown WMO code"
+   }
++,
++  "hourlyChart": "Grafico 24 ore",
++  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" }
+ }
+diff --git a/lib/l10n/app_localizations.dart b/lib/l10n/app_localizations.dart
+index 6f7c86b..05f796b 100644
+--- a/lib/l10n/app_localizations.dart
++++ b/lib/l10n/app_localizations.dart
+@@ -903,6 +903,12 @@ abstract class AppLocalizations {
+   /// In en, this message translates to:
+   /// **'Unknown'**
+   String get wmoUnknown;
++
++  /// Toggle to show the 24-hour temperature chart
++  ///
++  /// In en, this message translates to:
++  /// **'24-hour chart'**
++  String get hourlyChart;
+ }
+ 
+ class _AppLocalizationsDelegate
+diff --git a/lib/l10n/app_localizations_de.dart b/lib/l10n/app_localizations_de.dart
+index 68f4195..91ccfac 100644
+--- a/lib/l10n/app_localizations_de.dart
++++ b/lib/l10n/app_localizations_de.dart
+@@ -419,4 +419,7 @@ class AppLocalizationsDe extends AppLocalizations {
+ 
+   @override
+   String get wmoUnknown => 'Unbekannt';
++
++  @override
++  String get hourlyChart => '24-Stunden-Diagramm';
+ }
+diff --git a/lib/l10n/app_localizations_en.dart b/lib/l10n/app_localizations_en.dart
+index 8a33921..473f9b6 100644
+--- a/lib/l10n/app_localizations_en.dart
++++ b/lib/l10n/app_localizations_en.dart
+@@ -415,4 +415,7 @@ class AppLocalizationsEn extends AppLocalizations {
+ 
+   @override
+   String get wmoUnknown => 'Unknown';
++
++  @override
++  String get hourlyChart => '24-hour chart';
+ }
+diff --git a/lib/l10n/app_localizations_es.dart b/lib/l10n/app_localizations_es.dart
+index e3797b5..2daa64e 100644
+--- a/lib/l10n/app_localizations_es.dart
++++ b/lib/l10n/app_localizations_es.dart
+@@ -419,4 +419,7 @@ class AppLocalizationsEs extends AppLocalizations {
+ 
+   @override
+   String get wmoUnknown => 'Desconocido';
++
++  @override
++  String get hourlyChart => 'Gráfico de 24 horas';
+ }
+diff --git a/lib/l10n/app_localizations_fr.dart b/lib/l10n/app_localizations_fr.dart
+index fe5ba62..10f3327 100644
+--- a/lib/l10n/app_localizations_fr.dart
++++ b/lib/l10n/app_localizations_fr.dart
+@@ -421,4 +421,7 @@ class AppLocalizationsFr extends AppLocalizations {
+ 
+   @override
+   String get wmoUnknown => 'Inconnu';
++
++  @override
++  String get hourlyChart => 'Graphique 24 heures';
+ }
+diff --git a/lib/l10n/app_localizations_hu.dart b/lib/l10n/app_localizations_hu.dart
+index 398afb7..ff872d3 100644
+--- a/lib/l10n/app_localizations_hu.dart
++++ b/lib/l10n/app_localizations_hu.dart
+@@ -417,4 +417,7 @@ class AppLocalizationsHu extends AppLocalizations {
+ 
+   @override
+   String get wmoUnknown => 'Ismeretlen';
++
++  @override
++  String get hourlyChart => '24 órás grafikon';
+ }
+diff --git a/lib/l10n/app_localizations_it.dart b/lib/l10n/app_localizations_it.dart
+index 8bbb538..8611ace 100644
+--- a/lib/l10n/app_localizations_it.dart
++++ b/lib/l10n/app_localizations_it.dart
+@@ -419,4 +419,7 @@ class AppLocalizationsIt extends AppLocalizations {
+ 
+   @override
+   String get wmoUnknown => 'Sconosciuto';
++
++  @override
++  String get hourlyChart => 'Grafico 24 ore';
+ }
+diff --git a/lib/l10n/app_localizations_nl.dart b/lib/l10n/app_localizations_nl.dart
+index cfc0eb2..9801d45 100644
+--- a/lib/l10n/app_localizations_nl.dart
++++ b/lib/l10n/app_localizations_nl.dart
+@@ -416,4 +416,7 @@ class AppLocalizationsNl extends AppLocalizations {
+ 
+   @override
+   String get wmoUnknown => 'Onbekend';
++
++  @override
++  String get hourlyChart => '24-uurs grafiek';
+ }
+diff --git a/lib/l10n/app_localizations_pl.dart b/lib/l10n/app_localizations_pl.dart
+index cca12c1..36c0492 100644
+--- a/lib/l10n/app_localizations_pl.dart
++++ b/lib/l10n/app_localizations_pl.dart
+@@ -419,4 +419,7 @@ class AppLocalizationsPl extends AppLocalizations {
+ 
+   @override
+   String get wmoUnknown => 'Nieznane';
++
++  @override
++  String get hourlyChart => 'Wykres 24-godzinny';
+ }
+diff --git a/lib/l10n/app_localizations_ro.dart b/lib/l10n/app_localizations_ro.dart
+index 89834c4..e9dd054 100644
+--- a/lib/l10n/app_localizations_ro.dart
++++ b/lib/l10n/app_localizations_ro.dart
+@@ -420,4 +420,7 @@ class AppLocalizationsRo extends AppLocalizations {
+ 
+   @override
+   String get wmoUnknown => 'Necunoscut';
++
++  @override
++  String get hourlyChart => 'Grafic 24 de ore';
+ }
+diff --git a/lib/l10n/app_nl.arb b/lib/l10n/app_nl.arb
+index aea2d37..c3c9a91 100644
+--- a/lib/l10n/app_nl.arb
++++ b/lib/l10n/app_nl.arb
+@@ -551,4 +551,7 @@
+   "@wmoUnknown": {
+     "description": "Unknown WMO code"
+   }
++,
++  "hourlyChart": "24-uurs grafiek",
++  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" }
+ }
+diff --git a/lib/l10n/app_pl.arb b/lib/l10n/app_pl.arb
+index c192c8e..55e570c 100644
+--- a/lib/l10n/app_pl.arb
++++ b/lib/l10n/app_pl.arb
+@@ -551,4 +551,7 @@
+   "@wmoUnknown": {
+     "description": "Unknown WMO code"
+   }
++,
++  "hourlyChart": "Wykres 24-godzinny",
++  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" }
+ }
+diff --git a/lib/l10n/app_ro.arb b/lib/l10n/app_ro.arb
+index ecab0b4..9689d78 100644
+--- a/lib/l10n/app_ro.arb
++++ b/lib/l10n/app_ro.arb
+@@ -551,4 +551,7 @@
+   "@wmoUnknown": {
+     "description": "Unknown WMO code"
+   }
++,
++  "hourlyChart": "Grafic 24 de ore",
++  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" }
+ }
+diff --git a/lib/models/settings.dart b/lib/models/settings.dart
+index 04cde1a..b351ca5 100644
+--- a/lib/models/settings.dart
++++ b/lib/models/settings.dart
+@@ -74,6 +74,7 @@ class Settings {
+   final bool showBluetooth;
+   final bool showMusic;
+   final bool kioskMode;
++  final bool showHourlyChart;
+   final String? languageCode;
+ 
+   const Settings({
+@@ -105,6 +106,7 @@ class Settings {
+     this.showBluetooth = true,
+     this.showMusic = true,
+     this.kioskMode = false,
++    this.showHourlyChart = true,
+     this.languageCode,
+   });
+ 
+@@ -205,6 +207,7 @@ class Settings {
+     bool? showBluetooth,
+     bool? showMusic,
+     bool? kioskMode,
++    bool? showHourlyChart,
+     String? languageCode,
+     bool clearLanguage = false,
+   }) {
+@@ -241,6 +244,7 @@ class Settings {
+       showBluetooth: showBluetooth ?? this.showBluetooth,
+       showMusic: showMusic ?? this.showMusic,
+       kioskMode: kioskMode ?? this.kioskMode,
++      showHourlyChart: showHourlyChart ?? this.showHourlyChart,
+       languageCode:
+           clearLanguage ? null : (languageCode ?? this.languageCode),
+     );
+@@ -275,6 +279,7 @@ class Settings {
+         'showBluetooth': showBluetooth,
+         'showMusic': showMusic,
+         'kioskMode': kioskMode,
++        'showHourlyChart': showHourlyChart,
+         'languageCode': languageCode,
+       };
+ 
+@@ -315,6 +320,7 @@ class Settings {
+         showBluetooth: (j['showBluetooth'] as bool?) ?? true,
+         showMusic: (j['showMusic'] as bool?) ?? true,
+         kioskMode: (j['kioskMode'] as bool?) ?? false,
++        showHourlyChart: (j['showHourlyChart'] as bool?) ?? true,
+         languageCode: j['languageCode'] as String?,
+       );
+ 
+diff --git a/lib/models/weather.dart b/lib/models/weather.dart
+index 06d5df5..8b7ce82 100644
+--- a/lib/models/weather.dart
++++ b/lib/models/weather.dart
+@@ -25,6 +25,8 @@ class WeatherData {
+   final DateTime? sunset;
+ 
+   final int? utcOffsetSeconds;
++  final List<double>? hourlyTemps;
++  final int? hourlyStartHour;
+   final DateTime fetchedAt;
+ 
+   const WeatherData({
+@@ -36,6 +38,8 @@ class WeatherData {
+     required this.sunrise,
+     required this.sunset,
+     required this.utcOffsetSeconds,
++    this.hourlyTemps,
++    this.hourlyStartHour,
+     required this.fetchedAt,
+   });
+ 
+@@ -57,7 +61,7 @@ class WeatherData {
+ 
+   String summary(AppLocalizations l10n) {
+     final hl = (tempMaxC != null && tempMinC != null)
+-        ? ' · ↑${tempMaxC!.round()}° ↓${tempMinC!.round()}°'
++        ? ' · ▲${tempMaxC!.round()}° ▼${tempMinC!.round()}°'
+         : '';
+     return '${description(l10n)}$hl';
+   }
+@@ -71,6 +75,8 @@ class WeatherData {
+         'sunrise': sunrise?.toIso8601String(),
+         'sunset': sunset?.toIso8601String(),
+         'utcOffsetSeconds': utcOffsetSeconds,
++        'hourlyTemps': hourlyTemps,
++        'hourlyStartHour': hourlyStartHour,
+         'fetchedAt': fetchedAt.toIso8601String(),
+       };
+ 
+@@ -83,6 +89,10 @@ class WeatherData {
+         sunrise: _parseOrNull(json['sunrise']),
+         sunset: _parseOrNull(json['sunset']),
+         utcOffsetSeconds: (json['utcOffsetSeconds'] as num?)?.toInt(),
++        hourlyTemps: ((json['hourlyTemps'] as List?) ?? const [])
++            .map((e) => (e as num).toDouble())
++            .toList(),
++        hourlyStartHour: (json['hourlyStartHour'] as num?)?.toInt(),
+         fetchedAt: DateTime.parse(json['fetchedAt'] as String),
+       );
+ 
+diff --git a/lib/services/weather_service.dart b/lib/services/weather_service.dart
+index 7da36a5..e8f3401 100644
+--- a/lib/services/weather_service.dart
++++ b/lib/services/weather_service.dart
+@@ -17,8 +17,9 @@ class WeatherService {
+       'current': 'weather_code,temperature_2m',
+       'daily':
+           'weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset',
++      'hourly': 'temperature_2m',
+       'timezone': 'auto',
+-      'forecast_days': '1',
++      'forecast_days': '2',
+     });
+ 
+     final resp = await _client.get(uri).timeout(const Duration(seconds: 15));
+@@ -34,6 +35,10 @@ class WeatherService {
+ 
+     final daily = body['daily'] as Map<String, dynamic>?;
+     final code = (current['weather_code'] as num).toInt();
++    final hourly = _hourlyFromNow(
++      body['hourly'] as Map<String, dynamic>?,
++      utcOffsetSeconds: (body['utc_offset_seconds'] as num?)?.toInt(),
++    );
+     return WeatherData(
+       condition: conditionFromWmo(code),
+       weatherCode: code,
+@@ -43,10 +48,54 @@ class WeatherService {
+       sunrise: _firstDate(daily?['sunrise']),
+       sunset: _firstDate(daily?['sunset']),
+       utcOffsetSeconds: (body['utc_offset_seconds'] as num?)?.toInt(),
++      hourlyTemps: hourly?.$1,
++      hourlyStartHour: hourly?.$2,
+       fetchedAt: DateTime.now(),
+     );
+   }
+ 
++  /// Returns 24 hourly temperatures starting at the current local hour,
++  /// plus the starting hour-of-day. Null when data is unavailable.
++  static (List<double>, int)? _hourlyFromNow(
++    Map<String, dynamic>? hourly, {
++    int? utcOffsetSeconds,
++  }) {
++    if (hourly == null) return null;
++    final times = hourly['time'];
++    final temps = hourly['temperature_2m'];
++    if (times is! List || temps is! List || times.isEmpty) return null;
++    final n = times.length < temps.length ? times.length : temps.length;
++    final off = utcOffsetSeconds ?? 0;
++    final nowUtc = DateTime.now().toUtc();
++    final local =
++        nowUtc.add(Duration(seconds: off));
++    final startHour = local.hour;
++    // Times are local ISO strings without offset ("2026-11-05T21:00").
++    int best = -1;
++    int bestDelta = 1 << 60;
++    for (var i = 0; i < n; i++) {
++      final t = DateTime.tryParse(times[i] as String);
++      if (t == null) return null;
++      final delta =
++          (t.difference(DateTime.utc(local.year, local.month, local.day,
++                      local.hour))
++              .inMinutes)
++              .abs();
++      if (delta < bestDelta) {
++        bestDelta = delta;
++        best = i;
++      }
++    }
++    if (best < 0 || bestDelta > 90) return null;
++    final values = <double>[];
++    for (var i = best; i < n && values.length < 24; i++) {
++      final v = temps[i];
++      if (v is num) values.add(v.toDouble());
++    }
++    if (values.length < 24) return null;
++    return (values, startHour);
++  }
++
+   static DateTime? _firstDate(Object? list) {
+     if (list is List && list.isNotEmpty && list.first is String) {
+       final d = DateTime.tryParse(list.first as String);
+diff --git a/lib/state/settings_controller.dart b/lib/state/settings_controller.dart
+index dc12bee..d3d3621 100644
+--- a/lib/state/settings_controller.dart
++++ b/lib/state/settings_controller.dart
+@@ -76,6 +76,9 @@ class SettingsController extends ChangeNotifier {
+   Future<void> setKioskMode(bool v) =>
+       _update(_settings.copyWith(kioskMode: v));
+ 
++  Future<void> setShowHourlyChart(bool v) =>
++      _update(_settings.copyWith(showHourlyChart: v));
++
+   Future<void> setLanguageCode(String? code) => _update(_settings.copyWith(
+       languageCode: code, clearLanguage: code == null));
+ 
+diff --git a/lib/ui/froggy_view.dart b/lib/ui/froggy_view.dart
+index ce8df95..cdb5c65 100644
+--- a/lib/ui/froggy_view.dart
++++ b/lib/ui/froggy_view.dart
+@@ -9,6 +9,7 @@ import '../models/settings.dart';
+ import '../models/weather.dart';
+ import '../services/asset_catalog.dart';
+ import 'foreground.dart';
++import 'hourly_chart.dart';
+ import 'overlay.dart';
+ import 'status_bar.dart';
+ 
+@@ -142,6 +143,13 @@ class FroggyView extends StatelessWidget {
+               ),
+             ),
+           if (showOverlay) WeatherOverlay(weather: weather, settings: settings),
++          if (showOverlay && settings.showHourlyChart)
++            Positioned(
++              top: 0,
++              left: 0,
++              right: 0,
++              child: HourlyChartStrip(weather: weather),
++            ),
+           if (showOverlay && hasTopContent)
+             Positioned(
+               top: 0,
+diff --git a/lib/ui/hourly_chart.dart b/lib/ui/hourly_chart.dart
+new file mode 100644
+index 0000000..8f1ddf3
+--- /dev/null
++++ b/lib/ui/hourly_chart.dart
+@@ -0,0 +1,172 @@
++import 'dart:math' as math;
++
++import 'package:flutter/material.dart';
++
++import '../models/weather.dart';
++
++/// 24h hourly temperature band chart, overlaid at the top of the frog scene.
++///
++/// Band variant: one colored vertical band per hour from the temperature
++/// line downwards (same color, ~35% opacity), colored dots on the line and a
++/// thin white line connecting them. Labels above every point, hour numbers
++/// below every 3rd point. Colors interpolate cold (blue) -> warm (yellow).
++class HourlyChartStrip extends StatelessWidget {
++  const HourlyChartStrip({super.key, required this.weather});
++
++  final WeatherData? weather;
++
++  @override
++  Widget build(BuildContext context) {
++    final w = weather;
++    final temps = w?.hourlyTemps;
++    if (w == null ||
++        temps == null ||
++        temps.length < 24 ||
++        w.hourlyStartHour == null) {
++      return const SizedBox.shrink();
++    }
++    final h = MediaQuery.sizeOf(context).height;
++    final chartHeight = (h * 0.14).clamp(64.0, 120.0);
++    return IgnorePointer(
++      child: Align(
++        alignment: Alignment.topCenter,
++        child: Container(
++          color: const Color(0x59000000), // rgba(0,0,0,0.35)
++          padding: const EdgeInsets.symmetric(vertical: 4),
++          height: chartHeight,
++          child: CustomPaint(
++            size: Size.infinite,
++            painter: _HourlyChartPainter(
++              temps: temps.take(24).toList(),
++              startHour: w.hourlyStartHour!,
++            ),
++          ),
++        ),
++      ),
++    );
++  }
++}
++
++class _HourlyChartPainter extends CustomPainter {
++  _HourlyChartPainter({
++    required this.temps,
++    required this.startHour,
++  });
++
++  final List<double> temps;
++  final int startHour;
++
++  static const _cold = Color.fromARGB(255, 70, 140, 255);
++  static const _warm = Color.fromARGB(255, 255, 200, 40);
++
++  Color _colorFor(double t) {
++    final min = temps.reduce(math.min);
++    final max = temps.reduce(math.max);
++    final f = (max - min) <= 0.001 ? 0.5 : (t - min) / (max - min);
++    return Color.lerp(_cold, _warm, f.clamp(0.0, 1.0))!;
++  }
++
++  @override
++  void paint(Canvas canvas, Size size) {
++    final n = temps.length;
++    final min = temps.reduce(math.min);
++    final max = temps.reduce(math.max);
++    final range = (max - min) <= 0.001 ? 1.0 : (max - min);
++
++    const labelFontSize = 10.0;
++    const hourFontSize = 10.0;
++    const topPad = labelFontSize + 5;
++    const bottomPad = hourFontSize + 6;
++    final lineTop = topPad.toDouble();
++    final lineBottom = size.height - bottomPad;
++    final dx = size.width / n;
++    final midX = List<double>.generate(n, (i) => dx * (i + 0.5));
++    final lineY = List<double>.generate(n, (i) {
++      final f = (temps[i] - min) / range;
++      return lineBottom - f * (lineBottom - lineTop);
++    });
++
++    // Bands from the line down to the bottom of the chart area.
++    final bandPaint = Paint()..style = PaintingStyle.fill;
++    for (var i = 0; i < n; i++) {
++      bandPaint.color = _colorFor(temps[i]).withValues(alpha: 0.35);
++      canvasRect(
++        canvas,
++        Rect.fromLTRB(midX[i] - dx / 2, lineY[i], midX[i] + dx / 2,
++            size.height - bottomPad + 4),
++        bandPaint,
++      );
++    }
++
++    // Thin white line connecting points.
++    final linePaint = Paint()
++      ..color = Colors.white.withValues(alpha: 0.9)
++      ..style = PaintingStyle.stroke
++      ..strokeWidth = 1.5;
++    final path = Path();
++    for (var i = 0; i < n; i++) {
++      if (i == 0) {
++        path.moveTo(midX[i], lineY[i]);
++      } else {
++        path.lineTo(midX[i], lineY[i]);
++      }
++    }
++    canvas.drawPath(path, linePaint);
++
++    // Dots on the line.
++    final dotPaint = Paint();
++    for (var i = 0; i < n; i++) {
++      dotPaint.color = _colorFor(temps[i]);
++      canvas.drawCircle(Offset(midX[i], lineY[i]), 2.5, dotPaint);
++    }
++
++    // Temperature labels above every point.
++    final labelStyle = TextPainter(
++      textDirection: TextDirection.ltr,
++      textAlign: TextAlign.center,
++    );
++    for (var i = 0; i < n; i++) {
++      labelStyle.text = TextSpan(
++        text: '${temps[i].round()}°',
++        style: const TextStyle(
++          color: Colors.white,
++          fontSize: labelFontSize,
++          fontWeight: FontWeight.bold,
++        ),
++      );
++      labelStyle.layout();
++      labelStyle.paint(
++          canvas,
++          Offset(
++              midX[i] - labelStyle.width / 2, lineY[i] - labelStyle.height - 2));
++    }
++
++    // Hour labels below every 3rd point.
++    final hourStyle = TextPainter(
++      textDirection: TextDirection.ltr,
++      textAlign: TextAlign.center,
++    );
++    for (var i = 0; i < n; i += 3) {
++      final hour = (startHour + i) % 24;
++      hourStyle.text = TextSpan(
++        text: '$hour',
++        style: const TextStyle(
++          color: Colors.white70,
++          fontSize: hourFontSize,
++          fontWeight: FontWeight.w600,
++        ),
++      );
++      hourStyle.layout();
++      hourStyle.paint(canvas,
++          Offset(midX[i] - hourStyle.width / 2, size.height - hourFontSize - 1));
++    }
++  }
++
++  void canvasRect(Canvas canvas, Rect rect, Paint paint) {
++    canvas.drawRect(rect, paint);
++  }
++
++  @override
++  bool shouldRepaint(covariant _HourlyChartPainter old) =>
++      old.temps != temps || old.startHour != startHour;
++}
+diff --git a/lib/ui/settings_screen.dart b/lib/ui/settings_screen.dart
+index 6670a2b..a4b6bbd 100644
+--- a/lib/ui/settings_screen.dart
++++ b/lib/ui/settings_screen.dart
+@@ -271,6 +271,11 @@ class _Controls extends StatelessWidget {
+               value: s.showWeather,
+               onChanged: settings.setShowWeather,
+             ),
++            SwitchListTile(
++              title: Text(l10n.hourlyChart),
++              value: s.showHourlyChart,
++              onChanged: settings.setShowHourlyChart,
++            ),
+             SwitchListTile(
+               title: Text(l10n.showLocation),
+               subtitle: Text(l10n.showLocationSubtitle),
+-- 
+2.43.0
+

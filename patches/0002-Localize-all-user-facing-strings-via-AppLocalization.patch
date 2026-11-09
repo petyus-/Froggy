@@ -1,0 +1,1008 @@
+From c32111cd1bf0d788f0039de7fdbb61fa85a68195 Mon Sep 17 00:00:00 2001
+From: Hermes <hermes@localhost>
+Date: Wed, 4 Nov 2026 04:36:10 +0200
+Subject: [PATCH 02/13] Localize all user-facing strings via AppLocalizations
+
+Replace hardcoded strings in main.dart, ui/settings_screen.dart,
+ui/overlay.dart and models/weather.dart (WMO descriptions) with
+AppLocalizations lookups; each class using l10n defines its own
+AppLocalizations.of(context)! lookup.
+---
+ lib/main.dart               | 118 +++++++++--------
+ lib/models/weather.dart     |  71 +++++-----
+ lib/ui/overlay.dart         |   8 +-
+ lib/ui/settings_screen.dart | 250 +++++++++++++++++++-----------------
+ 4 files changed, 233 insertions(+), 214 deletions(-)
+
+diff --git a/lib/main.dart b/lib/main.dart
+index 83a5f95..8393eb1 100644
+--- a/lib/main.dart
++++ b/lib/main.dart
+@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
+ import 'package:flutter/services.dart';
+ import 'package:shared_preferences/shared_preferences.dart';
+ 
++import 'l10n/app_localizations.dart';
+ import 'models/settings.dart';
+ import 'services/system_status_service.dart';
+ import 'services/update_service.dart';
+@@ -107,6 +108,8 @@ class _FroggyAppState extends State<FroggyApp> with WidgetsBindingObserver {
+       title: "Google's Weather Frog (Froggy)",
+       debugShowCheckedModeBanner: false,
+       theme: ThemeData.dark(useMaterial3: true),
++      localizationsDelegates: AppLocalizations.localizationsDelegates,
++      supportedLocales: AppLocalizations.supportedLocales,
+       builder: (context, child) {
+         Widget result = Shortcuts(
+           shortcuts: const <ShortcutActivator, Intent>{
+@@ -196,49 +199,52 @@ class _HomeScreenState extends State<HomeScreen> {
+   void _showUpdateDialog(UpdateInfo info) {
+     showDialog<void>(
+       context: context,
+-      builder: (ctx) => AlertDialog(
+-        title: const Text('Update available'),
+-        content: Column(
+-          mainAxisSize: MainAxisSize.min,
+-          crossAxisAlignment: CrossAxisAlignment.start,
+-          children: [
+-            Text('Froggy v${info.latestVersion} is available — '
+-                'you have v${info.currentVersion}.'),
+-            if (info.notes.isNotEmpty) ...[
+-              const SizedBox(height: 12),
+-              ConstrainedBox(
+-                constraints: const BoxConstraints(maxHeight: 160),
+-                child: SingleChildScrollView(
+-                  child: Text(
+-                    info.notes,
+-                    style: Theme.of(ctx).textTheme.bodySmall,
++      builder: (ctx) {
++        final l10n = AppLocalizations.of(ctx)!;
++        return AlertDialog(
++          title: Text(l10n.updateAvailable),
++          content: Column(
++            mainAxisSize: MainAxisSize.min,
++            crossAxisAlignment: CrossAxisAlignment.start,
++            children: [
++              Text(l10n.updateAvailableDetails(
++                  info.latestVersion, info.currentVersion)),
++              if (info.notes.isNotEmpty) ...[
++                const SizedBox(height: 12),
++                ConstrainedBox(
++                  constraints: const BoxConstraints(maxHeight: 160),
++                  child: SingleChildScrollView(
++                    child: Text(
++                      info.notes,
++                      style: Theme.of(ctx).textTheme.bodySmall,
++                    ),
+                   ),
+                 ),
+-              ),
++              ],
+             ],
+-          ],
+-        ),
+-        actions: [
+-          TextButton(
+-            onPressed: () {
+-              _updates.skipVersion(info.latestVersion);
+-              Navigator.pop(ctx);
+-            },
+-            child: const Text('Skip'),
+           ),
+-          TextButton(
+-            onPressed: () => Navigator.pop(ctx),
+-            child: const Text('Later'),
+-          ),
+-          FilledButton(
+-            onPressed: () {
+-              Navigator.pop(ctx);
+-              _startUpdate(info);
+-            },
+-            child: Text(info.apkUrl != null ? 'Update' : 'View'),
+-          ),
+-        ],
+-      ),
++          actions: [
++            TextButton(
++              onPressed: () {
++                _updates.skipVersion(info.latestVersion);
++                Navigator.pop(ctx);
++              },
++              child: Text(l10n.skip),
++            ),
++            TextButton(
++              onPressed: () => Navigator.pop(ctx),
++              child: Text(l10n.later),
++            ),
++            FilledButton(
++              onPressed: () {
++                Navigator.pop(ctx);
++                _startUpdate(info);
++              },
++              child: Text(info.apkUrl != null ? l10n.update : l10n.view),
++            ),
++          ],
++        );
++      },
+     );
+   }
+ 
+@@ -249,9 +255,10 @@ class _HomeScreenState extends State<HomeScreen> {
+     }
+     final ok = await WindowService.installUpdate(info.apkUrl!);
+     if (!mounted) return;
++    final l10n = AppLocalizations.of(context)!;
+     ScaffoldMessenger.of(context).showSnackBar(
+       SnackBar(
+-        content: Text(ok ? 'Downloading update…' : 'Could not start the update'),
++        content: Text(ok ? l10n.downloadingUpdate : l10n.couldNotStartUpdate),
+       ),
+     );
+   }
+@@ -363,7 +370,7 @@ class _HomeScreenState extends State<HomeScreen> {
+                         icon: const Icon(Icons.settings),
+                         color: Colors.white,
+                         iconSize: 28,
+-                        tooltip: 'Settings',
++                        tooltip: AppLocalizations.of(context)!.settings,
+                         onPressed: () => _openSettings(context),
+                       ),
+                     ),
+@@ -469,12 +476,12 @@ class _LocationArrows extends StatelessWidget {
+           children: [
+             _EdgeArrow(
+               icon: Icons.chevron_left,
+-              tooltip: 'Previous location',
++              tooltip: AppLocalizations.of(context)!.previousLocation,
+               onPressed: onBack,
+             ),
+             _EdgeArrow(
+               icon: Icons.chevron_right,
+-              tooltip: 'Next location',
++              tooltip: AppLocalizations.of(context)!.nextLocation,
+               onPressed: onForward,
+             ),
+           ],
+@@ -542,25 +549,25 @@ class _RotateHint extends StatelessWidget {
+                 const Icon(Icons.screen_rotation,
+                     color: Colors.white, size: 48),
+                 const SizedBox(height: 20),
+-                const Text(
+-                  'Froggy looks best in landscape',
++                Text(
++                  AppLocalizations.of(context)!.landscapeTitle,
+                   textAlign: TextAlign.center,
+-                  style: TextStyle(
++                  style: const TextStyle(
+                     color: Colors.white,
+                     fontSize: 20,
+                     fontWeight: FontWeight.w600,
+                   ),
+                 ),
+                 const SizedBox(height: 10),
+-                const Text(
+-                  'Rotate your phone sideways for the full view.',
++                Text(
++                  AppLocalizations.of(context)!.landscapeBody,
+                   textAlign: TextAlign.center,
+-                  style: TextStyle(color: Colors.white70, fontSize: 14),
++                  style: const TextStyle(color: Colors.white70, fontSize: 14),
+                 ),
+                 const SizedBox(height: 24),
+                 FilledButton(
+                   onPressed: onDismiss,
+-                  child: const Text('Got it'),
++                  child: Text(AppLocalizations.of(context)!.gotIt),
+                 ),
+               ],
+             ),
+@@ -594,20 +601,19 @@ class _LocationWarning extends StatelessWidget {
+             children: [
+               const Icon(Icons.location_off, color: Colors.amber, size: 22),
+               const SizedBox(width: 12),
+-              const Expanded(
++              Expanded(
+                 child: Text(
+-                  'Location is blocked, so this is your approximate area. '
+-                  'Allow location in your browser, then Retry.',
+-                  style: TextStyle(color: Colors.white, fontSize: 13),
++                  AppLocalizations.of(context)!.locationBlocked,
++                  style: const TextStyle(color: Colors.white, fontSize: 13),
+                 ),
+               ),
+               TextButton(
+                 onPressed: onRetry,
+-                child: const Text('Retry'),
++                child: Text(AppLocalizations.of(context)!.retry),
+               ),
+               IconButton(
+                 icon: const Icon(Icons.close, color: Colors.white70, size: 20),
+-                tooltip: 'Dismiss',
++                tooltip: AppLocalizations.of(context)!.dismiss,
+                 onPressed: onDismiss,
+               ),
+             ],
+diff --git a/lib/models/weather.dart b/lib/models/weather.dart
+index d169d19..06d5df5 100644
+--- a/lib/models/weather.dart
++++ b/lib/models/weather.dart
+@@ -1,5 +1,7 @@
+ library;
+ 
++import '../l10n/app_localizations.dart';
++
+ enum WeatherCondition { sunny, cloudy, hazy, rainy, snowy }
+ 
+ enum DayPart { morning, day, sunset, night }
+@@ -51,13 +53,13 @@ class WeatherData {
+   bool get isStale =>
+       DateTime.now().difference(fetchedAt) > const Duration(hours: 2);
+ 
+-  String get description => wmoDescription(weatherCode);
++  String description(AppLocalizations l10n) => wmoDescription(weatherCode, l10n);
+ 
+-  String get summary {
++  String summary(AppLocalizations l10n) {
+     final hl = (tempMaxC != null && tempMinC != null)
+         ? ' · ↑${tempMaxC!.round()}° ↓${tempMinC!.round()}°'
+         : '';
+-    return '$description$hl';
++    return '${description(l10n)}$hl';
+   }
+ 
+   Map<String, dynamic> toJson() => {
+@@ -100,66 +102,65 @@ WeatherCondition conditionFromWmo(int code) {
+   return WeatherCondition.cloudy;
+ }
+ 
+-String wmoDescription(int code) {
++String wmoDescription(int code, AppLocalizations l10n) {
+   switch (code) {
+     case 0:
+-      return 'Clear';
++      return l10n.wmoClear;
+     case 1:
+-      return 'Mainly clear';
++      return l10n.wmoMainlyClear;
+     case 2:
+-      return 'Partly cloudy';
++      return l10n.wmoPartlyCloudy;
+     case 3:
+-      return 'Overcast';
++      return l10n.wmoOvercast;
+     case 45:
+-      return 'Fog';
++      return l10n.wmoFog;
+     case 48:
+-      return 'Rime fog';
++      return l10n.wmoRimeFog;
+     case 51:
+-      return 'Light drizzle';
++      return l10n.wmoLightDrizzle;
+     case 53:
+-      return 'Drizzle';
++      return l10n.wmoDrizzle;
+     case 55:
+-      return 'Heavy drizzle';
+-    case 56:
+-    case 57:
+-      return 'Freezing drizzle';
++      return l10n.wmoHeavyDrizzle;
+     case 61:
+-      return 'Light rain';
++      return l10n.wmoLightRain;
+     case 63:
+-      return 'Rain';
++      return l10n.wmoRain;
+     case 65:
+-      return 'Heavy rain';
+-    case 66:
+-    case 67:
+-      return 'Freezing rain';
++      return l10n.wmoHeavyRain;
+     case 71:
+-      return 'Light snow';
++      return l10n.wmoLightSnow;
+     case 73:
+-      return 'Snow';
++      return l10n.wmoSnow;
+     case 75:
+-      return 'Heavy snow';
++      return l10n.wmoHeavySnow;
+     case 77:
+-      return 'Snow grains';
++      return l10n.wmoSnowGrains;
+     case 80:
+-      return 'Light showers';
++      return l10n.wmoLightShowers;
+     case 81:
+-      return 'Showers';
++      return l10n.wmoShowers;
+     case 82:
+-      return 'Heavy showers';
++      return l10n.wmoHeavyShowers;
+     case 85:
+-      return 'Snow showers';
++      return l10n.wmoSnowShowers;
+     case 86:
+-      return 'Heavy snow showers';
++      return l10n.wmoHeavySnowShowers;
+     case 95:
+-      return 'Thunderstorm';
++      return l10n.wmoThunderstorm;
++    case 56:
++    case 57:
++      return l10n.wmoFreezingDrizzle;
++    case 66:
++    case 67:
++      return l10n.wmoFreezingRain;
+     case 96:
+     case 99:
+-      return 'Thunderstorm, hail';
++      return l10n.wmoThunderstormHail;
+     default:
+-      return 'Unknown';
++      return l10n.wmoUnknown;
+   }
+ }
+-
+ DayPart dayPartFor(DateTime now, DateTime? sunrise, DateTime? sunset) {
+   if (sunrise != null && sunset != null) {
+     final morningEnd = sunrise.add(const Duration(minutes: 150));
+diff --git a/lib/ui/overlay.dart b/lib/ui/overlay.dart
+index 6234d9e..c1092d2 100644
+--- a/lib/ui/overlay.dart
++++ b/lib/ui/overlay.dart
+@@ -3,6 +3,7 @@ import 'dart:async';
+ import 'package:flutter/material.dart';
+ import 'package:intl/intl.dart';
+ 
++import '../l10n/app_localizations.dart';
+ import '../models/settings.dart';
+ import '../models/weather.dart';
+ import 'foreground.dart';
+@@ -67,12 +68,12 @@ class _WeatherOverlayState extends State<WeatherOverlay>
+     return DateFormat.MMMEd().format(now);
+   }
+ 
+-  String _summary(WeatherData w) {
++  String _summary(WeatherData w, AppLocalizations l10n) {
+     final s = widget.settings;
+     final hl = (w.tempMaxC != null && w.tempMinC != null)
+         ? ' · ↑${s.formatTemp(w.tempMaxC!)} ↓${s.formatTemp(w.tempMinC!)}'
+         : '';
+-    return '${w.description}$hl';
++    return '${w.description(l10n)}$hl';
+   }
+ 
+   @override
+@@ -83,6 +84,7 @@ class _WeatherOverlayState extends State<WeatherOverlay>
+     if (!s.showClock && !s.showDate && !showWeather) {
+       return const SizedBox.shrink();
+     }
++    final l10n = AppLocalizations.of(context)!;
+     final stale = w?.isStale ?? false;
+     final tempColor = stale ? Colors.white.withValues(alpha: 0.6) : Colors.white;
+     final summaryColor =
+@@ -152,7 +154,7 @@ class _WeatherOverlayState extends State<WeatherOverlay>
+                         ),
+                         SizedBox(width: pad * 0.4),
+                         Text(
+-                          _summary(w),
++                          _summary(w, l10n),
+                           style: TextStyle(
+                             color: summaryColor,
+                             fontSize: summarySize,
+diff --git a/lib/ui/settings_screen.dart b/lib/ui/settings_screen.dart
+index 27755b1..4911ed8 100644
+--- a/lib/ui/settings_screen.dart
++++ b/lib/ui/settings_screen.dart
+@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
+ import 'package:flutter/material.dart';
+ import 'package:flutter/rendering.dart';
+ 
++import '../l10n/app_localizations.dart';
+ import '../models/settings.dart';
+ import '../services/geocoding_service.dart';
+ import '../services/system_status_service.dart';
+@@ -32,21 +33,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
+   Future<void> _confirmReset() async {
+     final ok = await showDialog<bool>(
+       context: context,
+-      builder: (ctx) => AlertDialog(
+-        title: const Text('Reset settings?'),
+-        content: const Text(
+-            'Restore all settings to defaults. Saved locations are kept.'),
+-        actions: [
+-          TextButton(
+-            onPressed: () => Navigator.pop(ctx, false),
+-            child: const Text('Cancel'),
+-          ),
+-          TextButton(
+-            onPressed: () => Navigator.pop(ctx, true),
+-            child: const Text('Reset'),
+-          ),
+-        ],
+-      ),
++      builder: (ctx) {
++        final l10n = AppLocalizations.of(ctx)!;
++        return AlertDialog(
++          title: Text(l10n.resetSettingsTitle),
++          content: Text(l10n.resetSettingsBody),
++          actions: [
++            TextButton(
++              onPressed: () => Navigator.pop(ctx, false),
++              child: Text(l10n.cancel),
++            ),
++            TextButton(
++              onPressed: () => Navigator.pop(ctx, true),
++              child: Text(l10n.reset),
++            ),
++          ],
++        );
++      },
+     );
+     if (ok == true) widget.settings.resetToDefaults();
+   }
+@@ -56,22 +59,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
+     final isTv =
+         MediaQuery.navigationModeOf(context) == NavigationMode.directional;
+     final showPreview = _showPreview ?? !isTv;
++    final l10n = AppLocalizations.of(context)!;
+     final preview = _Preview(settings: widget.settings, weather: widget.weather);
+     final controls = _Controls(settings: widget.settings, isTv: isTv);
+ 
+     return Scaffold(
+       appBar: AppBar(
+-        title: const Text('Settings'),
++        title: Text(l10n.settings),
+         actions: [
+           IconButton(
+             icon: const Icon(Icons.restart_alt),
+-            tooltip: 'Reset to defaults',
++            tooltip: l10n.resetToDefaults,
+             onPressed: _confirmReset,
+           ),
+           IconButton(
+             autofocus: true,
+             icon: Icon(showPreview ? Icons.visibility_off : Icons.visibility),
+-            tooltip: showPreview ? 'Hide preview' : 'Show preview',
++            tooltip: showPreview ? l10n.hidePreview : l10n.showPreview,
+             onPressed: () => setState(() => _showPreview = !showPreview),
+           ),
+         ],
+@@ -145,6 +149,7 @@ class _Controls extends StatelessWidget {
+       listenable: settings,
+       builder: (context, _) {
+         final s = settings.settings;
++        final l10n = AppLocalizations.of(context)!;
+         return ListView(
+           padding: const EdgeInsets.symmetric(vertical: 8),
+           scrollCacheExtent:
+@@ -170,11 +175,11 @@ class _Controls extends StatelessWidget {
+               },
+             ),
+             const SizedBox(height: 8),
+-            _sectionTitle(context, 'Timing'),
++            _sectionTitle(context, l10n.sectionTiming),
+             ListTile(
+               dense: true,
+-              title: const Text('Weather refresh'),
+-              trailing: Text('${s.refreshMinutes} min'),
++              title: Text(l10n.weatherRefresh),
++              trailing: Text(l10n.minutesValue(s.refreshMinutes)),
+             ),
+             Padding(
+               padding: const EdgeInsets.symmetric(horizontal: 16),
+@@ -183,15 +188,15 @@ class _Controls extends StatelessWidget {
+                 min: 5,
+                 max: 120,
+                 divisions: 23,
+-                label: '${s.refreshMinutes} min',
++                label: l10n.minutesValue(s.refreshMinutes),
+                 onChanged: (v) => settings.setRefreshMinutes(v.round()),
+               ),
+             ),
+             ListTile(
+               dense: true,
+-              title: const Text('Scene rotation'),
++              title: Text(l10n.sceneRotation),
+               trailing: Text(
+-                  s.rotateMinutes == 0 ? 'Off' : '${s.rotateMinutes} min'),
++                  s.rotateMinutes == 0 ? l10n.off : l10n.minutesValue(s.rotateMinutes)),
+             ),
+             Padding(
+               padding: const EdgeInsets.symmetric(horizontal: 16),
+@@ -200,15 +205,15 @@ class _Controls extends StatelessWidget {
+                 min: 0,
+                 max: 60,
+                 divisions: 60,
+-                label: s.rotateMinutes == 0 ? 'Off' : '${s.rotateMinutes} min',
++                label: s.rotateMinutes == 0 ? l10n.off : l10n.minutesValue(s.rotateMinutes),
+                 onChanged: (v) => settings.setRotateMinutes(v.round()),
+               ),
+             ),
+             const Divider(),
+-            _sectionTitle(context, 'Overlay size'),
++            _sectionTitle(context, l10n.sectionOverlaySize),
+             ListTile(
+               dense: true,
+-              title: const Text('Clock & text size'),
++              title: Text(l10n.clockTextSize),
+               trailing: Text('${(s.overlayScale * 100).round()}%'),
+             ),
+             Padding(
+@@ -223,7 +228,7 @@ class _Controls extends StatelessWidget {
+               ),
+             ),
+             const Divider(),
+-            _sectionTitle(context, 'Text shadow'),
++            _sectionTitle(context, l10n.sectionTextShadow),
+             Padding(
+               padding: const EdgeInsets.symmetric(horizontal: 16),
+               child: Slider(
+@@ -236,42 +241,44 @@ class _Controls extends StatelessWidget {
+               ),
+             ),
+             const Divider(),
+-            _sectionTitle(context, 'Display'),
++            _sectionTitle(context, l10n.sectionDisplay),
+             SwitchListTile(
+-              title: const Text('Show clock'),
+-              subtitle: const Text('Time at the bottom'),
++              title: Text(l10n.showClock),
++              subtitle: Text(l10n.showClockSubtitle),
+               value: s.showClock,
+               onChanged: settings.setShowClock,
+             ),
+             SwitchListTile(
+-              title: const Text('Show date'),
++              title: Text(l10n.showDate),
+               value: s.showDate,
+               onChanged: settings.setShowDate,
+             ),
+             SwitchListTile(
+-              title: const Text('Show weather'),
+-              subtitle: const Text('Temperature and conditions'),
++              title: Text(l10n.showWeather),
++              subtitle: Text(l10n.showWeatherSubtitle),
+               value: s.showWeather,
+               onChanged: settings.setShowWeather,
+             ),
+             SwitchListTile(
+-              title: const Text('Show location'),
+-              subtitle: const Text('Place name at the top'),
++              title: Text(l10n.showLocation),
++              subtitle: Text(l10n.showLocationSubtitle),
+               value: s.showLocation,
+               onChanged: settings.setShowLocation,
+             ),
+             const Divider(),
+-            _sectionTitle(context, 'Dimming'),
++            _sectionTitle(context, l10n.sectionDimming),
+             Padding(
+               padding: const EdgeInsets.symmetric(horizontal: 16),
+               child: Align(
+                 alignment: Alignment.centerLeft,
+                 child: SegmentedButton<DimMode>(
+-                  segments: const [
+-                    ButtonSegment(value: DimMode.off, label: Text('Off')),
+-                    ButtonSegment(value: DimMode.auto, label: Text('Auto')),
++                  segments: [
++                    ButtonSegment(
++                        value: DimMode.off, label: Text(l10n.dimOff)),
++                    ButtonSegment(
++                        value: DimMode.auto, label: Text(l10n.dimAuto)),
+                     ButtonSegment(
+-                        value: DimMode.scheduled, label: Text('Custom')),
++                        value: DimMode.scheduled, label: Text(l10n.dimCustom)),
+                   ],
+                   selected: {s.dimMode},
+                   onSelectionChanged: (set) => settings.setDimMode(set.first),
+@@ -283,7 +290,7 @@ class _Controls extends StatelessWidget {
+                 padding: const EdgeInsets.symmetric(horizontal: 16),
+                 child: Row(
+                   children: [
+-                    const Text('Level'),
++                    Text(l10n.level),
+                     Expanded(
+                       child: Slider(
+                         value: s.nightDim,
+@@ -301,7 +308,7 @@ class _Controls extends StatelessWidget {
+               ListTile(
+                 dense: true,
+                 leading: const Icon(Icons.bedtime_outlined),
+-                title: const Text('From'),
++                title: Text(l10n.from),
+                 trailing: Text(_fmtTime(context, s.dimStart)),
+                 onTap: () =>
+                     _pickTime(context, s.dimStart, settings.setDimStart),
+@@ -309,39 +316,39 @@ class _Controls extends StatelessWidget {
+               ListTile(
+                 dense: true,
+                 leading: const Icon(Icons.wb_sunny_outlined),
+-                title: const Text('To'),
++                title: Text(l10n.to),
+                 trailing: Text(_fmtTime(context, s.dimEnd)),
+                 onTap: () => _pickTime(context, s.dimEnd, settings.setDimEnd),
+               ),
+             ],
+             if (!kIsWeb) ...[
+             const Divider(),
+-            _sectionTitle(context, 'Status icons'),
++            _sectionTitle(context, l10n.sectionStatusIcons),
+             SwitchListTile(
+-              title: const Text('Show status icons'),
++              title: Text(l10n.showStatusIcons),
+               value: s.showStatus,
+               onChanged: settings.setShowStatus,
+             ),
+             if (s.showStatus) ...[
+               SwitchListTile(
+-                title: const Text('Wi-Fi'),
++                title: Text(l10n.wifi),
+                 value: s.showWifi,
+                 onChanged: settings.setShowWifi,
+               ),
+               SwitchListTile(
+-                title: const Text('Bluetooth'),
++                title: Text(l10n.bluetooth),
+                 value: s.showBluetooth,
+                 onChanged: settings.setShowBluetooth,
+               ),
+               SwitchListTile(
+-                title: const Text('Music'),
++                title: Text(l10n.music),
+                 value: s.showMusic,
+                 onChanged: settings.setShowMusic,
+               ),
+               if (s.showMusic)
+                 SwitchListTile(
+-                  title: const Text('Show music title'),
+-                  subtitle: const Text('Track name (needs notification access)'),
++                  title: Text(l10n.showMusicTitle),
++                  subtitle: Text(l10n.showMusicTitleSubtitle),
+                   value: s.showMusicTitle,
+                   onChanged: settings.setShowMusicTitle,
+                 ),
+@@ -349,28 +356,25 @@ class _Controls extends StatelessWidget {
+                 const _NotificationAccessTile(),
+             ],
+             const Divider(),
+-            _sectionTitle(context, 'Kiosk mode'),
++            _sectionTitle(context, l10n.sectionKioskMode),
+             SwitchListTile(
+-              title: const Text('Kiosk mode'),
+-              subtitle: const Text(
+-                  'Always-on display for devices without a screensaver. Hides '
+-                  'the settings button (long-press the screen to reopen) and '
+-                  'keeps the screen on.'),
++              title: Text(l10n.kioskMode),
++              subtitle: Text(l10n.kioskModeSubtitle),
+               value: s.kioskMode,
+               onChanged: settings.setKioskMode,
+             ),
+             const Divider(),
+-            _sectionTitle(context, 'Launcher'),
++            _sectionTitle(context, l10n.sectionLauncher),
+             const _LauncherTile(),
+             ],
+             const Divider(),
+-            _sectionTitle(context, 'Location'),
++            _sectionTitle(context, l10n.sectionLocation),
+             ListTile(
+               leading: Icon(s.locationMode == LocationMode.automatic
+                   ? Icons.radio_button_checked
+                   : Icons.radio_button_unchecked),
+-              title: const Text('Automatic'),
+-              subtitle: const Text('Detect from network / GPS'),
++              title: Text(l10n.automaticLocation),
++              subtitle: Text(l10n.automaticLocationSubtitle),
+               onTap: () => settings.setLocationMode(LocationMode.automatic),
+             ),
+             for (final loc in s.savedLocations)
+@@ -383,72 +387,72 @@ class _Controls extends StatelessWidget {
+                 subtitle: loc.region == null ? null : Text(loc.region!),
+                 trailing: IconButton(
+                   icon: const Icon(Icons.delete_outline),
+-                  tooltip: 'Remove',
++                  tooltip: l10n.remove,
+                   onPressed: () => settings.removeLocation(loc.id),
+                 ),
+                 onTap: () => settings.selectLocation(loc.id),
+               ),
+             ListTile(
+               leading: const Icon(Icons.add_location_alt_outlined),
+-              title: const Text('Add location'),
++              title: Text(l10n.addLocation),
+               onTap: () => _addLocation(context),
+             ),
+             if (s.canCycleLocations) ...[
+               ListTile(
+-                title: const Text('Swipe to switch'),
+-                subtitle: const Text('Gesture on the frog'),
++                title: Text(l10n.swipeToSwitch),
++                subtitle: Text(l10n.swipeGestureSubtitle),
+                 trailing: DropdownButton<LocationSwipe>(
+                   value: s.locationSwipe,
+                   onChanged: (v) =>
+                       v == null ? null : settings.setLocationSwipe(v),
+-                  items: const [
++                  items: [
+                     DropdownMenuItem(
+                       value: LocationSwipe.horizontal,
+-                      child: Text('Left / right'),
++                      child: Text(l10n.swipeLeftRight),
+                     ),
+                     DropdownMenuItem(
+                       value: LocationSwipe.vertical,
+-                      child: Text('Up / down'),
++                      child: Text(l10n.swipeUpDown),
+                     ),
+                     DropdownMenuItem(
+                       value: LocationSwipe.off,
+-                      child: Text('Off'),
++                      child: Text(l10n.off),
+                     ),
+                   ],
+                 ),
+               ),
+               ListTile(
+-                title: const Text('Switch locations'),
+-                subtitle: const Text('Automatic rotation'),
++                title: Text(l10n.switchLocations),
++                subtitle: Text(l10n.automaticRotationSubtitle),
+                 trailing: DropdownButton<LocationRotation>(
+                   value: s.locationRotation,
+                   onChanged: (v) =>
+                       v == null ? null : settings.setLocationRotation(v),
+-                  items: const [
++                  items: [
+                     DropdownMenuItem(
+                       value: LocationRotation.off,
+-                      child: Text('Manually'),
++                      child: Text(l10n.manually),
+                     ),
+                     DropdownMenuItem(
+                       value: LocationRotation.withScene,
+-                      child: Text('With scene'),
++                      child: Text(l10n.withScene),
+                     ),
+                     DropdownMenuItem(
+                       value: LocationRotation.timed,
+-                      child: Text('On a timer'),
++                      child: Text(l10n.onATimer),
+                     ),
+                   ],
+                 ),
+               ),
+               SwitchListTile(
+-                title: const Text('Edge arrows'),
+-                subtitle: const Text('Back / forward buttons at the sides'),
++                title: Text(l10n.edgeArrows),
++                subtitle: Text(l10n.edgeArrowsSubtitle),
+                 value: s.showLocationArrows,
+                 onChanged: settings.setShowLocationArrows,
+               ),
+               if (s.locationRotation == LocationRotation.timed)
+                 ListTile(
+-                  title: const Text('Location rotation'),
++                  title: Text(l10n.locationRotation),
+                   trailing: DropdownButton<int>(
+                     value: s.locationRotateMinutes,
+                     onChanged: (v) =>
+@@ -463,10 +467,10 @@ class _Controls extends StatelessWidget {
+                 ),
+             ],
+             const Divider(),
+-            _sectionTitle(context, 'About'),
++            _sectionTitle(context, l10n.sectionAbout),
+             if (!kIsWeb)
+               SwitchListTile(
+-                title: const Text('Check for updates on startup'),
++                title: Text(l10n.checkUpdatesOnStartup),
+                 value: s.checkUpdatesOnStartup,
+                 onChanged: settings.setCheckUpdatesOnStartup,
+               ),
+@@ -481,7 +485,7 @@ class _Controls extends StatelessWidget {
+         mainAxisSize: MainAxisSize.min,
+         crossAxisAlignment: CrossAxisAlignment.start,
+         children: [
+-          _sectionTitle(context, 'Units'),
++          _sectionTitle(context, AppLocalizations.of(context)!.sectionUnits),
+           Padding(
+             padding: const EdgeInsets.symmetric(horizontal: 16),
+             child: Align(
+@@ -503,7 +507,7 @@ class _Controls extends StatelessWidget {
+         mainAxisSize: MainAxisSize.min,
+         crossAxisAlignment: CrossAxisAlignment.start,
+         children: [
+-          _sectionTitle(context, 'Time format'),
++          _sectionTitle(context, AppLocalizations.of(context)!.sectionTimeFormat),
+           Padding(
+             padding: const EdgeInsets.symmetric(horizontal: 16),
+             child: Align(
+@@ -589,17 +593,18 @@ class _LauncherTileState extends State<_LauncherTile>
+ 
+   @override
+   Widget build(BuildContext context) {
++    final l10n = AppLocalizations.of(context)!;
+     return ListTile(
+       leading: Icon(_isDefault ? Icons.home : Icons.home_outlined),
+-      title: const Text('Home app'),
++      title: Text(l10n.homeApp),
+       subtitle: Text(_isDefault
+-          ? 'Froggy is your default home app'
+-          : 'Show Froggy on the home screen, replacing your launcher'),
++          ? l10n.isDefaultHomeApp
++          : l10n.setAsHomeApp),
+       trailing: _isDefault
+           ? null
+-          : const TextButton(
++          : TextButton(
+               onPressed: WindowService.openHomeSettings,
+-              child: Text('Set'),
++              child: Text(l10n.set),
+             ),
+     );
+   }
+@@ -647,12 +652,13 @@ class _AboutSectionState extends State<_AboutSection> {
+     setState(() {
+       _checking = false;
+       if (info == null) {
+-        _status = 'Could not check — try again later';
++        _status = AppLocalizations.of(context)!.checkFailed;
+       } else if (info.updateAvailable) {
+-        _status = 'Update available: v${info.latestVersion}';
++        _status = AppLocalizations.of(context)!
++            .updateAvailableVersion(info.latestVersion);
+         _update = info;
+       } else {
+-        _status = "You're on the latest version";
++        _status = AppLocalizations.of(context)!.upToDate;
+       }
+     });
+   }
+@@ -664,10 +670,10 @@ class _AboutSectionState extends State<_AboutSection> {
+     }
+     final ok = await WindowService.installUpdate(info.apkUrl!);
+     if (mounted) {
++      final l10n = AppLocalizations.of(context)!;
+       ScaffoldMessenger.of(context).showSnackBar(
+         SnackBar(
+-          content:
+-              Text(ok ? 'Downloading update…' : "Couldn't start the update"),
++          content: Text(ok ? l10n.downloadingUpdate : l10n.couldNotStartUpdateAlt),
+         ),
+       );
+     }
+@@ -679,30 +685,33 @@ class _AboutSectionState extends State<_AboutSection> {
+         : await WindowService.openUrl(url);
+     if (!ok && mounted) {
+       ScaffoldMessenger.of(context).showSnackBar(
+-        const SnackBar(content: Text("Couldn't open the link on this device")),
++        SnackBar(
++            content:
++                Text(AppLocalizations.of(context)!.couldNotOpenLink)),
+       );
+     }
+   }
+ 
+   @override
+   Widget build(BuildContext context) {
++    final l10n = AppLocalizations.of(context)!;
+     return Column(
+-      children: [
+-        ListTile(
+-          leading: const SizedBox(
+-            width: 40,
+-            height: 40,
+-            child: Image(image: AssetImage('assets/app_icon.png')),
+-          ),
+-          title: const Text('Froggy'),
+-          subtitle: Text(
+-            _version.isEmpty ? "Google's Weather Frog" : 'Version $_version',
+-          ),
+-        ),
+-        if (!kIsWeb) ...[
+-          ListTile(
+-            leading: const Icon(Icons.system_update_outlined),
+-            title: const Text('Check for updates'),
++          children: [
++            ListTile(
++              leading: const SizedBox(
++                width: 40,
++                height: 40,
++                child: Image(image: AssetImage('assets/app_icon.png')),
++              ),
++              title: Text(l10n.froggy),
++              subtitle: Text(
++                _version.isEmpty ? l10n.googlesWeatherFrog : l10n.versionValue(_version),
++              ),
++            ),
++            if (!kIsWeb) ...[
++              ListTile(
++                leading: const Icon(Icons.system_update_outlined),
++                title: Text(l10n.checkForUpdates),
+             subtitle: _status == null ? null : Text(_status!),
+             trailing: _checking
+                 ? const SizedBox(
+@@ -717,14 +726,14 @@ class _AboutSectionState extends State<_AboutSection> {
+             ListTile(
+               leading: const Icon(Icons.download_outlined),
+               title: Text(_update!.apkUrl != null
+-                  ? 'Download & install update'
+-                  : 'Get the latest release'),
++                  ? l10n.downloadInstallUpdate
++                  : l10n.getLatestRelease),
+               onTap: () => _install(_update!),
+             ),
+         ],
+         ListTile(
+           leading: const Icon(Icons.code),
+-          title: const Text('Source code'),
++          title: Text(l10n.sourceCode),
+           subtitle: const Text('github.com/R0rt1z2/Froggy'),
+           onTap: () => _open(UpdateService.repoUrl),
+         ),
+@@ -772,13 +781,14 @@ class _NotificationAccessTileState extends State<_NotificationAccessTile>
+   @override
+   Widget build(BuildContext context) {
+     if (_granted) return const SizedBox.shrink();
++    final l10n = AppLocalizations.of(context)!;
+     return ListTile(
+       leading: const Icon(Icons.notifications_off_outlined),
+-      title: const Text('Notification access'),
+-      subtitle: const Text('Needed to read the track title'),
++      title: Text(l10n.notificationAccess),
++      subtitle: Text(l10n.notificationAccessSubtitle),
+       trailing: TextButton(
+         onPressed: _service.openNotificationAccess,
+-        child: const Text('Grant'),
++        child: Text(l10n.grant),
+       ),
+     );
+   }
+@@ -814,13 +824,13 @@ class _AddLocationScreenState extends State<_AddLocationScreen> {
+       setState(() {
+         _results = results;
+         _loading = false;
+-        if (results.isEmpty) _error = 'No matches found';
++        if (results.isEmpty) _error = AppLocalizations.of(context)!.noMatchesFound;
+       });
+     } catch (_) {
+       if (!mounted) return;
+       setState(() {
+         _loading = false;
+-        _error = 'Search failed — check your connection';
++        _error = AppLocalizations.of(context)!.searchFailed;
+       });
+     }
+   }
+@@ -835,7 +845,7 @@ class _AddLocationScreenState extends State<_AddLocationScreen> {
+   @override
+   Widget build(BuildContext context) {
+     return Scaffold(
+-      appBar: AppBar(title: const Text('Add location')),
++      appBar: AppBar(title: Text(AppLocalizations.of(context)!.addLocation)),
+       body: SafeArea(
+         child: Column(
+           children: [
+@@ -846,12 +856,12 @@ class _AddLocationScreenState extends State<_AddLocationScreen> {
+                 autofocus: true,
+                 textInputAction: TextInputAction.search,
+                 decoration: InputDecoration(
+-                  hintText: 'City name',
++                  hintText: AppLocalizations.of(context)!.cityName,
+                   border: const OutlineInputBorder(),
+                   prefixIcon: const Icon(Icons.search),
+                   suffixIcon: IconButton(
+                     icon: const Icon(Icons.arrow_forward),
+-                    tooltip: 'Search',
++                    tooltip: AppLocalizations.of(context)!.search,
+                     onPressed: _search,
+                   ),
+                 ),
+-- 
+2.43.0
+

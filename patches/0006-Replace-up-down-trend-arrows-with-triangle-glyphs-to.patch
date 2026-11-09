@@ -1,0 +1,26 @@
+From 2b42f244b7b64940f93ca26f60a87236acc88995 Mon Sep 17 00:00:00 2001
+From: PeterChamp <peter@maszatai.com>
+Date: Thu, 5 Nov 2026 03:41:50 +0200
+Subject: [PATCH 06/13] Replace up/down trend arrows with triangle glyphs to
+ avoid tofu in kiosk
+
+---
+ lib/ui/overlay.dart | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lib/ui/overlay.dart b/lib/ui/overlay.dart
+index c1092d2..04a4be8 100644
+--- a/lib/ui/overlay.dart
++++ b/lib/ui/overlay.dart
+@@ -71,7 +71,7 @@ class _WeatherOverlayState extends State<WeatherOverlay>
+   String _summary(WeatherData w, AppLocalizations l10n) {
+     final s = widget.settings;
+     final hl = (w.tempMaxC != null && w.tempMinC != null)
+-        ? ' · ↑${s.formatTemp(w.tempMaxC!)} ↓${s.formatTemp(w.tempMinC!)}'
++        ? ' · ▲${s.formatTemp(w.tempMaxC!)} ▼${s.formatTemp(w.tempMinC!)}'
+         : '';
+     return '${w.description(l10n)}$hl';
+   }
+-- 
+2.43.0
+

@@ -1,0 +1,436 @@
+From 921fa66a1da9ad7732156fd716ad610cc705d58e Mon Sep 17 00:00:00 2001
+From: PeterChamp <peter@maszatai.com>
+Date: Thu, 5 Nov 2026 14:13:48 +0200
+Subject: [PATCH 09/13] feat: always-visible frog option
+
+- New settings toggle 'Always show the frog' (default ON, persisted)
+- When ON, night and sunset scene animations fall back to the day frog
+  animation of the same scene/condition, since Google's night frogs often
+  sleep or hide off-screen
+- Localized in all 9 languages
+---
+ lib/l10n/app_de.arb                |  4 +++-
+ lib/l10n/app_en.arb                |  4 +++-
+ lib/l10n/app_es.arb                |  4 +++-
+ lib/l10n/app_fr.arb                |  4 +++-
+ lib/l10n/app_hu.arb                |  4 +++-
+ lib/l10n/app_it.arb                |  4 +++-
+ lib/l10n/app_localizations.dart    |  6 ++++++
+ lib/l10n/app_localizations_de.dart |  3 +++
+ lib/l10n/app_localizations_en.dart |  3 +++
+ lib/l10n/app_localizations_es.dart |  3 +++
+ lib/l10n/app_localizations_fr.dart |  3 +++
+ lib/l10n/app_localizations_hu.dart |  3 +++
+ lib/l10n/app_localizations_it.dart |  3 +++
+ lib/l10n/app_localizations_nl.dart |  3 +++
+ lib/l10n/app_localizations_pl.dart |  3 +++
+ lib/l10n/app_localizations_ro.dart |  3 +++
+ lib/l10n/app_nl.arb                |  4 +++-
+ lib/l10n/app_pl.arb                |  4 +++-
+ lib/l10n/app_ro.arb                |  4 +++-
+ lib/models/settings.dart           |  6 ++++++
+ lib/services/asset_catalog.dart    | 17 +++++++++++++++--
+ lib/state/settings_controller.dart |  3 +++
+ lib/state/weather_controller.dart  |  9 +++++++++
+ lib/ui/settings_screen.dart        |  5 +++++
+ 24 files changed, 98 insertions(+), 11 deletions(-)
+
+diff --git a/lib/l10n/app_de.arb b/lib/l10n/app_de.arb
+index a789261..141ddc3 100644
+--- a/lib/l10n/app_de.arb
++++ b/lib/l10n/app_de.arb
+@@ -553,5 +553,7 @@
+   }
+ ,
+   "hourlyChart": "24-Stunden-Diagramm",
+-  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" }
++  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" },
++  "alwaysShowFrog": "Frosch immer anzeigen",
++  "@alwaysShowFrog": { "description": "Prefer scene animations where the frog is visible" }
+ }
+diff --git a/lib/l10n/app_en.arb b/lib/l10n/app_en.arb
+index 5249fc0..2331ff8 100644
+--- a/lib/l10n/app_en.arb
++++ b/lib/l10n/app_en.arb
+@@ -419,5 +419,7 @@
+   "@wmoUnknown": { "description": "Unknown WMO code" }
+ ,
+   "hourlyChart": "24-hour chart",
+-  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" }
++  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" },
++  "alwaysShowFrog": "Always show the frog",
++  "@alwaysShowFrog": { "description": "Prefer scene animations where the frog is visible" }
+ }
+diff --git a/lib/l10n/app_es.arb b/lib/l10n/app_es.arb
+index 515c419..e5c50b0 100644
+--- a/lib/l10n/app_es.arb
++++ b/lib/l10n/app_es.arb
+@@ -553,5 +553,7 @@
+   }
+ ,
+   "hourlyChart": "Gráfico de 24 horas",
+-  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" }
++  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" },
++  "alwaysShowFrog": "Mostrar siempre la rana",
++  "@alwaysShowFrog": { "description": "Prefer scene animations where the frog is visible" }
+ }
+diff --git a/lib/l10n/app_fr.arb b/lib/l10n/app_fr.arb
+index 7195e29..b68b497 100644
+--- a/lib/l10n/app_fr.arb
++++ b/lib/l10n/app_fr.arb
+@@ -553,5 +553,7 @@
+   }
+ ,
+   "hourlyChart": "Graphique 24 heures",
+-  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" }
++  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" },
++  "alwaysShowFrog": "Toujours afficher la grenouille",
++  "@alwaysShowFrog": { "description": "Prefer scene animations where the frog is visible" }
+ }
+diff --git a/lib/l10n/app_hu.arb b/lib/l10n/app_hu.arb
+index 29a926b..6c97173 100644
+--- a/lib/l10n/app_hu.arb
++++ b/lib/l10n/app_hu.arb
+@@ -553,5 +553,7 @@
+   }
+ ,
+   "hourlyChart": "24 órás grafikon",
+-  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" }
++  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" },
++  "alwaysShowFrog": "Mindig látszódjon a béka",
++  "@alwaysShowFrog": { "description": "Prefer scene animations where the frog is visible" }
+ }
+diff --git a/lib/l10n/app_it.arb b/lib/l10n/app_it.arb
+index 9b40b36..f36ce39 100644
+--- a/lib/l10n/app_it.arb
++++ b/lib/l10n/app_it.arb
+@@ -553,5 +553,7 @@
+   }
+ ,
+   "hourlyChart": "Grafico 24 ore",
+-  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" }
++  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" },
++  "alwaysShowFrog": "Mostra sempre la rana",
++  "@alwaysShowFrog": { "description": "Prefer scene animations where the frog is visible" }
+ }
+diff --git a/lib/l10n/app_localizations.dart b/lib/l10n/app_localizations.dart
+index 05f796b..64e50b5 100644
+--- a/lib/l10n/app_localizations.dart
++++ b/lib/l10n/app_localizations.dart
+@@ -909,6 +909,12 @@ abstract class AppLocalizations {
+   /// In en, this message translates to:
+   /// **'24-hour chart'**
+   String get hourlyChart;
++
++  /// Prefer scene animations where the frog is visible
++  ///
++  /// In en, this message translates to:
++  /// **'Always show the frog'**
++  String get alwaysShowFrog;
+ }
+ 
+ class _AppLocalizationsDelegate
+diff --git a/lib/l10n/app_localizations_de.dart b/lib/l10n/app_localizations_de.dart
+index 91ccfac..7438f03 100644
+--- a/lib/l10n/app_localizations_de.dart
++++ b/lib/l10n/app_localizations_de.dart
+@@ -422,4 +422,7 @@ class AppLocalizationsDe extends AppLocalizations {
+ 
+   @override
+   String get hourlyChart => '24-Stunden-Diagramm';
++
++  @override
++  String get alwaysShowFrog => 'Frosch immer anzeigen';
+ }
+diff --git a/lib/l10n/app_localizations_en.dart b/lib/l10n/app_localizations_en.dart
+index 473f9b6..1ac76b1 100644
+--- a/lib/l10n/app_localizations_en.dart
++++ b/lib/l10n/app_localizations_en.dart
+@@ -418,4 +418,7 @@ class AppLocalizationsEn extends AppLocalizations {
+ 
+   @override
+   String get hourlyChart => '24-hour chart';
++
++  @override
++  String get alwaysShowFrog => 'Always show the frog';
+ }
+diff --git a/lib/l10n/app_localizations_es.dart b/lib/l10n/app_localizations_es.dart
+index 2daa64e..663cf6c 100644
+--- a/lib/l10n/app_localizations_es.dart
++++ b/lib/l10n/app_localizations_es.dart
+@@ -422,4 +422,7 @@ class AppLocalizationsEs extends AppLocalizations {
+ 
+   @override
+   String get hourlyChart => 'Gráfico de 24 horas';
++
++  @override
++  String get alwaysShowFrog => 'Mostrar siempre la rana';
+ }
+diff --git a/lib/l10n/app_localizations_fr.dart b/lib/l10n/app_localizations_fr.dart
+index 10f3327..113b7d7 100644
+--- a/lib/l10n/app_localizations_fr.dart
++++ b/lib/l10n/app_localizations_fr.dart
+@@ -424,4 +424,7 @@ class AppLocalizationsFr extends AppLocalizations {
+ 
+   @override
+   String get hourlyChart => 'Graphique 24 heures';
++
++  @override
++  String get alwaysShowFrog => 'Toujours afficher la grenouille';
+ }
+diff --git a/lib/l10n/app_localizations_hu.dart b/lib/l10n/app_localizations_hu.dart
+index ff872d3..18e30f1 100644
+--- a/lib/l10n/app_localizations_hu.dart
++++ b/lib/l10n/app_localizations_hu.dart
+@@ -420,4 +420,7 @@ class AppLocalizationsHu extends AppLocalizations {
+ 
+   @override
+   String get hourlyChart => '24 órás grafikon';
++
++  @override
++  String get alwaysShowFrog => 'Mindig látszódjon a béka';
+ }
+diff --git a/lib/l10n/app_localizations_it.dart b/lib/l10n/app_localizations_it.dart
+index 8611ace..c54517a 100644
+--- a/lib/l10n/app_localizations_it.dart
++++ b/lib/l10n/app_localizations_it.dart
+@@ -422,4 +422,7 @@ class AppLocalizationsIt extends AppLocalizations {
+ 
+   @override
+   String get hourlyChart => 'Grafico 24 ore';
++
++  @override
++  String get alwaysShowFrog => 'Mostra sempre la rana';
+ }
+diff --git a/lib/l10n/app_localizations_nl.dart b/lib/l10n/app_localizations_nl.dart
+index 9801d45..377a1e5 100644
+--- a/lib/l10n/app_localizations_nl.dart
++++ b/lib/l10n/app_localizations_nl.dart
+@@ -419,4 +419,7 @@ class AppLocalizationsNl extends AppLocalizations {
+ 
+   @override
+   String get hourlyChart => '24-uurs grafiek';
++
++  @override
++  String get alwaysShowFrog => 'Kikker altijd tonen';
+ }
+diff --git a/lib/l10n/app_localizations_pl.dart b/lib/l10n/app_localizations_pl.dart
+index 36c0492..042c051 100644
+--- a/lib/l10n/app_localizations_pl.dart
++++ b/lib/l10n/app_localizations_pl.dart
+@@ -422,4 +422,7 @@ class AppLocalizationsPl extends AppLocalizations {
+ 
+   @override
+   String get hourlyChart => 'Wykres 24-godzinny';
++
++  @override
++  String get alwaysShowFrog => 'Zawsze pokazuj żabę';
+ }
+diff --git a/lib/l10n/app_localizations_ro.dart b/lib/l10n/app_localizations_ro.dart
+index e9dd054..b60a7fc 100644
+--- a/lib/l10n/app_localizations_ro.dart
++++ b/lib/l10n/app_localizations_ro.dart
+@@ -423,4 +423,7 @@ class AppLocalizationsRo extends AppLocalizations {
+ 
+   @override
+   String get hourlyChart => 'Grafic 24 de ore';
++
++  @override
++  String get alwaysShowFrog => 'Afișează mereu broscuța';
+ }
+diff --git a/lib/l10n/app_nl.arb b/lib/l10n/app_nl.arb
+index c3c9a91..d89c3f7 100644
+--- a/lib/l10n/app_nl.arb
++++ b/lib/l10n/app_nl.arb
+@@ -553,5 +553,7 @@
+   }
+ ,
+   "hourlyChart": "24-uurs grafiek",
+-  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" }
++  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" },
++  "alwaysShowFrog": "Kikker altijd tonen",
++  "@alwaysShowFrog": { "description": "Prefer scene animations where the frog is visible" }
+ }
+diff --git a/lib/l10n/app_pl.arb b/lib/l10n/app_pl.arb
+index 55e570c..6e8d64f 100644
+--- a/lib/l10n/app_pl.arb
++++ b/lib/l10n/app_pl.arb
+@@ -553,5 +553,7 @@
+   }
+ ,
+   "hourlyChart": "Wykres 24-godzinny",
+-  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" }
++  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" },
++  "alwaysShowFrog": "Zawsze pokazuj żabę",
++  "@alwaysShowFrog": { "description": "Prefer scene animations where the frog is visible" }
+ }
+diff --git a/lib/l10n/app_ro.arb b/lib/l10n/app_ro.arb
+index 9689d78..eefab4b 100644
+--- a/lib/l10n/app_ro.arb
++++ b/lib/l10n/app_ro.arb
+@@ -553,5 +553,7 @@
+   }
+ ,
+   "hourlyChart": "Grafic 24 de ore",
+-  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" }
++  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" },
++  "alwaysShowFrog": "Afișează mereu broscuța",
++  "@alwaysShowFrog": { "description": "Prefer scene animations where the frog is visible" }
+ }
+diff --git a/lib/models/settings.dart b/lib/models/settings.dart
+index b351ca5..8cdacb9 100644
+--- a/lib/models/settings.dart
++++ b/lib/models/settings.dart
+@@ -75,6 +75,7 @@ class Settings {
+   final bool showMusic;
+   final bool kioskMode;
+   final bool showHourlyChart;
++  final bool alwaysShowFrog;
+   final String? languageCode;
+ 
+   const Settings({
+@@ -107,6 +108,7 @@ class Settings {
+     this.showMusic = true,
+     this.kioskMode = false,
+     this.showHourlyChart = true,
++    this.alwaysShowFrog = true,
+     this.languageCode,
+   });
+ 
+@@ -208,6 +210,7 @@ class Settings {
+     bool? showMusic,
+     bool? kioskMode,
+     bool? showHourlyChart,
++    bool? alwaysShowFrog,
+     String? languageCode,
+     bool clearLanguage = false,
+   }) {
+@@ -245,6 +248,7 @@ class Settings {
+       showMusic: showMusic ?? this.showMusic,
+       kioskMode: kioskMode ?? this.kioskMode,
+       showHourlyChart: showHourlyChart ?? this.showHourlyChart,
++      alwaysShowFrog: alwaysShowFrog ?? this.alwaysShowFrog,
+       languageCode:
+           clearLanguage ? null : (languageCode ?? this.languageCode),
+     );
+@@ -280,6 +284,7 @@ class Settings {
+         'showMusic': showMusic,
+         'kioskMode': kioskMode,
+         'showHourlyChart': showHourlyChart,
++        'alwaysShowFrog': alwaysShowFrog,
+         'languageCode': languageCode,
+       };
+ 
+@@ -321,6 +326,7 @@ class Settings {
+         showMusic: (j['showMusic'] as bool?) ?? true,
+         kioskMode: (j['kioskMode'] as bool?) ?? false,
+         showHourlyChart: (j['showHourlyChart'] as bool?) ?? true,
++        alwaysShowFrog: (j['alwaysShowFrog'] as bool?) ?? true,
+         languageCode: j['languageCode'] as String?,
+       );
+ 
+diff --git a/lib/services/asset_catalog.dart b/lib/services/asset_catalog.dart
+index 874dba4..2cdd7c2 100644
+--- a/lib/services/asset_catalog.dart
++++ b/lib/services/asset_catalog.dart
+@@ -84,7 +84,18 @@ class AssetCatalog {
+     );
+   }
+ 
+-  String _resolveFrog(String scene, DayPart tod, WeatherCondition cond) {
++  String _resolveFrog(String scene, DayPart tod, WeatherCondition cond,
++      {bool preferVisible = false}) {
++    if (preferVisible && (tod == DayPart.night || tod == DayPart.sunset)) {
++      // Night and sunset animations often show the frog sleeping or hidden
++      // inside; day animations always feature the frog prominently.
++      final dayFrog = _frog(scene, DayPart.day, cond);
++      if (_available.contains(dayFrog)) return dayFrog;
++      for (final c in _neutralOrder) {
++        final cand = _frog(scene, DayPart.day, c);
++        if (_available.contains(cand)) return cand;
++      }
++    }
+     final exact = _frog(scene, tod, cond);
+     if (_available.contains(exact)) return exact;
+     final alt = _frog(scene, _adjacentTod(tod), cond);
+@@ -99,10 +110,12 @@ class AssetCatalog {
+     required String scene,
+     required DayPart dayPart,
+     required WeatherCondition condition,
++    bool alwaysShowFrog = false,
+   }) {
+     return SceneAssets(
+       _resolveBackground(scene, dayPart, condition),
+-      _resolveFrog(scene, dayPart, condition),
++      _resolveFrog(scene, dayPart, condition,
++          preferVisible: alwaysShowFrog),
+     );
+   }
+ }
+diff --git a/lib/state/settings_controller.dart b/lib/state/settings_controller.dart
+index d3d3621..da88ccf 100644
+--- a/lib/state/settings_controller.dart
++++ b/lib/state/settings_controller.dart
+@@ -79,6 +79,9 @@ class SettingsController extends ChangeNotifier {
+   Future<void> setShowHourlyChart(bool v) =>
+       _update(_settings.copyWith(showHourlyChart: v));
+ 
++  Future<void> setAlwaysShowFrog(bool v) =>
++      _update(_settings.copyWith(alwaysShowFrog: v));
++
+   Future<void> setLanguageCode(String? code) => _update(_settings.copyWith(
+       languageCode: code, clearLanguage: code == null));
+ 
+diff --git a/lib/state/weather_controller.dart b/lib/state/weather_controller.dart
+index ba2d3b7..79a8e8c 100644
+--- a/lib/state/weather_controller.dart
++++ b/lib/state/weather_controller.dart
+@@ -50,6 +50,7 @@ class WeatherController extends ChangeNotifier {
+   Timer? _locationTimer;
+   int _sceneIndex = 0;
+   String _lastLocationKey = 'auto';
++  String? _lastFrogSettingsKey;
+   String _lastIntervals = '';
+   bool _started = false;
+   bool _active = true;
+@@ -197,6 +198,13 @@ class WeatherController extends ChangeNotifier {
+     _lastLocationKey = key;
+     if (_started && changed) refresh();
+ 
++    final frogKey =
++        '$key|${_settings?.settings.alwaysShowFrog ?? false}';
++    if (_started && frogKey != _lastFrogSettingsKey) {
++      _lastFrogSettingsKey = frogKey;
++      _apply();
++    }
++
+     final iv = _intervalsKey();
+     if (_started && iv != _lastIntervals) {
+       _lastIntervals = iv;
+@@ -229,6 +237,7 @@ class WeatherController extends ChangeNotifier {
+       scene: scene,
+       dayPart: dayPart,
+       condition: condition,
++      alwaysShowFrog: _settings?.settings.alwaysShowFrog ?? false,
+     );
+ 
+     if (_scene?.background != next.background || _scene?.frog != next.frog) {
+diff --git a/lib/ui/settings_screen.dart b/lib/ui/settings_screen.dart
+index a4b6bbd..03be3f6 100644
+--- a/lib/ui/settings_screen.dart
++++ b/lib/ui/settings_screen.dart
+@@ -276,6 +276,11 @@ class _Controls extends StatelessWidget {
+               value: s.showHourlyChart,
+               onChanged: settings.setShowHourlyChart,
+             ),
++            SwitchListTile(
++              title: Text(l10n.alwaysShowFrog),
++              value: s.alwaysShowFrog,
++              onChanged: settings.setAlwaysShowFrog,
++            ),
+             SwitchListTile(
+               title: Text(l10n.showLocation),
+               subtitle: Text(l10n.showLocationSubtitle),
+-- 
+2.43.0
+

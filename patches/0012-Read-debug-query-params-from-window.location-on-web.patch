@@ -1,0 +1,70 @@
+From 29a39edb4ddeb6cbfc0770a0328d7a6fc4004c3c Mon Sep 17 00:00:00 2001
+From: petyus- <petyus-@users.noreply.github.com>
+Date: Fri, 6 Nov 2026 10:51:09 +0200
+Subject: [PATCH 12/13] Read debug query params from window.location on web
+
+---
+ lib/services/debug_params.dart      | 1 +
+ lib/services/debug_params_stub.dart | 4 ++++
+ lib/services/debug_params_web.dart  | 8 ++++++++
+ lib/state/weather_controller.dart   | 3 ++-
+ 4 files changed, 15 insertions(+), 1 deletion(-)
+ create mode 100644 lib/services/debug_params.dart
+ create mode 100644 lib/services/debug_params_stub.dart
+ create mode 100644 lib/services/debug_params_web.dart
+
+diff --git a/lib/services/debug_params.dart b/lib/services/debug_params.dart
+new file mode 100644
+index 0000000..b886e20
+--- /dev/null
++++ b/lib/services/debug_params.dart
+@@ -0,0 +1 @@
++export 'debug_params_stub.dart' if (dart.library.html) 'debug_params_web.dart';
+diff --git a/lib/services/debug_params_stub.dart b/lib/services/debug_params_stub.dart
+new file mode 100644
+index 0000000..7a3cf65
+--- /dev/null
++++ b/lib/services/debug_params_stub.dart
+@@ -0,0 +1,4 @@
++/// Query parameters of the current page.
++///
++/// On non-web platforms this is always empty.
++Map<String, String> get debugQueryParams => const <String, String>{};
+diff --git a/lib/services/debug_params_web.dart b/lib/services/debug_params_web.dart
+new file mode 100644
+index 0000000..06fce63
+--- /dev/null
++++ b/lib/services/debug_params_web.dart
+@@ -0,0 +1,8 @@
++import 'dart:html' as html;
++
++/// Query parameters of the current page.
++///
++/// [Uri.base] resolves against the `<base href>` element, which drops the
++/// query string, so the full location is used instead.
++Map<String, String> get debugQueryParams =>
++    Uri.parse(html.window.location.href).queryParameters;
+diff --git a/lib/state/weather_controller.dart b/lib/state/weather_controller.dart
+index d841507..974f129 100644
+--- a/lib/state/weather_controller.dart
++++ b/lib/state/weather_controller.dart
+@@ -6,6 +6,7 @@ import '../models/settings.dart';
+ import '../models/weather.dart';
+ import '../services/asset_catalog.dart';
+ import '../services/cache.dart';
++import '../services/debug_params.dart';
+ import '../services/location_service.dart';
+ import '../services/system_status_service.dart';
+ import '../services/weather_service.dart';
+@@ -230,7 +231,7 @@ class WeatherController extends ChangeNotifier {
+   }
+ 
+   void _parseDebugParams() {
+-    final q = Uri.base.queryParameters;
++    final q = debugQueryParams;
+     if (q['debug'] != '1' || q['scene'] == null) return;
+     DayPart? tod;
+     for (final v in DayPart.values) {
+-- 
+2.43.0
+

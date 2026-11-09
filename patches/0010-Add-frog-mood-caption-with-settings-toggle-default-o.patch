@@ -1,0 +1,2913 @@
+From 45e4ade2049d56aa4ec9150b234f8cd7c5a00b1a Mon Sep 17 00:00:00 2001
+From: petyus- <petyus-@users.noreply.github.com>
+Date: Fri, 6 Nov 2026 08:38:00 +0200
+Subject: [PATCH 10/13] Add frog mood caption with settings toggle (default
+ off)
+
+---
+ lib/l10n/app_de.arb                |  99 +++-
+ lib/l10n/app_en.arb                | 761 +++++++++++++++++++----------
+ lib/l10n/app_es.arb                |  99 +++-
+ lib/l10n/app_fr.arb                |  99 +++-
+ lib/l10n/app_hu.arb                |  99 +++-
+ lib/l10n/app_it.arb                |  99 +++-
+ lib/l10n/app_localizations.dart    | 132 +++++
+ lib/l10n/app_localizations_de.dart |  66 +++
+ lib/l10n/app_localizations_en.dart |  66 +++
+ lib/l10n/app_localizations_es.dart |  66 +++
+ lib/l10n/app_localizations_fr.dart |  66 +++
+ lib/l10n/app_localizations_hu.dart |  66 +++
+ lib/l10n/app_localizations_it.dart |  66 +++
+ lib/l10n/app_localizations_nl.dart |  66 +++
+ lib/l10n/app_localizations_pl.dart |  66 +++
+ lib/l10n/app_localizations_ro.dart |  66 +++
+ lib/l10n/app_nl.arb                |  99 +++-
+ lib/l10n/app_pl.arb                |  99 +++-
+ lib/l10n/app_ro.arb                |  99 +++-
+ lib/main.dart                      |   1 +
+ lib/models/settings.dart           |   6 +
+ lib/state/settings_controller.dart |   3 +
+ lib/ui/froggy_view.dart            |  18 +
+ lib/ui/mood_caption.dart           | 104 ++++
+ lib/ui/settings_screen.dart        |   5 +
+ 25 files changed, 2116 insertions(+), 300 deletions(-)
+ create mode 100644 lib/ui/mood_caption.dart
+
+diff --git a/lib/l10n/app_de.arb b/lib/l10n/app_de.arb
+index 141ddc3..014b814 100644
+--- a/lib/l10n/app_de.arb
++++ b/lib/l10n/app_de.arb
+@@ -550,10 +550,101 @@
+   "wmoUnknown": "Unbekannt",
+   "@wmoUnknown": {
+     "description": "Unknown WMO code"
+-  }
+-,
++  },
+   "hourlyChart": "24-Stunden-Diagramm",
+-  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" },
++  "@hourlyChart": {
++    "description": "Toggle to show the 24-hour temperature chart"
++  },
+   "alwaysShowFrog": "Frosch immer anzeigen",
+-  "@alwaysShowFrog": { "description": "Prefer scene animations where the frog is visible" }
++  "@alwaysShowFrog": {
++    "description": "Prefer scene animations where the frog is visible"
++  },
++  "moodCaption": "Frosch-Laune anzeigen",
++  "@moodCaption": {
++    "description": "Toggle to show the frog mood/activity caption in the bottom-right corner"
++  },
++  "moodLabel": "Frosch",
++  "@moodLabel": {
++    "description": "Prefix label of the mood caption, e.g. 'Frog'"
++  },
++  "moodMorningSunny": "reckt sich",
++  "@moodMorningSunny": {
++    "description": "Frog mood activity for morning / sunny"
++  },
++  "moodMorningCloudy": "wacht auf",
++  "@moodMorningCloudy": {
++    "description": "Frog mood activity for morning / cloudy"
++  },
++  "moodMorningHazy": "genießt den Nebel",
++  "@moodMorningHazy": {
++    "description": "Frog mood activity for morning / hazy"
++  },
++  "moodMorningRainy": "singt im Regen",
++  "@moodMorningRainy": {
++    "description": "Frog mood activity for morning / rainy"
++  },
++  "moodMorningSnowy": "fängt Schneeflocken",
++  "@moodMorningSnowy": {
++    "description": "Frog mood activity for morning / snowy"
++  },
++  "moodDaySunny": "sonnt sich",
++  "@moodDaySunny": {
++    "description": "Frog mood activity for day / sunny"
++  },
++  "moodDayCloudy": "picknickt",
++  "@moodDayCloudy": {
++    "description": "Frog mood activity for day / cloudy"
++  },
++  "moodDayHazy": "träumt",
++  "@moodDayHazy": {
++    "description": "Frog mood activity for day / hazy"
++  },
++  "moodDayRainy": "Regentanz",
++  "@moodDayRainy": {
++    "description": "Frog mood activity for day / rainy"
++  },
++  "moodDaySnowy": "wirft Schneebälle",
++  "@moodDaySnowy": {
++    "description": "Frog mood activity for day / snowy"
++  },
++  "moodSunsetSunny": "schaut den Sonnenuntergang",
++  "@moodSunsetSunny": {
++    "description": "Frog mood activity for sunset / sunny"
++  },
++  "moodSunsetCloudy": "schaut den Sonnenuntergang",
++  "@moodSunsetCloudy": {
++    "description": "Frog mood activity for sunset / cloudy"
++  },
++  "moodSunsetHazy": "schaut den Sonnenuntergang",
++  "@moodSunsetHazy": {
++    "description": "Frog mood activity for sunset / hazy"
++  },
++  "moodSunsetRainy": "lauscht dem Regen",
++  "@moodSunsetRainy": {
++    "description": "Frog mood activity for sunset / rainy"
++  },
++  "moodSunsetSnowy": "wärmt sich",
++  "@moodSunsetSnowy": {
++    "description": "Frog mood activity for sunset / snowy"
++  },
++  "moodNightSunny": "beobachtet Sterne",
++  "@moodNightSunny": {
++    "description": "Frog mood activity for night / sunny"
++  },
++  "moodNightCloudy": "träumt",
++  "@moodNightCloudy": {
++    "description": "Frog mood activity for night / cloudy"
++  },
++  "moodNightHazy": "träumt",
++  "@moodNightHazy": {
++    "description": "Frog mood activity for night / hazy"
++  },
++  "moodNightRainy": "döst im Regen",
++  "@moodNightRainy": {
++    "description": "Frog mood activity for night / rainy"
++  },
++  "moodNightSnowy": "schläft gemütlich",
++  "@moodNightSnowy": {
++    "description": "Frog mood activity for night / snowy"
++  }
+ }
+diff --git a/lib/l10n/app_en.arb b/lib/l10n/app_en.arb
+index 2331ff8..13d69d7 100644
+--- a/lib/l10n/app_en.arb
++++ b/lib/l10n/app_en.arb
+@@ -1,425 +1,650 @@
+ {
+   "@@locale": "en",
+-
+   "appTitle": "Google's Weather Frog (Froggy)",
+-  "@appTitle": { "description": "Application title" },
+-
++  "@appTitle": {
++    "description": "Application title"
++  },
+   "settings": "Settings",
+-  "@settings": { "description": "Settings screen title and tooltip" },
+-
++  "@settings": {
++    "description": "Settings screen title and tooltip"
++  },
+   "resetToDefaults": "Reset to defaults",
+-  "@resetToDefaults": { "description": "Tooltip for the reset button" },
+-
++  "@resetToDefaults": {
++    "description": "Tooltip for the reset button"
++  },
+   "resetSettingsTitle": "Reset settings?",
+-  "@resetSettingsTitle": { "description": "Title of the reset confirmation dialog" },
+-
++  "@resetSettingsTitle": {
++    "description": "Title of the reset confirmation dialog"
++  },
+   "resetSettingsBody": "Restore all settings to defaults. Saved locations are kept.",
+-  "@resetSettingsBody": { "description": "Body of the reset confirmation dialog" },
+-
++  "@resetSettingsBody": {
++    "description": "Body of the reset confirmation dialog"
++  },
+   "cancel": "Cancel",
+-  "@cancel": { "description": "Generic cancel button" },
+-
++  "@cancel": {
++    "description": "Generic cancel button"
++  },
+   "reset": "Reset",
+-  "@reset": { "description": "Reset confirmation button" },
+-
++  "@reset": {
++    "description": "Reset confirmation button"
++  },
+   "hidePreview": "Hide preview",
+-  "@hidePreview": { "description": "Tooltip to hide the settings preview" },
+-
++  "@hidePreview": {
++    "description": "Tooltip to hide the settings preview"
++  },
+   "showPreview": "Show preview",
+-  "@showPreview": { "description": "Tooltip to show the settings preview" },
+-
++  "@showPreview": {
++    "description": "Tooltip to show the settings preview"
++  },
+   "sectionTiming": "Timing",
+-  "@sectionTiming": { "description": "Timing settings section title" },
+-
++  "@sectionTiming": {
++    "description": "Timing settings section title"
++  },
+   "sectionOverlaySize": "Overlay size",
+-  "@sectionOverlaySize": { "description": "Overlay size settings section title" },
+-
++  "@sectionOverlaySize": {
++    "description": "Overlay size settings section title"
++  },
+   "sectionTextShadow": "Text shadow",
+-  "@sectionTextShadow": { "description": "Text shadow settings section title" },
+-
++  "@sectionTextShadow": {
++    "description": "Text shadow settings section title"
++  },
+   "sectionDisplay": "Display",
+-  "@sectionDisplay": { "description": "Display settings section title" },
+-
++  "@sectionDisplay": {
++    "description": "Display settings section title"
++  },
+   "sectionDimming": "Dimming",
+-  "@sectionDimming": { "description": "Dimming settings section title" },
+-
++  "@sectionDimming": {
++    "description": "Dimming settings section title"
++  },
+   "sectionStatusIcons": "Status icons",
+-  "@sectionStatusIcons": { "description": "Status icons settings section title" },
+-
++  "@sectionStatusIcons": {
++    "description": "Status icons settings section title"
++  },
+   "sectionKioskMode": "Kiosk mode",
+-  "@sectionKioskMode": { "description": "Kiosk mode settings section title" },
+-
++  "@sectionKioskMode": {
++    "description": "Kiosk mode settings section title"
++  },
+   "sectionLauncher": "Launcher",
+-  "@sectionLauncher": { "description": "Launcher settings section title" },
+-
++  "@sectionLauncher": {
++    "description": "Launcher settings section title"
++  },
+   "sectionLocation": "Location",
+-  "@sectionLocation": { "description": "Location settings section title" },
+-
++  "@sectionLocation": {
++    "description": "Location settings section title"
++  },
+   "sectionLanguage": "Language",
+-  "@sectionLanguage": { "description": "Language settings section title" },
+-
++  "@sectionLanguage": {
++    "description": "Language settings section title"
++  },
+   "sectionAbout": "About",
+-  "@sectionAbout": { "description": "About settings section title" },
+-
++  "@sectionAbout": {
++    "description": "About settings section title"
++  },
+   "sectionUnits": "Units",
+-  "@sectionUnits": { "description": "Units settings section title" },
+-
++  "@sectionUnits": {
++    "description": "Units settings section title"
++  },
+   "sectionTimeFormat": "Time format",
+-  "@sectionTimeFormat": { "description": "Time format settings section title" },
+-
++  "@sectionTimeFormat": {
++    "description": "Time format settings section title"
++  },
+   "weatherRefresh": "Weather refresh",
+-  "@weatherRefresh": { "description": "Weather refresh interval label" },
+-
++  "@weatherRefresh": {
++    "description": "Weather refresh interval label"
++  },
+   "minutesValue": "{count} min",
+   "@minutesValue": {
+     "description": "Value in minutes",
+     "placeholders": {
+-      "count": { "type": "int" }
++      "count": {
++        "type": "int"
++      }
+     }
+   },
+-
+   "sceneRotation": "Scene rotation",
+-  "@sceneRotation": { "description": "Scene rotation interval label" },
+-
++  "@sceneRotation": {
++    "description": "Scene rotation interval label"
++  },
+   "off": "Off",
+-  "@off": { "description": "Disabled state" },
+-
++  "@off": {
++    "description": "Disabled state"
++  },
+   "clockTextSize": "Clock & text size",
+-  "@clockTextSize": { "description": "Overlay scale label" },
+-
++  "@clockTextSize": {
++    "description": "Overlay scale label"
++  },
+   "showClock": "Show clock",
+-  "@showClock": { "description": "Toggle to show the clock" },
+-
++  "@showClock": {
++    "description": "Toggle to show the clock"
++  },
+   "showClockSubtitle": "Time at the bottom",
+-  "@showClockSubtitle": { "description": "Show clock toggle subtitle" },
+-
++  "@showClockSubtitle": {
++    "description": "Show clock toggle subtitle"
++  },
+   "showDate": "Show date",
+-  "@showDate": { "description": "Toggle to show the date" },
+-
++  "@showDate": {
++    "description": "Toggle to show the date"
++  },
+   "showWeather": "Show weather",
+-  "@showWeather": { "description": "Toggle to show the weather" },
+-
++  "@showWeather": {
++    "description": "Toggle to show the weather"
++  },
+   "showWeatherSubtitle": "Temperature and conditions",
+-  "@showWeatherSubtitle": { "description": "Show weather toggle subtitle" },
+-
++  "@showWeatherSubtitle": {
++    "description": "Show weather toggle subtitle"
++  },
+   "showLocation": "Show location",
+-  "@showLocation": { "description": "Toggle to show the location name" },
+-
++  "@showLocation": {
++    "description": "Toggle to show the location name"
++  },
+   "showLocationSubtitle": "Place name at the top",
+-  "@showLocationSubtitle": { "description": "Show location toggle subtitle" },
+-
++  "@showLocationSubtitle": {
++    "description": "Show location toggle subtitle"
++  },
+   "dimOff": "Off",
+-  "@dimOff": { "description": "Dimming mode: off" },
+-
++  "@dimOff": {
++    "description": "Dimming mode: off"
++  },
+   "dimAuto": "Auto",
+-  "@dimAuto": { "description": "Dimming mode: automatic" },
+-
++  "@dimAuto": {
++    "description": "Dimming mode: automatic"
++  },
+   "dimCustom": "Custom",
+-  "@dimCustom": { "description": "Dimming mode: scheduled" },
+-
++  "@dimCustom": {
++    "description": "Dimming mode: scheduled"
++  },
+   "level": "Level",
+-  "@level": { "description": "Dim level label" },
+-
++  "@level": {
++    "description": "Dim level label"
++  },
+   "from": "From",
+-  "@from": { "description": "Dim schedule start label" },
+-
++  "@from": {
++    "description": "Dim schedule start label"
++  },
+   "to": "To",
+-  "@to": { "description": "Dim schedule end label" },
+-
++  "@to": {
++    "description": "Dim schedule end label"
++  },
+   "showStatusIcons": "Show status icons",
+-  "@showStatusIcons": { "description": "Toggle to show status icons" },
+-
++  "@showStatusIcons": {
++    "description": "Toggle to show status icons"
++  },
+   "wifi": "Wi-Fi",
+-  "@wifi": { "description": "Wi-Fi toggle label" },
+-
++  "@wifi": {
++    "description": "Wi-Fi toggle label"
++  },
+   "bluetooth": "Bluetooth",
+-  "@bluetooth": { "description": "Bluetooth toggle label" },
+-
++  "@bluetooth": {
++    "description": "Bluetooth toggle label"
++  },
+   "music": "Music",
+-  "@music": { "description": "Music toggle label" },
+-
++  "@music": {
++    "description": "Music toggle label"
++  },
+   "showMusicTitle": "Show music title",
+-  "@showMusicTitle": { "description": "Toggle to show the music track title" },
+-
++  "@showMusicTitle": {
++    "description": "Toggle to show the music track title"
++  },
+   "showMusicTitleSubtitle": "Track name (needs notification access)",
+-  "@showMusicTitleSubtitle": { "description": "Show music title toggle subtitle" },
+-
++  "@showMusicTitleSubtitle": {
++    "description": "Show music title toggle subtitle"
++  },
+   "kioskMode": "Kiosk mode",
+-  "@kioskMode": { "description": "Kiosk mode toggle label" },
+-
++  "@kioskMode": {
++    "description": "Kiosk mode toggle label"
++  },
+   "kioskModeSubtitle": "Always-on display for devices without a screensaver. Hides the settings button (long-press the screen to reopen) and keeps the screen on.",
+-  "@kioskModeSubtitle": { "description": "Kiosk mode toggle subtitle" },
+-
++  "@kioskModeSubtitle": {
++    "description": "Kiosk mode toggle subtitle"
++  },
+   "homeApp": "Home app",
+-  "@homeApp": { "description": "Launcher home app tile title" },
+-
++  "@homeApp": {
++    "description": "Launcher home app tile title"
++  },
+   "isDefaultHomeApp": "Froggy is your default home app",
+-  "@isDefaultHomeApp": { "description": "Subtitle when Froggy is the default home app" },
+-
++  "@isDefaultHomeApp": {
++    "description": "Subtitle when Froggy is the default home app"
++  },
+   "setAsHomeApp": "Show Froggy on the home screen, replacing your launcher",
+-  "@setAsHomeApp": { "description": "Subtitle when Froggy is not the default home app" },
+-
++  "@setAsHomeApp": {
++    "description": "Subtitle when Froggy is not the default home app"
++  },
+   "set": "Set",
+-  "@set": { "description": "Button to open the home app picker" },
+-
++  "@set": {
++    "description": "Button to open the home app picker"
++  },
+   "automaticLocation": "Automatic",
+-  "@automaticLocation": { "description": "Automatic location mode label" },
+-
++  "@automaticLocation": {
++    "description": "Automatic location mode label"
++  },
+   "automaticLocationSubtitle": "Detect from network / GPS",
+-  "@automaticLocationSubtitle": { "description": "Automatic location mode subtitle" },
+-
++  "@automaticLocationSubtitle": {
++    "description": "Automatic location mode subtitle"
++  },
+   "remove": "Remove",
+-  "@remove": { "description": "Tooltip to remove a saved location" },
+-
++  "@remove": {
++    "description": "Tooltip to remove a saved location"
++  },
+   "addLocation": "Add location",
+-  "@addLocation": { "description": "Add location action and screen title" },
+-
++  "@addLocation": {
++    "description": "Add location action and screen title"
++  },
+   "swipeToSwitch": "Swipe to switch",
+-  "@swipeToSwitch": { "description": "Location swipe gesture setting label" },
+-
++  "@swipeToSwitch": {
++    "description": "Location swipe gesture setting label"
++  },
+   "swipeGestureSubtitle": "Gesture on the frog",
+-  "@swipeGestureSubtitle": { "description": "Location swipe gesture setting subtitle" },
+-
++  "@swipeGestureSubtitle": {
++    "description": "Location swipe gesture setting subtitle"
++  },
+   "swipeLeftRight": "Left / right",
+-  "@swipeLeftRight": { "description": "Horizontal swipe option" },
+-
++  "@swipeLeftRight": {
++    "description": "Horizontal swipe option"
++  },
+   "swipeUpDown": "Up / down",
+-  "@swipeUpDown": { "description": "Vertical swipe option" },
+-
++  "@swipeUpDown": {
++    "description": "Vertical swipe option"
++  },
+   "switchLocations": "Switch locations",
+-  "@switchLocations": { "description": "Location rotation setting label" },
+-
++  "@switchLocations": {
++    "description": "Location rotation setting label"
++  },
+   "automaticRotationSubtitle": "Automatic rotation",
+-  "@automaticRotationSubtitle": { "description": "Location rotation setting subtitle" },
+-
++  "@automaticRotationSubtitle": {
++    "description": "Location rotation setting subtitle"
++  },
+   "manually": "Manually",
+-  "@manually": { "description": "Location rotation: manually" },
+-
++  "@manually": {
++    "description": "Location rotation: manually"
++  },
+   "withScene": "With scene",
+-  "@withScene": { "description": "Location rotation: with scene" },
+-
++  "@withScene": {
++    "description": "Location rotation: with scene"
++  },
+   "onATimer": "On a timer",
+-  "@onATimer": { "description": "Location rotation: on a timer" },
+-
++  "@onATimer": {
++    "description": "Location rotation: on a timer"
++  },
+   "edgeArrows": "Edge arrows",
+-  "@edgeArrows": { "description": "Location edge arrows toggle label" },
+-
++  "@edgeArrows": {
++    "description": "Location edge arrows toggle label"
++  },
+   "edgeArrowsSubtitle": "Back / forward buttons at the sides",
+-  "@edgeArrowsSubtitle": { "description": "Location edge arrows toggle subtitle" },
+-
++  "@edgeArrowsSubtitle": {
++    "description": "Location edge arrows toggle subtitle"
++  },
+   "locationRotation": "Location rotation",
+-  "@locationRotation": { "description": "Location rotation interval label" },
+-
++  "@locationRotation": {
++    "description": "Location rotation interval label"
++  },
+   "checkUpdatesOnStartup": "Check for updates on startup",
+-  "@checkUpdatesOnStartup": { "description": "Toggle to check for updates on startup" },
+-
++  "@checkUpdatesOnStartup": {
++    "description": "Toggle to check for updates on startup"
++  },
+   "checkForUpdates": "Check for updates",
+-  "@checkForUpdates": { "description": "Check for updates tile title" },
+-
++  "@checkForUpdates": {
++    "description": "Check for updates tile title"
++  },
+   "checkFailed": "Could not check — try again later",
+-  "@checkFailed": { "description": "Update check failed message" },
+-
++  "@checkFailed": {
++    "description": "Update check failed message"
++  },
+   "updateAvailableVersion": "Update available: v{version}",
+   "@updateAvailableVersion": {
+     "description": "Update available status with version",
+     "placeholders": {
+-      "version": { "type": "String" }
++      "version": {
++        "type": "String"
++      }
+     }
+   },
+-
+   "upToDate": "You're on the latest version",
+-  "@upToDate": { "description": "No update available message" },
+-
++  "@upToDate": {
++    "description": "No update available message"
++  },
+   "downloadInstallUpdate": "Download & install update",
+-  "@downloadInstallUpdate": { "description": "Download and install update tile title" },
+-
++  "@downloadInstallUpdate": {
++    "description": "Download and install update tile title"
++  },
+   "getLatestRelease": "Get the latest release",
+-  "@getLatestRelease": { "description": "Open the latest release page tile title" },
+-
++  "@getLatestRelease": {
++    "description": "Open the latest release page tile title"
++  },
+   "sourceCode": "Source code",
+-  "@sourceCode": { "description": "Source code tile title" },
+-
++  "@sourceCode": {
++    "description": "Source code tile title"
++  },
+   "notificationAccess": "Notification access",
+-  "@notificationAccess": { "description": "Notification access tile title" },
+-
++  "@notificationAccess": {
++    "description": "Notification access tile title"
++  },
+   "notificationAccessSubtitle": "Needed to read the track title",
+-  "@notificationAccessSubtitle": { "description": "Notification access tile subtitle" },
+-
++  "@notificationAccessSubtitle": {
++    "description": "Notification access tile subtitle"
++  },
+   "grant": "Grant",
+-  "@grant": { "description": "Button to grant notification access" },
+-
++  "@grant": {
++    "description": "Button to grant notification access"
++  },
+   "froggy": "Froggy",
+-  "@froggy": { "description": "About tile app name" },
+-
++  "@froggy": {
++    "description": "About tile app name"
++  },
+   "googlesWeatherFrog": "Google's Weather Frog",
+-  "@googlesWeatherFrog": { "description": "About tile app description" },
+-
++  "@googlesWeatherFrog": {
++    "description": "About tile app description"
++  },
+   "versionValue": "Version {version}",
+   "@versionValue": {
+     "description": "Version label",
+     "placeholders": {
+-      "version": { "type": "String" }
++      "version": {
++        "type": "String"
++      }
+     }
+   },
+-
+   "cityName": "City name",
+-  "@cityName": { "description": "City name input hint" },
+-
++  "@cityName": {
++    "description": "City name input hint"
++  },
+   "search": "Search",
+-  "@search": { "description": "Search tooltip" },
+-
++  "@search": {
++    "description": "Search tooltip"
++  },
+   "noMatchesFound": "No matches found",
+-  "@noMatchesFound": { "description": "Empty geocoding search result message" },
+-
++  "@noMatchesFound": {
++    "description": "Empty geocoding search result message"
++  },
+   "searchFailed": "Search failed — check your connection",
+-  "@searchFailed": { "description": "Geocoding search failure message" },
+-
++  "@searchFailed": {
++    "description": "Geocoding search failure message"
++  },
+   "updateAvailable": "Update available",
+-  "@updateAvailable": { "description": "Update dialog title" },
+-
++  "@updateAvailable": {
++    "description": "Update dialog title"
++  },
+   "updateAvailableDetails": "Froggy v{latest} is available — you have v{current}.",
+   "@updateAvailableDetails": {
+     "description": "Update dialog body",
+     "placeholders": {
+-      "latest": { "type": "String" },
+-      "current": { "type": "String" }
++      "latest": {
++        "type": "String"
++      },
++      "current": {
++        "type": "String"
++      }
+     }
+   },
+-
+   "skip": "Skip",
+-  "@skip": { "description": "Skip this update button" },
+-
++  "@skip": {
++    "description": "Skip this update button"
++  },
+   "later": "Later",
+-  "@later": { "description": "Remind me later button" },
+-
++  "@later": {
++    "description": "Remind me later button"
++  },
+   "update": "Update",
+-  "@update": { "description": "Start update button" },
+-
++  "@update": {
++    "description": "Start update button"
++  },
+   "view": "View",
+-  "@view": { "description": "View release button" },
+-
++  "@view": {
++    "description": "View release button"
++  },
+   "downloadingUpdate": "Downloading update…",
+-  "@downloadingUpdate": { "description": "Update download started snackbar" },
+-
++  "@downloadingUpdate": {
++    "description": "Update download started snackbar"
++  },
+   "couldNotStartUpdate": "Could not start the update",
+-  "@couldNotStartUpdate": { "description": "Update download failed snackbar" },
+-
++  "@couldNotStartUpdate": {
++    "description": "Update download failed snackbar"
++  },
+   "couldNotOpenLink": "Couldn't open the link on this device",
+-  "@couldNotOpenLink": { "description": "Failed to open URL snackbar" },
+-
++  "@couldNotOpenLink": {
++    "description": "Failed to open URL snackbar"
++  },
+   "couldNotStartUpdateAlt": "Couldn't start the update",
+-  "@couldNotStartUpdateAlt": { "description": "Update install failed snackbar (about section)" },
+-
++  "@couldNotStartUpdateAlt": {
++    "description": "Update install failed snackbar (about section)"
++  },
+   "previousLocation": "Previous location",
+-  "@previousLocation": { "description": "Tooltip for the previous location arrow" },
+-
++  "@previousLocation": {
++    "description": "Tooltip for the previous location arrow"
++  },
+   "nextLocation": "Next location",
+-  "@nextLocation": { "description": "Tooltip for the next location arrow" },
+-
++  "@nextLocation": {
++    "description": "Tooltip for the next location arrow"
++  },
+   "landscapeTitle": "Froggy looks best in landscape",
+-  "@landscapeTitle": { "description": "Rotate hint title" },
+-
++  "@landscapeTitle": {
++    "description": "Rotate hint title"
++  },
+   "landscapeBody": "Rotate your phone sideways for the full view.",
+-  "@landscapeBody": { "description": "Rotate hint body" },
+-
++  "@landscapeBody": {
++    "description": "Rotate hint body"
++  },
+   "gotIt": "Got it",
+-  "@gotIt": { "description": "Rotate hint dismiss button" },
+-
++  "@gotIt": {
++    "description": "Rotate hint dismiss button"
++  },
+   "locationBlocked": "Location is blocked, so this is your approximate area. Allow location in your browser, then Retry.",
+-  "@locationBlocked": { "description": "Web location permission warning" },
+-
++  "@locationBlocked": {
++    "description": "Web location permission warning"
++  },
+   "retry": "Retry",
+-  "@retry": { "description": "Retry button" },
+-
++  "@retry": {
++    "description": "Retry button"
++  },
+   "dismiss": "Dismiss",
+-  "@dismiss": { "description": "Dismiss tooltip" },
+-
++  "@dismiss": {
++    "description": "Dismiss tooltip"
++  },
+   "systemLanguage": "System (auto)",
+-  "@systemLanguage": { "description": "Follow the system language option" },
+-
++  "@systemLanguage": {
++    "description": "Follow the system language option"
++  },
+   "languageSubtitle": "App language",
+-  "@languageSubtitle": { "description": "Language setting subtitle" },
+-
++  "@languageSubtitle": {
++    "description": "Language setting subtitle"
++  },
+   "wmoClear": "Clear",
+-  "@wmoClear": { "description": "WMO code 0" },
+-
++  "@wmoClear": {
++    "description": "WMO code 0"
++  },
+   "wmoMainlyClear": "Mainly clear",
+-  "@wmoMainlyClear": { "description": "WMO code 1" },
+-
++  "@wmoMainlyClear": {
++    "description": "WMO code 1"
++  },
+   "wmoPartlyCloudy": "Partly cloudy",
+-  "@wmoPartlyCloudy": { "description": "WMO code 2" },
+-
++  "@wmoPartlyCloudy": {
++    "description": "WMO code 2"
++  },
+   "wmoOvercast": "Overcast",
+-  "@wmoOvercast": { "description": "WMO code 3" },
+-
++  "@wmoOvercast": {
++    "description": "WMO code 3"
++  },
+   "wmoFog": "Fog",
+-  "@wmoFog": { "description": "WMO code 45" },
+-
++  "@wmoFog": {
++    "description": "WMO code 45"
++  },
+   "wmoRimeFog": "Rime fog",
+-  "@wmoRimeFog": { "description": "WMO code 48" },
+-
++  "@wmoRimeFog": {
++    "description": "WMO code 48"
++  },
+   "wmoLightDrizzle": "Light drizzle",
+-  "@wmoLightDrizzle": { "description": "WMO code 51" },
+-
++  "@wmoLightDrizzle": {
++    "description": "WMO code 51"
++  },
+   "wmoDrizzle": "Drizzle",
+-  "@wmoDrizzle": { "description": "WMO code 53" },
+-
++  "@wmoDrizzle": {
++    "description": "WMO code 53"
++  },
+   "wmoHeavyDrizzle": "Heavy drizzle",
+-  "@wmoHeavyDrizzle": { "description": "WMO code 55" },
+-
++  "@wmoHeavyDrizzle": {
++    "description": "WMO code 55"
++  },
+   "wmoFreezingDrizzle": "Freezing drizzle",
+-  "@wmoFreezingDrizzle": { "description": "WMO codes 56, 57" },
+-
++  "@wmoFreezingDrizzle": {
++    "description": "WMO codes 56, 57"
++  },
+   "wmoLightRain": "Light rain",
+-  "@wmoLightRain": { "description": "WMO code 61" },
+-
++  "@wmoLightRain": {
++    "description": "WMO code 61"
++  },
+   "wmoRain": "Rain",
+-  "@wmoRain": { "description": "WMO code 63" },
+-
++  "@wmoRain": {
++    "description": "WMO code 63"
++  },
+   "wmoHeavyRain": "Heavy rain",
+-  "@wmoHeavyRain": { "description": "WMO code 65" },
+-
++  "@wmoHeavyRain": {
++    "description": "WMO code 65"
++  },
+   "wmoFreezingRain": "Freezing rain",
+-  "@wmoFreezingRain": { "description": "WMO codes 66, 67" },
+-
++  "@wmoFreezingRain": {
++    "description": "WMO codes 66, 67"
++  },
+   "wmoLightSnow": "Light snow",
+-  "@wmoLightSnow": { "description": "WMO code 71" },
+-
++  "@wmoLightSnow": {
++    "description": "WMO code 71"
++  },
+   "wmoSnow": "Snow",
+-  "@wmoSnow": { "description": "WMO code 73" },
+-
++  "@wmoSnow": {
++    "description": "WMO code 73"
++  },
+   "wmoHeavySnow": "Heavy snow",
+-  "@wmoHeavySnow": { "description": "WMO code 75" },
+-
++  "@wmoHeavySnow": {
++    "description": "WMO code 75"
++  },
+   "wmoSnowGrains": "Snow grains",
+-  "@wmoSnowGrains": { "description": "WMO code 77" },
+-
++  "@wmoSnowGrains": {
++    "description": "WMO code 77"
++  },
+   "wmoLightShowers": "Light showers",
+-  "@wmoLightShowers": { "description": "WMO code 80" },
+-
++  "@wmoLightShowers": {
++    "description": "WMO code 80"
++  },
+   "wmoShowers": "Showers",
+-  "@wmoShowers": { "description": "WMO code 81" },
+-
++  "@wmoShowers": {
++    "description": "WMO code 81"
++  },
+   "wmoHeavyShowers": "Heavy showers",
+-  "@wmoHeavyShowers": { "description": "WMO code 82" },
+-
++  "@wmoHeavyShowers": {
++    "description": "WMO code 82"
++  },
+   "wmoSnowShowers": "Snow showers",
+-  "@wmoSnowShowers": { "description": "WMO code 85" },
+-
++  "@wmoSnowShowers": {
++    "description": "WMO code 85"
++  },
+   "wmoHeavySnowShowers": "Heavy snow showers",
+-  "@wmoHeavySnowShowers": { "description": "WMO code 86" },
+-
++  "@wmoHeavySnowShowers": {
++    "description": "WMO code 86"
++  },
+   "wmoThunderstorm": "Thunderstorm",
+-  "@wmoThunderstorm": { "description": "WMO code 95" },
+-
++  "@wmoThunderstorm": {
++    "description": "WMO code 95"
++  },
+   "wmoThunderstormHail": "Thunderstorm, hail",
+-  "@wmoThunderstormHail": { "description": "WMO codes 96, 99" },
+-
++  "@wmoThunderstormHail": {
++    "description": "WMO codes 96, 99"
++  },
+   "wmoUnknown": "Unknown",
+-  "@wmoUnknown": { "description": "Unknown WMO code" }
+-,
++  "@wmoUnknown": {
++    "description": "Unknown WMO code"
++  },
+   "hourlyChart": "24-hour chart",
+-  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" },
++  "@hourlyChart": {
++    "description": "Toggle to show the 24-hour temperature chart"
++  },
+   "alwaysShowFrog": "Always show the frog",
+-  "@alwaysShowFrog": { "description": "Prefer scene animations where the frog is visible" }
++  "@alwaysShowFrog": {
++    "description": "Prefer scene animations where the frog is visible"
++  },
++  "moodCaption": "Frog mood caption",
++  "@moodCaption": {
++    "description": "Toggle to show the frog mood/activity caption in the bottom-right corner"
++  },
++  "moodLabel": "Frog",
++  "@moodLabel": {
++    "description": "Prefix label of the mood caption, e.g. 'Frog'"
++  },
++  "moodMorningSunny": "stretching",
++  "@moodMorningSunny": {
++    "description": "Frog mood activity for morning / sunny"
++  },
++  "moodMorningCloudy": "waking up",
++  "@moodMorningCloudy": {
++    "description": "Frog mood activity for morning / cloudy"
++  },
++  "moodMorningHazy": "enjoying the mist",
++  "@moodMorningHazy": {
++    "description": "Frog mood activity for morning / hazy"
++  },
++  "moodMorningRainy": "singing in the rain",
++  "@moodMorningRainy": {
++    "description": "Frog mood activity for morning / rainy"
++  },
++  "moodMorningSnowy": "catching snowflakes",
++  "@moodMorningSnowy": {
++    "description": "Frog mood activity for morning / snowy"
++  },
++  "moodDaySunny": "sunbathing",
++  "@moodDaySunny": {
++    "description": "Frog mood activity for day / sunny"
++  },
++  "moodDayCloudy": "having a picnic",
++  "@moodDayCloudy": {
++    "description": "Frog mood activity for day / cloudy"
++  },
++  "moodDayHazy": "daydreaming",
++  "@moodDayHazy": {
++    "description": "Frog mood activity for day / hazy"
++  },
++  "moodDayRainy": "rain dancing",
++  "@moodDayRainy": {
++    "description": "Frog mood activity for day / rainy"
++  },
++  "moodDaySnowy": "having a snowball fight",
++  "@moodDaySnowy": {
++    "description": "Frog mood activity for day / snowy"
++  },
++  "moodSunsetSunny": "watching the sunset",
++  "@moodSunsetSunny": {
++    "description": "Frog mood activity for sunset / sunny"
++  },
++  "moodSunsetCloudy": "watching the sunset",
++  "@moodSunsetCloudy": {
++    "description": "Frog mood activity for sunset / cloudy"
++  },
++  "moodSunsetHazy": "watching the sunset",
++  "@moodSunsetHazy": {
++    "description": "Frog mood activity for sunset / hazy"
++  },
++  "moodSunsetRainy": "listening to raindrops",
++  "@moodSunsetRainy": {
++    "description": "Frog mood activity for sunset / rainy"
++  },
++  "moodSunsetSnowy": "keeping warm",
++  "@moodSunsetSnowy": {
++    "description": "Frog mood activity for sunset / snowy"
++  },
++  "moodNightSunny": "stargazing",
++  "@moodNightSunny": {
++    "description": "Frog mood activity for night / sunny"
++  },
++  "moodNightCloudy": "dreaming",
++  "@moodNightCloudy": {
++    "description": "Frog mood activity for night / cloudy"
++  },
++  "moodNightHazy": "dreaming",
++  "@moodNightHazy": {
++    "description": "Frog mood activity for night / hazy"
++  },
++  "moodNightRainy": "dozing to the rain",
++  "@moodNightRainy": {
++    "description": "Frog mood activity for night / rainy"
++  },
++  "moodNightSnowy": "sleeping snugly",
++  "@moodNightSnowy": {
++    "description": "Frog mood activity for night / snowy"
++  }
+ }
+diff --git a/lib/l10n/app_es.arb b/lib/l10n/app_es.arb
+index e5c50b0..df5aa30 100644
+--- a/lib/l10n/app_es.arb
++++ b/lib/l10n/app_es.arb
+@@ -550,10 +550,101 @@
+   "wmoUnknown": "Desconocido",
+   "@wmoUnknown": {
+     "description": "Unknown WMO code"
+-  }
+-,
++  },
+   "hourlyChart": "Gráfico de 24 horas",
+-  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" },
++  "@hourlyChart": {
++    "description": "Toggle to show the 24-hour temperature chart"
++  },
+   "alwaysShowFrog": "Mostrar siempre la rana",
+-  "@alwaysShowFrog": { "description": "Prefer scene animations where the frog is visible" }
++  "@alwaysShowFrog": {
++    "description": "Prefer scene animations where the frog is visible"
++  },
++  "moodCaption": "Humor de la rana",
++  "@moodCaption": {
++    "description": "Toggle to show the frog mood/activity caption in the bottom-right corner"
++  },
++  "moodLabel": "Rana",
++  "@moodLabel": {
++    "description": "Prefix label of the mood caption, e.g. 'Frog'"
++  },
++  "moodMorningSunny": "se estira",
++  "@moodMorningSunny": {
++    "description": "Frog mood activity for morning / sunny"
++  },
++  "moodMorningCloudy": "se despierta",
++  "@moodMorningCloudy": {
++    "description": "Frog mood activity for morning / cloudy"
++  },
++  "moodMorningHazy": "disfruta de la niebla",
++  "@moodMorningHazy": {
++    "description": "Frog mood activity for morning / hazy"
++  },
++  "moodMorningRainy": "canta bajo la lluvia",
++  "@moodMorningRainy": {
++    "description": "Frog mood activity for morning / rainy"
++  },
++  "moodMorningSnowy": "atrapa copos",
++  "@moodMorningSnowy": {
++    "description": "Frog mood activity for morning / snowy"
++  },
++  "moodDaySunny": "toma el sol",
++  "@moodDaySunny": {
++    "description": "Frog mood activity for day / sunny"
++  },
++  "moodDayCloudy": "hace un pícnic",
++  "@moodDayCloudy": {
++    "description": "Frog mood activity for day / cloudy"
++  },
++  "moodDayHazy": "sueña despierto",
++  "@moodDayHazy": {
++    "description": "Frog mood activity for day / hazy"
++  },
++  "moodDayRainy": "baila bajo la lluvia",
++  "@moodDayRainy": {
++    "description": "Frog mood activity for day / rainy"
++  },
++  "moodDaySnowy": "juega con bolas de nieve",
++  "@moodDaySnowy": {
++    "description": "Frog mood activity for day / snowy"
++  },
++  "moodSunsetSunny": "mira la puesta de sol",
++  "@moodSunsetSunny": {
++    "description": "Frog mood activity for sunset / sunny"
++  },
++  "moodSunsetCloudy": "mira la puesta de sol",
++  "@moodSunsetCloudy": {
++    "description": "Frog mood activity for sunset / cloudy"
++  },
++  "moodSunsetHazy": "mira la puesta de sol",
++  "@moodSunsetHazy": {
++    "description": "Frog mood activity for sunset / hazy"
++  },
++  "moodSunsetRainy": "escucha la lluvia",
++  "@moodSunsetRainy": {
++    "description": "Frog mood activity for sunset / rainy"
++  },
++  "moodSunsetSnowy": "se abriga",
++  "@moodSunsetSnowy": {
++    "description": "Frog mood activity for sunset / snowy"
++  },
++  "moodNightSunny": "mira las estrellas",
++  "@moodNightSunny": {
++    "description": "Frog mood activity for night / sunny"
++  },
++  "moodNightCloudy": "sueña",
++  "@moodNightCloudy": {
++    "description": "Frog mood activity for night / cloudy"
++  },
++  "moodNightHazy": "sueña",
++  "@moodNightHazy": {
++    "description": "Frog mood activity for night / hazy"
++  },
++  "moodNightRainy": "dormita con la lluvia",
++  "@moodNightRainy": {
++    "description": "Frog mood activity for night / rainy"
++  },
++  "moodNightSnowy": "duerme calentito",
++  "@moodNightSnowy": {
++    "description": "Frog mood activity for night / snowy"
++  }
+ }
+diff --git a/lib/l10n/app_fr.arb b/lib/l10n/app_fr.arb
+index b68b497..35e5ec3 100644
+--- a/lib/l10n/app_fr.arb
++++ b/lib/l10n/app_fr.arb
+@@ -550,10 +550,101 @@
+   "wmoUnknown": "Inconnu",
+   "@wmoUnknown": {
+     "description": "Unknown WMO code"
+-  }
+-,
++  },
+   "hourlyChart": "Graphique 24 heures",
+-  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" },
++  "@hourlyChart": {
++    "description": "Toggle to show the 24-hour temperature chart"
++  },
+   "alwaysShowFrog": "Toujours afficher la grenouille",
+-  "@alwaysShowFrog": { "description": "Prefer scene animations where the frog is visible" }
++  "@alwaysShowFrog": {
++    "description": "Prefer scene animations where the frog is visible"
++  },
++  "moodCaption": "Humeur de la grenouille",
++  "@moodCaption": {
++    "description": "Toggle to show the frog mood/activity caption in the bottom-right corner"
++  },
++  "moodLabel": "Grenouille",
++  "@moodLabel": {
++    "description": "Prefix label of the mood caption, e.g. 'Frog'"
++  },
++  "moodMorningSunny": "s'étire",
++  "@moodMorningSunny": {
++    "description": "Frog mood activity for morning / sunny"
++  },
++  "moodMorningCloudy": "se réveille",
++  "@moodMorningCloudy": {
++    "description": "Frog mood activity for morning / cloudy"
++  },
++  "moodMorningHazy": "profite de la brume",
++  "@moodMorningHazy": {
++    "description": "Frog mood activity for morning / hazy"
++  },
++  "moodMorningRainy": "chante sous la pluie",
++  "@moodMorningRainy": {
++    "description": "Frog mood activity for morning / rainy"
++  },
++  "moodMorningSnowy": "attrape des flocons",
++  "@moodMorningSnowy": {
++    "description": "Frog mood activity for morning / snowy"
++  },
++  "moodDaySunny": "prend le soleil",
++  "@moodDaySunny": {
++    "description": "Frog mood activity for day / sunny"
++  },
++  "moodDayCloudy": "pique-nique",
++  "@moodDayCloudy": {
++    "description": "Frog mood activity for day / cloudy"
++  },
++  "moodDayHazy": "rêvasse",
++  "@moodDayHazy": {
++    "description": "Frog mood activity for day / hazy"
++  },
++  "moodDayRainy": "danse sous la pluie",
++  "@moodDayRainy": {
++    "description": "Frog mood activity for day / rainy"
++  },
++  "moodDaySnowy": "lance des boules de neige",
++  "@moodDaySnowy": {
++    "description": "Frog mood activity for day / snowy"
++  },
++  "moodSunsetSunny": "regarde le coucher du soleil",
++  "@moodSunsetSunny": {
++    "description": "Frog mood activity for sunset / sunny"
++  },
++  "moodSunsetCloudy": "regarde le coucher du soleil",
++  "@moodSunsetCloudy": {
++    "description": "Frog mood activity for sunset / cloudy"
++  },
++  "moodSunsetHazy": "regarde le coucher du soleil",
++  "@moodSunsetHazy": {
++    "description": "Frog mood activity for sunset / hazy"
++  },
++  "moodSunsetRainy": "écoute la pluie",
++  "@moodSunsetRainy": {
++    "description": "Frog mood activity for sunset / rainy"
++  },
++  "moodSunsetSnowy": "se réchauffe",
++  "@moodSunsetSnowy": {
++    "description": "Frog mood activity for sunset / snowy"
++  },
++  "moodNightSunny": "observe les étoiles",
++  "@moodNightSunny": {
++    "description": "Frog mood activity for night / sunny"
++  },
++  "moodNightCloudy": "rêve",
++  "@moodNightCloudy": {
++    "description": "Frog mood activity for night / cloudy"
++  },
++  "moodNightHazy": "rêve",
++  "@moodNightHazy": {
++    "description": "Frog mood activity for night / hazy"
++  },
++  "moodNightRainy": "somnole sous la pluie",
++  "@moodNightRainy": {
++    "description": "Frog mood activity for night / rainy"
++  },
++  "moodNightSnowy": "dort au chaud",
++  "@moodNightSnowy": {
++    "description": "Frog mood activity for night / snowy"
++  }
+ }
+diff --git a/lib/l10n/app_hu.arb b/lib/l10n/app_hu.arb
+index 6c97173..fad64ec 100644
+--- a/lib/l10n/app_hu.arb
++++ b/lib/l10n/app_hu.arb
+@@ -550,10 +550,101 @@
+   "wmoUnknown": "Ismeretlen",
+   "@wmoUnknown": {
+     "description": "Unknown WMO code"
+-  }
+-,
++  },
+   "hourlyChart": "24 órás grafikon",
+-  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" },
++  "@hourlyChart": {
++    "description": "Toggle to show the 24-hour temperature chart"
++  },
+   "alwaysShowFrog": "Mindig látszódjon a béka",
+-  "@alwaysShowFrog": { "description": "Prefer scene animations where the frog is visible" }
++  "@alwaysShowFrog": {
++    "description": "Prefer scene animations where the frog is visible"
++  },
++  "moodCaption": "Béka hangulata",
++  "@moodCaption": {
++    "description": "Toggle to show the frog mood/activity caption in the bottom-right corner"
++  },
++  "moodLabel": "Béka",
++  "@moodLabel": {
++    "description": "Prefix label of the mood caption, e.g. 'Frog'"
++  },
++  "moodMorningSunny": "nyújtózkodik",
++  "@moodMorningSunny": {
++    "description": "Frog mood activity for morning / sunny"
++  },
++  "moodMorningCloudy": "ébredezik",
++  "@moodMorningCloudy": {
++    "description": "Frog mood activity for morning / cloudy"
++  },
++  "moodMorningHazy": "ködöt szív",
++  "@moodMorningHazy": {
++    "description": "Frog mood activity for morning / hazy"
++  },
++  "moodMorningRainy": "esőben énekel",
++  "@moodMorningRainy": {
++    "description": "Frog mood activity for morning / rainy"
++  },
++  "moodMorningSnowy": "hópihét fog",
++  "@moodMorningSnowy": {
++    "description": "Frog mood activity for morning / snowy"
++  },
++  "moodDaySunny": "napozik",
++  "@moodDaySunny": {
++    "description": "Frog mood activity for day / sunny"
++  },
++  "moodDayCloudy": "piknikelt",
++  "@moodDayCloudy": {
++    "description": "Frog mood activity for day / cloudy"
++  },
++  "moodDayHazy": "ábrándozik",
++  "@moodDayHazy": {
++    "description": "Frog mood activity for day / hazy"
++  },
++  "moodDayRainy": "esőtáncol",
++  "@moodDayRainy": {
++    "description": "Frog mood activity for day / rainy"
++  },
++  "moodDaySnowy": "hólabdázik",
++  "@moodDaySnowy": {
++    "description": "Frog mood activity for day / snowy"
++  },
++  "moodSunsetSunny": "naplementét néz",
++  "@moodSunsetSunny": {
++    "description": "Frog mood activity for sunset / sunny"
++  },
++  "moodSunsetCloudy": "naplementét néz",
++  "@moodSunsetCloudy": {
++    "description": "Frog mood activity for sunset / cloudy"
++  },
++  "moodSunsetHazy": "naplementét néz",
++  "@moodSunsetHazy": {
++    "description": "Frog mood activity for sunset / hazy"
++  },
++  "moodSunsetRainy": "esőcseppeket hallgat",
++  "@moodSunsetRainy": {
++    "description": "Frog mood activity for sunset / rainy"
++  },
++  "moodSunsetSnowy": "melegedik",
++  "@moodSunsetSnowy": {
++    "description": "Frog mood activity for sunset / snowy"
++  },
++  "moodNightSunny": "csillagászik",
++  "@moodNightSunny": {
++    "description": "Frog mood activity for night / sunny"
++  },
++  "moodNightCloudy": "álmodik",
++  "@moodNightCloudy": {
++    "description": "Frog mood activity for night / cloudy"
++  },
++  "moodNightHazy": "álmodik",
++  "@moodNightHazy": {
++    "description": "Frog mood activity for night / hazy"
++  },
++  "moodNightRainy": "szunyókál",
++  "@moodNightRainy": {
++    "description": "Frog mood activity for night / rainy"
++  },
++  "moodNightSnowy": "melegben alszik",
++  "@moodNightSnowy": {
++    "description": "Frog mood activity for night / snowy"
++  }
+ }
+diff --git a/lib/l10n/app_it.arb b/lib/l10n/app_it.arb
+index f36ce39..ef541d4 100644
+--- a/lib/l10n/app_it.arb
++++ b/lib/l10n/app_it.arb
+@@ -550,10 +550,101 @@
+   "wmoUnknown": "Sconosciuto",
+   "@wmoUnknown": {
+     "description": "Unknown WMO code"
+-  }
+-,
++  },
+   "hourlyChart": "Grafico 24 ore",
+-  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" },
++  "@hourlyChart": {
++    "description": "Toggle to show the 24-hour temperature chart"
++  },
+   "alwaysShowFrog": "Mostra sempre la rana",
+-  "@alwaysShowFrog": { "description": "Prefer scene animations where the frog is visible" }
++  "@alwaysShowFrog": {
++    "description": "Prefer scene animations where the frog is visible"
++  },
++  "moodCaption": "Umore della rana",
++  "@moodCaption": {
++    "description": "Toggle to show the frog mood/activity caption in the bottom-right corner"
++  },
++  "moodLabel": "Rana",
++  "@moodLabel": {
++    "description": "Prefix label of the mood caption, e.g. 'Frog'"
++  },
++  "moodMorningSunny": "si stira",
++  "@moodMorningSunny": {
++    "description": "Frog mood activity for morning / sunny"
++  },
++  "moodMorningCloudy": "si sveglia",
++  "@moodMorningCloudy": {
++    "description": "Frog mood activity for morning / cloudy"
++  },
++  "moodMorningHazy": "gode la nebbia",
++  "@moodMorningHazy": {
++    "description": "Frog mood activity for morning / hazy"
++  },
++  "moodMorningRainy": "canta sotto la pioggia",
++  "@moodMorningRainy": {
++    "description": "Frog mood activity for morning / rainy"
++  },
++  "moodMorningSnowy": "acchiappa fiocchi",
++  "@moodMorningSnowy": {
++    "description": "Frog mood activity for morning / snowy"
++  },
++  "moodDaySunny": "prend il sole",
++  "@moodDaySunny": {
++    "description": "Frog mood activity for day / sunny"
++  },
++  "moodDayCloudy": "fa un picnic",
++  "@moodDayCloudy": {
++    "description": "Frog mood activity for day / cloudy"
++  },
++  "moodDayHazy": "sogna ad occhi aperti",
++  "@moodDayHazy": {
++    "description": "Frog mood activity for day / hazy"
++  },
++  "moodDayRainy": "balla sotto la pioggia",
++  "@moodDayRainy": {
++    "description": "Frog mood activity for day / rainy"
++  },
++  "moodDaySnowy": "fa palle di neve",
++  "@moodDaySnowy": {
++    "description": "Frog mood activity for day / snowy"
++  },
++  "moodSunsetSunny": "guarda il tramonto",
++  "@moodSunsetSunny": {
++    "description": "Frog mood activity for sunset / sunny"
++  },
++  "moodSunsetCloudy": "guarda il tramonto",
++  "@moodSunsetCloudy": {
++    "description": "Frog mood activity for sunset / cloudy"
++  },
++  "moodSunsetHazy": "guarda il tramonto",
++  "@moodSunsetHazy": {
++    "description": "Frog mood activity for sunset / hazy"
++  },
++  "moodSunsetRainy": "ascolta la pioggia",
++  "@moodSunsetRainy": {
++    "description": "Frog mood activity for sunset / rainy"
++  },
++  "moodSunsetSnowy": "si scalda",
++  "@moodSunsetSnowy": {
++    "description": "Frog mood activity for sunset / snowy"
++  },
++  "moodNightSunny": "ammira le stelle",
++  "@moodNightSunny": {
++    "description": "Frog mood activity for night / sunny"
++  },
++  "moodNightCloudy": "sogna",
++  "@moodNightCloudy": {
++    "description": "Frog mood activity for night / cloudy"
++  },
++  "moodNightHazy": "sogna",
++  "@moodNightHazy": {
++    "description": "Frog mood activity for night / hazy"
++  },
++  "moodNightRainy": "sonnecchia con la pioggia",
++  "@moodNightRainy": {
++    "description": "Frog mood activity for night / rainy"
++  },
++  "moodNightSnowy": "dorme al caldo",
++  "@moodNightSnowy": {
++    "description": "Frog mood activity for night / snowy"
++  }
+ }
+diff --git a/lib/l10n/app_localizations.dart b/lib/l10n/app_localizations.dart
+index 64e50b5..5a08f0a 100644
+--- a/lib/l10n/app_localizations.dart
++++ b/lib/l10n/app_localizations.dart
+@@ -915,6 +915,138 @@ abstract class AppLocalizations {
+   /// In en, this message translates to:
+   /// **'Always show the frog'**
+   String get alwaysShowFrog;
++
++  /// Toggle to show the frog mood/activity caption in the bottom-right corner
++  ///
++  /// In en, this message translates to:
++  /// **'Frog mood caption'**
++  String get moodCaption;
++
++  /// Prefix label of the mood caption, e.g. 'Frog'
++  ///
++  /// In en, this message translates to:
++  /// **'Frog'**
++  String get moodLabel;
++
++  /// Frog mood activity for morning / sunny
++  ///
++  /// In en, this message translates to:
++  /// **'stretching'**
++  String get moodMorningSunny;
++
++  /// Frog mood activity for morning / cloudy
++  ///
++  /// In en, this message translates to:
++  /// **'waking up'**
++  String get moodMorningCloudy;
++
++  /// Frog mood activity for morning / hazy
++  ///
++  /// In en, this message translates to:
++  /// **'enjoying the mist'**
++  String get moodMorningHazy;
++
++  /// Frog mood activity for morning / rainy
++  ///
++  /// In en, this message translates to:
++  /// **'singing in the rain'**
++  String get moodMorningRainy;
++
++  /// Frog mood activity for morning / snowy
++  ///
++  /// In en, this message translates to:
++  /// **'catching snowflakes'**
++  String get moodMorningSnowy;
++
++  /// Frog mood activity for day / sunny
++  ///
++  /// In en, this message translates to:
++  /// **'sunbathing'**
++  String get moodDaySunny;
++
++  /// Frog mood activity for day / cloudy
++  ///
++  /// In en, this message translates to:
++  /// **'having a picnic'**
++  String get moodDayCloudy;
++
++  /// Frog mood activity for day / hazy
++  ///
++  /// In en, this message translates to:
++  /// **'daydreaming'**
++  String get moodDayHazy;
++
++  /// Frog mood activity for day / rainy
++  ///
++  /// In en, this message translates to:
++  /// **'rain dancing'**
++  String get moodDayRainy;
++
++  /// Frog mood activity for day / snowy
++  ///
++  /// In en, this message translates to:
++  /// **'having a snowball fight'**
++  String get moodDaySnowy;
++
++  /// Frog mood activity for sunset / sunny
++  ///
++  /// In en, this message translates to:
++  /// **'watching the sunset'**
++  String get moodSunsetSunny;
++
++  /// Frog mood activity for sunset / cloudy
++  ///
++  /// In en, this message translates to:
++  /// **'watching the sunset'**
++  String get moodSunsetCloudy;
++
++  /// Frog mood activity for sunset / hazy
++  ///
++  /// In en, this message translates to:
++  /// **'watching the sunset'**
++  String get moodSunsetHazy;
++
++  /// Frog mood activity for sunset / rainy
++  ///
++  /// In en, this message translates to:
++  /// **'listening to raindrops'**
++  String get moodSunsetRainy;
++
++  /// Frog mood activity for sunset / snowy
++  ///
++  /// In en, this message translates to:
++  /// **'keeping warm'**
++  String get moodSunsetSnowy;
++
++  /// Frog mood activity for night / sunny
++  ///
++  /// In en, this message translates to:
++  /// **'stargazing'**
++  String get moodNightSunny;
++
++  /// Frog mood activity for night / cloudy
++  ///
++  /// In en, this message translates to:
++  /// **'dreaming'**
++  String get moodNightCloudy;
++
++  /// Frog mood activity for night / hazy
++  ///
++  /// In en, this message translates to:
++  /// **'dreaming'**
++  String get moodNightHazy;
++
++  /// Frog mood activity for night / rainy
++  ///
++  /// In en, this message translates to:
++  /// **'dozing to the rain'**
++  String get moodNightRainy;
++
++  /// Frog mood activity for night / snowy
++  ///
++  /// In en, this message translates to:
++  /// **'sleeping snugly'**
++  String get moodNightSnowy;
+ }
+ 
+ class _AppLocalizationsDelegate
+diff --git a/lib/l10n/app_localizations_de.dart b/lib/l10n/app_localizations_de.dart
+index 7438f03..860d429 100644
+--- a/lib/l10n/app_localizations_de.dart
++++ b/lib/l10n/app_localizations_de.dart
+@@ -425,4 +425,70 @@ class AppLocalizationsDe extends AppLocalizations {
+ 
+   @override
+   String get alwaysShowFrog => 'Frosch immer anzeigen';
++
++  @override
++  String get moodCaption => 'Frosch-Laune anzeigen';
++
++  @override
++  String get moodLabel => 'Frosch';
++
++  @override
++  String get moodMorningSunny => 'reckt sich';
++
++  @override
++  String get moodMorningCloudy => 'wacht auf';
++
++  @override
++  String get moodMorningHazy => 'genießt den Nebel';
++
++  @override
++  String get moodMorningRainy => 'singt im Regen';
++
++  @override
++  String get moodMorningSnowy => 'fängt Schneeflocken';
++
++  @override
++  String get moodDaySunny => 'sonnt sich';
++
++  @override
++  String get moodDayCloudy => 'picknickt';
++
++  @override
++  String get moodDayHazy => 'träumt';
++
++  @override
++  String get moodDayRainy => 'Regentanz';
++
++  @override
++  String get moodDaySnowy => 'wirft Schneebälle';
++
++  @override
++  String get moodSunsetSunny => 'schaut den Sonnenuntergang';
++
++  @override
++  String get moodSunsetCloudy => 'schaut den Sonnenuntergang';
++
++  @override
++  String get moodSunsetHazy => 'schaut den Sonnenuntergang';
++
++  @override
++  String get moodSunsetRainy => 'lauscht dem Regen';
++
++  @override
++  String get moodSunsetSnowy => 'wärmt sich';
++
++  @override
++  String get moodNightSunny => 'beobachtet Sterne';
++
++  @override
++  String get moodNightCloudy => 'träumt';
++
++  @override
++  String get moodNightHazy => 'träumt';
++
++  @override
++  String get moodNightRainy => 'döst im Regen';
++
++  @override
++  String get moodNightSnowy => 'schläft gemütlich';
+ }
+diff --git a/lib/l10n/app_localizations_en.dart b/lib/l10n/app_localizations_en.dart
+index 1ac76b1..df3f8c9 100644
+--- a/lib/l10n/app_localizations_en.dart
++++ b/lib/l10n/app_localizations_en.dart
+@@ -421,4 +421,70 @@ class AppLocalizationsEn extends AppLocalizations {
+ 
+   @override
+   String get alwaysShowFrog => 'Always show the frog';
++
++  @override
++  String get moodCaption => 'Frog mood caption';
++
++  @override
++  String get moodLabel => 'Frog';
++
++  @override
++  String get moodMorningSunny => 'stretching';
++
++  @override
++  String get moodMorningCloudy => 'waking up';
++
++  @override
++  String get moodMorningHazy => 'enjoying the mist';
++
++  @override
++  String get moodMorningRainy => 'singing in the rain';
++
++  @override
++  String get moodMorningSnowy => 'catching snowflakes';
++
++  @override
++  String get moodDaySunny => 'sunbathing';
++
++  @override
++  String get moodDayCloudy => 'having a picnic';
++
++  @override
++  String get moodDayHazy => 'daydreaming';
++
++  @override
++  String get moodDayRainy => 'rain dancing';
++
++  @override
++  String get moodDaySnowy => 'having a snowball fight';
++
++  @override
++  String get moodSunsetSunny => 'watching the sunset';
++
++  @override
++  String get moodSunsetCloudy => 'watching the sunset';
++
++  @override
++  String get moodSunsetHazy => 'watching the sunset';
++
++  @override
++  String get moodSunsetRainy => 'listening to raindrops';
++
++  @override
++  String get moodSunsetSnowy => 'keeping warm';
++
++  @override
++  String get moodNightSunny => 'stargazing';
++
++  @override
++  String get moodNightCloudy => 'dreaming';
++
++  @override
++  String get moodNightHazy => 'dreaming';
++
++  @override
++  String get moodNightRainy => 'dozing to the rain';
++
++  @override
++  String get moodNightSnowy => 'sleeping snugly';
+ }
+diff --git a/lib/l10n/app_localizations_es.dart b/lib/l10n/app_localizations_es.dart
+index 663cf6c..18d86f9 100644
+--- a/lib/l10n/app_localizations_es.dart
++++ b/lib/l10n/app_localizations_es.dart
+@@ -425,4 +425,70 @@ class AppLocalizationsEs extends AppLocalizations {
+ 
+   @override
+   String get alwaysShowFrog => 'Mostrar siempre la rana';
++
++  @override
++  String get moodCaption => 'Humor de la rana';
++
++  @override
++  String get moodLabel => 'Rana';
++
++  @override
++  String get moodMorningSunny => 'se estira';
++
++  @override
++  String get moodMorningCloudy => 'se despierta';
++
++  @override
++  String get moodMorningHazy => 'disfruta de la niebla';
++
++  @override
++  String get moodMorningRainy => 'canta bajo la lluvia';
++
++  @override
++  String get moodMorningSnowy => 'atrapa copos';
++
++  @override
++  String get moodDaySunny => 'toma el sol';
++
++  @override
++  String get moodDayCloudy => 'hace un pícnic';
++
++  @override
++  String get moodDayHazy => 'sueña despierto';
++
++  @override
++  String get moodDayRainy => 'baila bajo la lluvia';
++
++  @override
++  String get moodDaySnowy => 'juega con bolas de nieve';
++
++  @override
++  String get moodSunsetSunny => 'mira la puesta de sol';
++
++  @override
++  String get moodSunsetCloudy => 'mira la puesta de sol';
++
++  @override
++  String get moodSunsetHazy => 'mira la puesta de sol';
++
++  @override
++  String get moodSunsetRainy => 'escucha la lluvia';
++
++  @override
++  String get moodSunsetSnowy => 'se abriga';
++
++  @override
++  String get moodNightSunny => 'mira las estrellas';
++
++  @override
++  String get moodNightCloudy => 'sueña';
++
++  @override
++  String get moodNightHazy => 'sueña';
++
++  @override
++  String get moodNightRainy => 'dormita con la lluvia';
++
++  @override
++  String get moodNightSnowy => 'duerme calentito';
+ }
+diff --git a/lib/l10n/app_localizations_fr.dart b/lib/l10n/app_localizations_fr.dart
+index 113b7d7..6513b36 100644
+--- a/lib/l10n/app_localizations_fr.dart
++++ b/lib/l10n/app_localizations_fr.dart
+@@ -427,4 +427,70 @@ class AppLocalizationsFr extends AppLocalizations {
+ 
+   @override
+   String get alwaysShowFrog => 'Toujours afficher la grenouille';
++
++  @override
++  String get moodCaption => 'Humeur de la grenouille';
++
++  @override
++  String get moodLabel => 'Grenouille';
++
++  @override
++  String get moodMorningSunny => 's\'étire';
++
++  @override
++  String get moodMorningCloudy => 'se réveille';
++
++  @override
++  String get moodMorningHazy => 'profite de la brume';
++
++  @override
++  String get moodMorningRainy => 'chante sous la pluie';
++
++  @override
++  String get moodMorningSnowy => 'attrape des flocons';
++
++  @override
++  String get moodDaySunny => 'prend le soleil';
++
++  @override
++  String get moodDayCloudy => 'pique-nique';
++
++  @override
++  String get moodDayHazy => 'rêvasse';
++
++  @override
++  String get moodDayRainy => 'danse sous la pluie';
++
++  @override
++  String get moodDaySnowy => 'lance des boules de neige';
++
++  @override
++  String get moodSunsetSunny => 'regarde le coucher du soleil';
++
++  @override
++  String get moodSunsetCloudy => 'regarde le coucher du soleil';
++
++  @override
++  String get moodSunsetHazy => 'regarde le coucher du soleil';
++
++  @override
++  String get moodSunsetRainy => 'écoute la pluie';
++
++  @override
++  String get moodSunsetSnowy => 'se réchauffe';
++
++  @override
++  String get moodNightSunny => 'observe les étoiles';
++
++  @override
++  String get moodNightCloudy => 'rêve';
++
++  @override
++  String get moodNightHazy => 'rêve';
++
++  @override
++  String get moodNightRainy => 'somnole sous la pluie';
++
++  @override
++  String get moodNightSnowy => 'dort au chaud';
+ }
+diff --git a/lib/l10n/app_localizations_hu.dart b/lib/l10n/app_localizations_hu.dart
+index 18e30f1..ef78261 100644
+--- a/lib/l10n/app_localizations_hu.dart
++++ b/lib/l10n/app_localizations_hu.dart
+@@ -423,4 +423,70 @@ class AppLocalizationsHu extends AppLocalizations {
+ 
+   @override
+   String get alwaysShowFrog => 'Mindig látszódjon a béka';
++
++  @override
++  String get moodCaption => 'Béka hangulata';
++
++  @override
++  String get moodLabel => 'Béka';
++
++  @override
++  String get moodMorningSunny => 'nyújtózkodik';
++
++  @override
++  String get moodMorningCloudy => 'ébredezik';
++
++  @override
++  String get moodMorningHazy => 'ködöt szív';
++
++  @override
++  String get moodMorningRainy => 'esőben énekel';
++
++  @override
++  String get moodMorningSnowy => 'hópihét fog';
++
++  @override
++  String get moodDaySunny => 'napozik';
++
++  @override
++  String get moodDayCloudy => 'piknikelt';
++
++  @override
++  String get moodDayHazy => 'ábrándozik';
++
++  @override
++  String get moodDayRainy => 'esőtáncol';
++
++  @override
++  String get moodDaySnowy => 'hólabdázik';
++
++  @override
++  String get moodSunsetSunny => 'naplementét néz';
++
++  @override
++  String get moodSunsetCloudy => 'naplementét néz';
++
++  @override
++  String get moodSunsetHazy => 'naplementét néz';
++
++  @override
++  String get moodSunsetRainy => 'esőcseppeket hallgat';
++
++  @override
++  String get moodSunsetSnowy => 'melegedik';
++
++  @override
++  String get moodNightSunny => 'csillagászik';
++
++  @override
++  String get moodNightCloudy => 'álmodik';
++
++  @override
++  String get moodNightHazy => 'álmodik';
++
++  @override
++  String get moodNightRainy => 'szunyókál';
++
++  @override
++  String get moodNightSnowy => 'melegben alszik';
+ }
+diff --git a/lib/l10n/app_localizations_it.dart b/lib/l10n/app_localizations_it.dart
+index c54517a..b101404 100644
+--- a/lib/l10n/app_localizations_it.dart
++++ b/lib/l10n/app_localizations_it.dart
+@@ -425,4 +425,70 @@ class AppLocalizationsIt extends AppLocalizations {
+ 
+   @override
+   String get alwaysShowFrog => 'Mostra sempre la rana';
++
++  @override
++  String get moodCaption => 'Umore della rana';
++
++  @override
++  String get moodLabel => 'Rana';
++
++  @override
++  String get moodMorningSunny => 'si stira';
++
++  @override
++  String get moodMorningCloudy => 'si sveglia';
++
++  @override
++  String get moodMorningHazy => 'gode la nebbia';
++
++  @override
++  String get moodMorningRainy => 'canta sotto la pioggia';
++
++  @override
++  String get moodMorningSnowy => 'acchiappa fiocchi';
++
++  @override
++  String get moodDaySunny => 'prend il sole';
++
++  @override
++  String get moodDayCloudy => 'fa un picnic';
++
++  @override
++  String get moodDayHazy => 'sogna ad occhi aperti';
++
++  @override
++  String get moodDayRainy => 'balla sotto la pioggia';
++
++  @override
++  String get moodDaySnowy => 'fa palle di neve';
++
++  @override
++  String get moodSunsetSunny => 'guarda il tramonto';
++
++  @override
++  String get moodSunsetCloudy => 'guarda il tramonto';
++
++  @override
++  String get moodSunsetHazy => 'guarda il tramonto';
++
++  @override
++  String get moodSunsetRainy => 'ascolta la pioggia';
++
++  @override
++  String get moodSunsetSnowy => 'si scalda';
++
++  @override
++  String get moodNightSunny => 'ammira le stelle';
++
++  @override
++  String get moodNightCloudy => 'sogna';
++
++  @override
++  String get moodNightHazy => 'sogna';
++
++  @override
++  String get moodNightRainy => 'sonnecchia con la pioggia';
++
++  @override
++  String get moodNightSnowy => 'dorme al caldo';
+ }
+diff --git a/lib/l10n/app_localizations_nl.dart b/lib/l10n/app_localizations_nl.dart
+index 377a1e5..949dd24 100644
+--- a/lib/l10n/app_localizations_nl.dart
++++ b/lib/l10n/app_localizations_nl.dart
+@@ -422,4 +422,70 @@ class AppLocalizationsNl extends AppLocalizations {
+ 
+   @override
+   String get alwaysShowFrog => 'Kikker altijd tonen';
++
++  @override
++  String get moodCaption => 'Kikkerstemming';
++
++  @override
++  String get moodLabel => 'Kikker';
++
++  @override
++  String get moodMorningSunny => 'rekt zich';
++
++  @override
++  String get moodMorningCloudy => 'wordt wakker';
++
++  @override
++  String get moodMorningHazy => 'geniet van de mist';
++
++  @override
++  String get moodMorningRainy => 'zingt in de regen';
++
++  @override
++  String get moodMorningSnowy => 'vangt sneeuwvlokken';
++
++  @override
++  String get moodDaySunny => 'zonnet';
++
++  @override
++  String get moodDayCloudy => 'picknickt';
++
++  @override
++  String get moodDayHazy => 'droomt';
++
++  @override
++  String get moodDayRainy => 'danst in de regen';
++
++  @override
++  String get moodDaySnowy => 'gooit sneeuwballen';
++
++  @override
++  String get moodSunsetSunny => 'kijkt naar de zonsondergang';
++
++  @override
++  String get moodSunsetCloudy => 'kijkt naar de zonsondergang';
++
++  @override
++  String get moodSunsetHazy => 'kijkt naar de zonsondergang';
++
++  @override
++  String get moodSunsetRainy => 'luistert naar de regen';
++
++  @override
++  String get moodSunsetSnowy => 'warmt zich';
++
++  @override
++  String get moodNightSunny => 'kijkt naar sterren';
++
++  @override
++  String get moodNightCloudy => 'droomt';
++
++  @override
++  String get moodNightHazy => 'droomt';
++
++  @override
++  String get moodNightRainy => 'doezelt in de regen';
++
++  @override
++  String get moodNightSnowy => 'slaapt knus';
+ }
+diff --git a/lib/l10n/app_localizations_pl.dart b/lib/l10n/app_localizations_pl.dart
+index 042c051..477add5 100644
+--- a/lib/l10n/app_localizations_pl.dart
++++ b/lib/l10n/app_localizations_pl.dart
+@@ -425,4 +425,70 @@ class AppLocalizationsPl extends AppLocalizations {
+ 
+   @override
+   String get alwaysShowFrog => 'Zawsze pokazuj żabę';
++
++  @override
++  String get moodCaption => 'Nastrój żaby';
++
++  @override
++  String get moodLabel => 'Żaba';
++
++  @override
++  String get moodMorningSunny => 'rozciąga się';
++
++  @override
++  String get moodMorningCloudy => 'budzi się';
++
++  @override
++  String get moodMorningHazy => 'cieszy się mgłą';
++
++  @override
++  String get moodMorningRainy => 'śpiewa w deszczu';
++
++  @override
++  String get moodMorningSnowy => 'łapie płatki śniegu';
++
++  @override
++  String get moodDaySunny => 'opala się';
++
++  @override
++  String get moodDayCloudy => 'robi piknik';
++
++  @override
++  String get moodDayHazy => 'marzy';
++
++  @override
++  String get moodDayRainy => 'tańczy w deszczu';
++
++  @override
++  String get moodDaySnowy => 'gra w śnieżki';
++
++  @override
++  String get moodSunsetSunny => 'podziwia zachód słońca';
++
++  @override
++  String get moodSunsetCloudy => 'podziwia zachód słońca';
++
++  @override
++  String get moodSunsetHazy => 'podziwia zachód słońca';
++
++  @override
++  String get moodSunsetRainy => 'słucha deszczu';
++
++  @override
++  String get moodSunsetSnowy => 'ogrzewa się';
++
++  @override
++  String get moodNightSunny => 'patrzy na gwiazdy';
++
++  @override
++  String get moodNightCloudy => 'śni';
++
++  @override
++  String get moodNightHazy => 'śni';
++
++  @override
++  String get moodNightRainy => 'drzemie przy deszczu';
++
++  @override
++  String get moodNightSnowy => 'śpi w cieple';
+ }
+diff --git a/lib/l10n/app_localizations_ro.dart b/lib/l10n/app_localizations_ro.dart
+index b60a7fc..90c94b0 100644
+--- a/lib/l10n/app_localizations_ro.dart
++++ b/lib/l10n/app_localizations_ro.dart
+@@ -426,4 +426,70 @@ class AppLocalizationsRo extends AppLocalizations {
+ 
+   @override
+   String get alwaysShowFrog => 'Afișează mereu broscuța';
++
++  @override
++  String get moodCaption => 'Starea broscuței';
++
++  @override
++  String get moodLabel => 'Broscuța';
++
++  @override
++  String get moodMorningSunny => 'se întinde';
++
++  @override
++  String get moodMorningCloudy => 'se trezește';
++
++  @override
++  String get moodMorningHazy => 'se bucură de ceață';
++
++  @override
++  String get moodMorningRainy => 'cântă în ploaie';
++
++  @override
++  String get moodMorningSnowy => 'prinde fulgi';
++
++  @override
++  String get moodDaySunny => 'stă la soare';
++
++  @override
++  String get moodDayCloudy => 'face un picnic';
++
++  @override
++  String get moodDayHazy => 'visează';
++
++  @override
++  String get moodDayRainy => 'dansează în ploaie';
++
++  @override
++  String get moodDaySnowy => 'se joacă cu bulgări';
++
++  @override
++  String get moodSunsetSunny => 'privește apusul';
++
++  @override
++  String get moodSunsetCloudy => 'privește apusul';
++
++  @override
++  String get moodSunsetHazy => 'privește apusul';
++
++  @override
++  String get moodSunsetRainy => 'ascultă ploaia';
++
++  @override
++  String get moodSunsetSnowy => 'se încălzește';
++
++  @override
++  String get moodNightSunny => 'privește stelele';
++
++  @override
++  String get moodNightCloudy => 'visează';
++
++  @override
++  String get moodNightHazy => 'visează';
++
++  @override
++  String get moodNightRainy => 'face pui de somn';
++
++  @override
++  String get moodNightSnowy => 'doarme la căldură';
+ }
+diff --git a/lib/l10n/app_nl.arb b/lib/l10n/app_nl.arb
+index d89c3f7..ec33420 100644
+--- a/lib/l10n/app_nl.arb
++++ b/lib/l10n/app_nl.arb
+@@ -550,10 +550,101 @@
+   "wmoUnknown": "Onbekend",
+   "@wmoUnknown": {
+     "description": "Unknown WMO code"
+-  }
+-,
++  },
+   "hourlyChart": "24-uurs grafiek",
+-  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" },
++  "@hourlyChart": {
++    "description": "Toggle to show the 24-hour temperature chart"
++  },
+   "alwaysShowFrog": "Kikker altijd tonen",
+-  "@alwaysShowFrog": { "description": "Prefer scene animations where the frog is visible" }
++  "@alwaysShowFrog": {
++    "description": "Prefer scene animations where the frog is visible"
++  },
++  "moodCaption": "Kikkerstemming",
++  "@moodCaption": {
++    "description": "Toggle to show the frog mood/activity caption in the bottom-right corner"
++  },
++  "moodLabel": "Kikker",
++  "@moodLabel": {
++    "description": "Prefix label of the mood caption, e.g. 'Frog'"
++  },
++  "moodMorningSunny": "rekt zich",
++  "@moodMorningSunny": {
++    "description": "Frog mood activity for morning / sunny"
++  },
++  "moodMorningCloudy": "wordt wakker",
++  "@moodMorningCloudy": {
++    "description": "Frog mood activity for morning / cloudy"
++  },
++  "moodMorningHazy": "geniet van de mist",
++  "@moodMorningHazy": {
++    "description": "Frog mood activity for morning / hazy"
++  },
++  "moodMorningRainy": "zingt in de regen",
++  "@moodMorningRainy": {
++    "description": "Frog mood activity for morning / rainy"
++  },
++  "moodMorningSnowy": "vangt sneeuwvlokken",
++  "@moodMorningSnowy": {
++    "description": "Frog mood activity for morning / snowy"
++  },
++  "moodDaySunny": "zonnet",
++  "@moodDaySunny": {
++    "description": "Frog mood activity for day / sunny"
++  },
++  "moodDayCloudy": "picknickt",
++  "@moodDayCloudy": {
++    "description": "Frog mood activity for day / cloudy"
++  },
++  "moodDayHazy": "droomt",
++  "@moodDayHazy": {
++    "description": "Frog mood activity for day / hazy"
++  },
++  "moodDayRainy": "danst in de regen",
++  "@moodDayRainy": {
++    "description": "Frog mood activity for day / rainy"
++  },
++  "moodDaySnowy": "gooit sneeuwballen",
++  "@moodDaySnowy": {
++    "description": "Frog mood activity for day / snowy"
++  },
++  "moodSunsetSunny": "kijkt naar de zonsondergang",
++  "@moodSunsetSunny": {
++    "description": "Frog mood activity for sunset / sunny"
++  },
++  "moodSunsetCloudy": "kijkt naar de zonsondergang",
++  "@moodSunsetCloudy": {
++    "description": "Frog mood activity for sunset / cloudy"
++  },
++  "moodSunsetHazy": "kijkt naar de zonsondergang",
++  "@moodSunsetHazy": {
++    "description": "Frog mood activity for sunset / hazy"
++  },
++  "moodSunsetRainy": "luistert naar de regen",
++  "@moodSunsetRainy": {
++    "description": "Frog mood activity for sunset / rainy"
++  },
++  "moodSunsetSnowy": "warmt zich",
++  "@moodSunsetSnowy": {
++    "description": "Frog mood activity for sunset / snowy"
++  },
++  "moodNightSunny": "kijkt naar sterren",
++  "@moodNightSunny": {
++    "description": "Frog mood activity for night / sunny"
++  },
++  "moodNightCloudy": "droomt",
++  "@moodNightCloudy": {
++    "description": "Frog mood activity for night / cloudy"
++  },
++  "moodNightHazy": "droomt",
++  "@moodNightHazy": {
++    "description": "Frog mood activity for night / hazy"
++  },
++  "moodNightRainy": "doezelt in de regen",
++  "@moodNightRainy": {
++    "description": "Frog mood activity for night / rainy"
++  },
++  "moodNightSnowy": "slaapt knus",
++  "@moodNightSnowy": {
++    "description": "Frog mood activity for night / snowy"
++  }
+ }
+diff --git a/lib/l10n/app_pl.arb b/lib/l10n/app_pl.arb
+index 6e8d64f..ba550dd 100644
+--- a/lib/l10n/app_pl.arb
++++ b/lib/l10n/app_pl.arb
+@@ -550,10 +550,101 @@
+   "wmoUnknown": "Nieznane",
+   "@wmoUnknown": {
+     "description": "Unknown WMO code"
+-  }
+-,
++  },
+   "hourlyChart": "Wykres 24-godzinny",
+-  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" },
++  "@hourlyChart": {
++    "description": "Toggle to show the 24-hour temperature chart"
++  },
+   "alwaysShowFrog": "Zawsze pokazuj żabę",
+-  "@alwaysShowFrog": { "description": "Prefer scene animations where the frog is visible" }
++  "@alwaysShowFrog": {
++    "description": "Prefer scene animations where the frog is visible"
++  },
++  "moodCaption": "Nastrój żaby",
++  "@moodCaption": {
++    "description": "Toggle to show the frog mood/activity caption in the bottom-right corner"
++  },
++  "moodLabel": "Żaba",
++  "@moodLabel": {
++    "description": "Prefix label of the mood caption, e.g. 'Frog'"
++  },
++  "moodMorningSunny": "rozciąga się",
++  "@moodMorningSunny": {
++    "description": "Frog mood activity for morning / sunny"
++  },
++  "moodMorningCloudy": "budzi się",
++  "@moodMorningCloudy": {
++    "description": "Frog mood activity for morning / cloudy"
++  },
++  "moodMorningHazy": "cieszy się mgłą",
++  "@moodMorningHazy": {
++    "description": "Frog mood activity for morning / hazy"
++  },
++  "moodMorningRainy": "śpiewa w deszczu",
++  "@moodMorningRainy": {
++    "description": "Frog mood activity for morning / rainy"
++  },
++  "moodMorningSnowy": "łapie płatki śniegu",
++  "@moodMorningSnowy": {
++    "description": "Frog mood activity for morning / snowy"
++  },
++  "moodDaySunny": "opala się",
++  "@moodDaySunny": {
++    "description": "Frog mood activity for day / sunny"
++  },
++  "moodDayCloudy": "robi piknik",
++  "@moodDayCloudy": {
++    "description": "Frog mood activity for day / cloudy"
++  },
++  "moodDayHazy": "marzy",
++  "@moodDayHazy": {
++    "description": "Frog mood activity for day / hazy"
++  },
++  "moodDayRainy": "tańczy w deszczu",
++  "@moodDayRainy": {
++    "description": "Frog mood activity for day / rainy"
++  },
++  "moodDaySnowy": "gra w śnieżki",
++  "@moodDaySnowy": {
++    "description": "Frog mood activity for day / snowy"
++  },
++  "moodSunsetSunny": "podziwia zachód słońca",
++  "@moodSunsetSunny": {
++    "description": "Frog mood activity for sunset / sunny"
++  },
++  "moodSunsetCloudy": "podziwia zachód słońca",
++  "@moodSunsetCloudy": {
++    "description": "Frog mood activity for sunset / cloudy"
++  },
++  "moodSunsetHazy": "podziwia zachód słońca",
++  "@moodSunsetHazy": {
++    "description": "Frog mood activity for sunset / hazy"
++  },
++  "moodSunsetRainy": "słucha deszczu",
++  "@moodSunsetRainy": {
++    "description": "Frog mood activity for sunset / rainy"
++  },
++  "moodSunsetSnowy": "ogrzewa się",
++  "@moodSunsetSnowy": {
++    "description": "Frog mood activity for sunset / snowy"
++  },
++  "moodNightSunny": "patrzy na gwiazdy",
++  "@moodNightSunny": {
++    "description": "Frog mood activity for night / sunny"
++  },
++  "moodNightCloudy": "śni",
++  "@moodNightCloudy": {
++    "description": "Frog mood activity for night / cloudy"
++  },
++  "moodNightHazy": "śni",
++  "@moodNightHazy": {
++    "description": "Frog mood activity for night / hazy"
++  },
++  "moodNightRainy": "drzemie przy deszczu",
++  "@moodNightRainy": {
++    "description": "Frog mood activity for night / rainy"
++  },
++  "moodNightSnowy": "śpi w cieple",
++  "@moodNightSnowy": {
++    "description": "Frog mood activity for night / snowy"
++  }
+ }
+diff --git a/lib/l10n/app_ro.arb b/lib/l10n/app_ro.arb
+index eefab4b..25b33be 100644
+--- a/lib/l10n/app_ro.arb
++++ b/lib/l10n/app_ro.arb
+@@ -550,10 +550,101 @@
+   "wmoUnknown": "Necunoscut",
+   "@wmoUnknown": {
+     "description": "Unknown WMO code"
+-  }
+-,
++  },
+   "hourlyChart": "Grafic 24 de ore",
+-  "@hourlyChart": { "description": "Toggle to show the 24-hour temperature chart" },
++  "@hourlyChart": {
++    "description": "Toggle to show the 24-hour temperature chart"
++  },
+   "alwaysShowFrog": "Afișează mereu broscuța",
+-  "@alwaysShowFrog": { "description": "Prefer scene animations where the frog is visible" }
++  "@alwaysShowFrog": {
++    "description": "Prefer scene animations where the frog is visible"
++  },
++  "moodCaption": "Starea broscuței",
++  "@moodCaption": {
++    "description": "Toggle to show the frog mood/activity caption in the bottom-right corner"
++  },
++  "moodLabel": "Broscuța",
++  "@moodLabel": {
++    "description": "Prefix label of the mood caption, e.g. 'Frog'"
++  },
++  "moodMorningSunny": "se întinde",
++  "@moodMorningSunny": {
++    "description": "Frog mood activity for morning / sunny"
++  },
++  "moodMorningCloudy": "se trezește",
++  "@moodMorningCloudy": {
++    "description": "Frog mood activity for morning / cloudy"
++  },
++  "moodMorningHazy": "se bucură de ceață",
++  "@moodMorningHazy": {
++    "description": "Frog mood activity for morning / hazy"
++  },
++  "moodMorningRainy": "cântă în ploaie",
++  "@moodMorningRainy": {
++    "description": "Frog mood activity for morning / rainy"
++  },
++  "moodMorningSnowy": "prinde fulgi",
++  "@moodMorningSnowy": {
++    "description": "Frog mood activity for morning / snowy"
++  },
++  "moodDaySunny": "stă la soare",
++  "@moodDaySunny": {
++    "description": "Frog mood activity for day / sunny"
++  },
++  "moodDayCloudy": "face un picnic",
++  "@moodDayCloudy": {
++    "description": "Frog mood activity for day / cloudy"
++  },
++  "moodDayHazy": "visează",
++  "@moodDayHazy": {
++    "description": "Frog mood activity for day / hazy"
++  },
++  "moodDayRainy": "dansează în ploaie",
++  "@moodDayRainy": {
++    "description": "Frog mood activity for day / rainy"
++  },
++  "moodDaySnowy": "se joacă cu bulgări",
++  "@moodDaySnowy": {
++    "description": "Frog mood activity for day / snowy"
++  },
++  "moodSunsetSunny": "privește apusul",
++  "@moodSunsetSunny": {
++    "description": "Frog mood activity for sunset / sunny"
++  },
++  "moodSunsetCloudy": "privește apusul",
++  "@moodSunsetCloudy": {
++    "description": "Frog mood activity for sunset / cloudy"
++  },
++  "moodSunsetHazy": "privește apusul",
++  "@moodSunsetHazy": {
++    "description": "Frog mood activity for sunset / hazy"
++  },
++  "moodSunsetRainy": "ascultă ploaia",
++  "@moodSunsetRainy": {
++    "description": "Frog mood activity for sunset / rainy"
++  },
++  "moodSunsetSnowy": "se încălzește",
++  "@moodSunsetSnowy": {
++    "description": "Frog mood activity for sunset / snowy"
++  },
++  "moodNightSunny": "privește stelele",
++  "@moodNightSunny": {
++    "description": "Frog mood activity for night / sunny"
++  },
++  "moodNightCloudy": "visează",
++  "@moodNightCloudy": {
++    "description": "Frog mood activity for night / cloudy"
++  },
++  "moodNightHazy": "visează",
++  "@moodNightHazy": {
++    "description": "Frog mood activity for night / hazy"
++  },
++  "moodNightRainy": "face pui de somn",
++  "@moodNightRainy": {
++    "description": "Frog mood activity for night / rainy"
++  },
++  "moodNightSnowy": "doarme la căldură",
++  "@moodNightSnowy": {
++    "description": "Frog mood activity for night / snowy"
++  }
+ }
+diff --git a/lib/main.dart b/lib/main.dart
+index dd40fc7..f9179bd 100644
+--- a/lib/main.dart
++++ b/lib/main.dart
+@@ -375,6 +375,7 @@ class _HomeScreenState extends State<HomeScreen> {
+                     weather: weather.weather,
+                     settings: settings.settings,
+                     locationName: weather.locationName,
++                    cornerGear: !kiosk,
+                   ),
+                 ),
+               ),
+diff --git a/lib/models/settings.dart b/lib/models/settings.dart
+index 8cdacb9..2ee0da8 100644
+--- a/lib/models/settings.dart
++++ b/lib/models/settings.dart
+@@ -76,6 +76,7 @@ class Settings {
+   final bool kioskMode;
+   final bool showHourlyChart;
+   final bool alwaysShowFrog;
++  final bool showMoodCaption;
+   final String? languageCode;
+ 
+   const Settings({
+@@ -109,6 +110,7 @@ class Settings {
+     this.kioskMode = false,
+     this.showHourlyChart = true,
+     this.alwaysShowFrog = true,
++    this.showMoodCaption = false,
+     this.languageCode,
+   });
+ 
+@@ -211,6 +213,7 @@ class Settings {
+     bool? kioskMode,
+     bool? showHourlyChart,
+     bool? alwaysShowFrog,
++    bool? showMoodCaption,
+     String? languageCode,
+     bool clearLanguage = false,
+   }) {
+@@ -249,6 +252,7 @@ class Settings {
+       kioskMode: kioskMode ?? this.kioskMode,
+       showHourlyChart: showHourlyChart ?? this.showHourlyChart,
+       alwaysShowFrog: alwaysShowFrog ?? this.alwaysShowFrog,
++      showMoodCaption: showMoodCaption ?? this.showMoodCaption,
+       languageCode:
+           clearLanguage ? null : (languageCode ?? this.languageCode),
+     );
+@@ -285,6 +289,7 @@ class Settings {
+         'kioskMode': kioskMode,
+         'showHourlyChart': showHourlyChart,
+         'alwaysShowFrog': alwaysShowFrog,
++        'showMoodCaption': showMoodCaption,
+         'languageCode': languageCode,
+       };
+ 
+@@ -327,6 +332,7 @@ class Settings {
+         kioskMode: (j['kioskMode'] as bool?) ?? false,
+         showHourlyChart: (j['showHourlyChart'] as bool?) ?? true,
+         alwaysShowFrog: (j['alwaysShowFrog'] as bool?) ?? true,
++        showMoodCaption: (j['showMoodCaption'] as bool?) ?? false,
+         languageCode: j['languageCode'] as String?,
+       );
+ 
+diff --git a/lib/state/settings_controller.dart b/lib/state/settings_controller.dart
+index da88ccf..29a9f0e 100644
+--- a/lib/state/settings_controller.dart
++++ b/lib/state/settings_controller.dart
+@@ -82,6 +82,9 @@ class SettingsController extends ChangeNotifier {
+   Future<void> setAlwaysShowFrog(bool v) =>
+       _update(_settings.copyWith(alwaysShowFrog: v));
+ 
++  Future<void> setShowMoodCaption(bool v) =>
++      _update(_settings.copyWith(showMoodCaption: v));
++
+   Future<void> setLanguageCode(String? code) => _update(_settings.copyWith(
+       languageCode: code, clearLanguage: code == null));
+ 
+diff --git a/lib/ui/froggy_view.dart b/lib/ui/froggy_view.dart
+index cdb5c65..fbf27df 100644
+--- a/lib/ui/froggy_view.dart
++++ b/lib/ui/froggy_view.dart
+@@ -10,6 +10,7 @@ import '../models/weather.dart';
+ import '../services/asset_catalog.dart';
+ import 'foreground.dart';
+ import 'hourly_chart.dart';
++import 'mood_caption.dart';
+ import 'overlay.dart';
+ import 'status_bar.dart';
+ 
+@@ -22,6 +23,7 @@ class FroggyView extends StatelessWidget {
+     this.locationName,
+     this.showOverlay = true,
+     this.showTopBar = true,
++    this.cornerGear = true,
+   });
+ 
+   final SceneAssets? scene;
+@@ -31,6 +33,10 @@ class FroggyView extends StatelessWidget {
+   final bool showOverlay;
+   final bool showTopBar;
+ 
++  /// Whether a settings gear button occupies the bottom-right corner above
++  /// this view (non-kiosk layouts); the mood caption is lifted above it.
++  final bool cornerGear;
++
+   static const _animationName = 'Hero-Action';
+ 
+   static const _maxDecodeSize = 2048;
+@@ -150,6 +156,18 @@ class FroggyView extends StatelessWidget {
+               right: 0,
+               child: HourlyChartStrip(weather: weather),
+             ),
++          if (showOverlay && settings.showMoodCaption)
++            Positioned(
++              bottom:
++                  statusPad + (cornerGear ? statusIcon * 1.5 + 8 : 0),
++              right: statusPad,
++              child: MoodCaption(
++                dayPart: dayPart,
++                condition:
++                    weather?.condition ?? WeatherCondition.cloudy,
++                shadows: shadows,
++              ),
++            ),
+           if (showOverlay && hasTopContent)
+             Positioned(
+               top: 0,
+diff --git a/lib/ui/mood_caption.dart b/lib/ui/mood_caption.dart
+new file mode 100644
+index 0000000..678e353
+--- /dev/null
++++ b/lib/ui/mood_caption.dart
+@@ -0,0 +1,104 @@
++import 'package:flutter/material.dart';
++
++import '../l10n/app_localizations.dart';
++import '../models/weather.dart';
++
++/// Bottom-right pill showing what the frog is doing, based on the current
++/// day part and weather condition.
++class MoodCaption extends StatelessWidget {
++  const MoodCaption({
++    super.key,
++    required this.dayPart,
++    required this.condition,
++    this.shadows = const [],
++  });
++
++  final DayPart dayPart;
++  final WeatherCondition condition;
++  final List<Shadow> shadows;
++
++  static String _activity(AppLocalizations l10n, DayPart p, WeatherCondition c) {
++    switch (p) {
++      case DayPart.morning:
++        switch (c) {
++          case WeatherCondition.sunny:
++            return l10n.moodMorningSunny;
++          case WeatherCondition.cloudy:
++            return l10n.moodMorningCloudy;
++          case WeatherCondition.hazy:
++            return l10n.moodMorningHazy;
++          case WeatherCondition.rainy:
++            return l10n.moodMorningRainy;
++          case WeatherCondition.snowy:
++            return l10n.moodMorningSnowy;
++        }
++      case DayPart.day:
++        switch (c) {
++          case WeatherCondition.sunny:
++            return l10n.moodDaySunny;
++          case WeatherCondition.cloudy:
++            return l10n.moodDayCloudy;
++          case WeatherCondition.hazy:
++            return l10n.moodDayHazy;
++          case WeatherCondition.rainy:
++            return l10n.moodDayRainy;
++          case WeatherCondition.snowy:
++            return l10n.moodDaySnowy;
++        }
++      case DayPart.sunset:
++        switch (c) {
++          case WeatherCondition.sunny:
++            return l10n.moodSunsetSunny;
++          case WeatherCondition.cloudy:
++            return l10n.moodSunsetCloudy;
++          case WeatherCondition.hazy:
++            return l10n.moodSunsetHazy;
++          case WeatherCondition.rainy:
++            return l10n.moodSunsetRainy;
++          case WeatherCondition.snowy:
++            return l10n.moodSunsetSnowy;
++        }
++      case DayPart.night:
++        switch (c) {
++          case WeatherCondition.sunny:
++            return l10n.moodNightSunny;
++          case WeatherCondition.cloudy:
++            return l10n.moodNightCloudy;
++          case WeatherCondition.hazy:
++            return l10n.moodNightHazy;
++          case WeatherCondition.rainy:
++            return l10n.moodNightRainy;
++          case WeatherCondition.snowy:
++            return l10n.moodNightSnowy;
++        }
++    }
++  }
++
++  @override
++  Widget build(BuildContext context) {
++    final l10n = AppLocalizations.of(context);
++    if (l10n == null) return const SizedBox.shrink();
++    final text = '${l10n.moodLabel}: ${_activity(l10n, dayPart, condition)}';
++    return IgnorePointer(
++      child: Container(
++        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
++        decoration: BoxDecoration(
++          color: Colors.black.withValues(alpha: 0.45),
++          borderRadius: BorderRadius.circular(999),
++        ),
++        child: Text(
++          text,
++          maxLines: 1,
++          softWrap: false,
++          overflow: TextOverflow.ellipsis,
++          style: TextStyle(
++            color: Colors.white,
++            fontSize: 13,
++            fontWeight: FontWeight.w500,
++            shadows: shadows,
++          ),
++        ),
++      ),
++    );
++  }
++}
+diff --git a/lib/ui/settings_screen.dart b/lib/ui/settings_screen.dart
+index 03be3f6..5872ac4 100644
+--- a/lib/ui/settings_screen.dart
++++ b/lib/ui/settings_screen.dart
+@@ -281,6 +281,11 @@ class _Controls extends StatelessWidget {
+               value: s.alwaysShowFrog,
+               onChanged: settings.setAlwaysShowFrog,
+             ),
++            SwitchListTile(
++              title: Text(l10n.moodCaption),
++              value: s.showMoodCaption,
++              onChanged: settings.setShowMoodCaption,
++            ),
+             SwitchListTile(
+               title: Text(l10n.showLocation),
+               subtitle: Text(l10n.showLocationSubtitle),
+-- 
+2.43.0
+

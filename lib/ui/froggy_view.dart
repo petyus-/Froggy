@@ -194,13 +194,10 @@ class FroggyView extends StatelessWidget {
           // showWeather toggle): current temperature plus today's min/max,
           if (overlay && weather != null)
             Positioned(
-              // Bottom-right corner readout: current temperature plus today's
-              // min/max, e.g. `12° (3…9°)`. On kiosk layouts (no corner gear)
-              // this is exactly where the mood caption pill used to sit. When
-              // a gear button occupies that corner, the readout is lifted
-              // above it.
-              right: statusPad,
-              bottom: cornerGear ? statusPad + 48 : statusPad,
+              // Same line as the settings gear: sits immediately LEFT of the
+              // gear (28px icon + 12px gap), vertically on the gear row.
+              right: statusPad + (cornerGear ? 40 : 0),
+              bottom: statusPad,
               child: IgnorePointer(
                 child: _CornerTemp(
                   weather: weather!,
@@ -225,9 +222,22 @@ class FroggyView extends StatelessWidget {
                       return Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          if (showLoc)
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: ConstrainedBox(
+                                constraints:
+                                    BoxConstraints(maxWidth: c.maxWidth * 0.4),
+                                child: _LocationLabel(
+                                  name: locationName!,
+                                  size: statusIcon,
+                                  shadows: shadows,
+                                ),
+                              ),
+                            ),
                           Expanded(
                             child: Align(
-                              alignment: Alignment.centerLeft,
+                              alignment: Alignment.centerRight,
                               child: kIsWeb
                                   ? const SizedBox.shrink()
                                   : StatusBar(
@@ -243,19 +253,6 @@ class FroggyView extends StatelessWidget {
                                     ),
                             ),
                           ),
-                          if (showLoc)
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: ConstrainedBox(
-                                constraints:
-                                    BoxConstraints(maxWidth: c.maxWidth * 0.4),
-                                child: _LocationLabel(
-                                  name: locationName!,
-                                  size: statusIcon,
-                                  shadows: shadows,
-                                ),
-                              ),
-                            ),
                         ],
                       );
                     },

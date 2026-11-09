@@ -1,0 +1,232 @@
+From 0d92076851c96c7867d8bc29fb39a7f738e4eb03 Mon Sep 17 00:00:00 2001
+From: petyus- <petyus-@users.noreply.github.com>
+Date: Fri, 6 Nov 2026 10:13:17 +0200
+Subject: [PATCH 11/13] Add debug URL override to render exact
+ scene/daypart/weather combo
+
+---
+ lib/main.dart                     |  5 ++--
+ lib/state/weather_controller.dart | 43 ++++++++++++++++++++++++++++---
+ lib/ui/froggy_view.dart           | 41 +++++++++++++++++++++++------
+ 3 files changed, 76 insertions(+), 13 deletions(-)
+
+diff --git a/lib/main.dart b/lib/main.dart
+index f9179bd..0dec62e 100644
+--- a/lib/main.dart
++++ b/lib/main.dart
+@@ -339,7 +339,8 @@ class _HomeScreenState extends State<HomeScreen> {
+         listenable: Listenable.merge([weather, settings]),
+         builder: (context, _) {
+           if (!weather.ready) return const SplashScreen();
+-          final kiosk = settings.settings.kioskMode;
++          final kiosk =
++              settings.settings.kioskMode || weather.debugMode;
+           final swipe = weather.canCycleLocations
+               ? settings.settings.locationSwipe
+               : LocationSwipe.off;
+@@ -375,7 +376,7 @@ class _HomeScreenState extends State<HomeScreen> {
+                     weather: weather.weather,
+                     settings: settings.settings,
+                     locationName: weather.locationName,
+-                    cornerGear: !kiosk,
++                    cornerGear: !kiosk, debugMode: weather.debugMode,
+                   ),
+                 ),
+               ),
+diff --git a/lib/state/weather_controller.dart b/lib/state/weather_controller.dart
+index 79a8e8c..d841507 100644
+--- a/lib/state/weather_controller.dart
++++ b/lib/state/weather_controller.dart
+@@ -78,8 +78,25 @@ class WeatherController extends ChangeNotifier {
+   bool get usingApproximateLocation => _usingApproximateLocation;
+   List<String> get scenes => _catalog?.scenes ?? const [];
+ 
++  String? _debugScene;
++  DayPart? _debugTod;
++  WeatherCondition? _debugCond;
++
++  /// True when the app was launched with explicit debug scene params
++  /// (e.g. ?debug=1&scene=fields&tod=day&cond=sunny); skips weather
++  /// fetching and renders exactly that combo.
++  bool get debugMode => _debugScene != null;
++
+   Future<void> init() async {
+     _catalog ??= await AssetCatalog.load();
++    if (kIsWeb) _parseDebugParams();
++    if (debugMode) {
++      final idx = _catalog!.scenes.indexOf(_debugScene!);
++      _sceneIndex = idx >= 0 ? idx : 0;
++      _started = true;
++      _apply();
++      return;
++    }
+     _useDeviceLocation = !await SystemStatusService().isTelevision();
+     _data = await _cache.loadWeather();
+     _apply();
+@@ -212,6 +229,22 @@ class WeatherController extends ChangeNotifier {
+     }
+   }
+ 
++  void _parseDebugParams() {
++    final q = Uri.base.queryParameters;
++    if (q['debug'] != '1' || q['scene'] == null) return;
++    DayPart? tod;
++    for (final v in DayPart.values) {
++      if (v.name == q['tod']) tod = v;
++    }
++    WeatherCondition? cond;
++    for (final v in WeatherCondition.values) {
++      if (v.name == q['cond']) cond = v;
++    }
++    _debugScene = q['scene'];
++    _debugTod = tod ?? DayPart.day;
++    _debugCond = cond ?? WeatherCondition.sunny;
++  }
++
+   bool get canCycleLocations =>
+       _settings?.settings.canCycleLocations ?? false;
+ 
+@@ -229,9 +262,13 @@ class WeatherController extends ChangeNotifier {
+     final catalog = _catalog;
+     if (catalog == null || catalog.scenes.isEmpty) return;
+ 
+-    final dayPart = _data?.dayPart ?? dayPartFor(DateTime.now(), null, null);
+-    final condition = _data?.condition ?? WeatherCondition.sunny;
+-    final scene = catalog.scenes[_sceneIndex % catalog.scenes.length];
++    final dayPart =
++        _debugTod ?? _data?.dayPart ?? dayPartFor(DateTime.now(), null, null);
++    final condition =
++        _debugCond ?? _data?.condition ?? WeatherCondition.sunny;
++    final scene = debugMode
++        ? _debugScene!
++        : catalog.scenes[_sceneIndex % catalog.scenes.length];
+ 
+     final next = catalog.resolve(
+       scene: scene,
+diff --git a/lib/ui/froggy_view.dart b/lib/ui/froggy_view.dart
+index fbf27df..18465f1 100644
+--- a/lib/ui/froggy_view.dart
++++ b/lib/ui/froggy_view.dart
+@@ -24,6 +24,7 @@ class FroggyView extends StatelessWidget {
+     this.showOverlay = true,
+     this.showTopBar = true,
+     this.cornerGear = true,
++    this.debugMode = false,
+   });
+ 
+   final SceneAssets? scene;
+@@ -37,6 +38,9 @@ class FroggyView extends StatelessWidget {
+   /// this view (non-kiosk layouts); the mood caption is lifted above it.
+   final bool cornerGear;
+ 
++  /// Debug capture mode: no overlay, no dimming — just the raw combo.
++  final bool debugMode;
++
+   static const _animationName = 'Hero-Action';
+ 
+   static const _maxDecodeSize = 2048;
+@@ -65,10 +69,13 @@ class FroggyView extends StatelessWidget {
+         ? 1.0
+         : (dayPart == DayPart.sunset ? 0.5 : 0.0);
+     final localTime = weather?.localTime ?? DateTime.now();
+-    final dim = settings.dimAt(nightFactor, localTime);
++    final dim = debugMode
++        ? 0.0
++        : settings.dimAt(nightFactor, localTime);
+     final showLoc = settings.showLocation &&
+         locationName != null &&
+         locationName!.isNotEmpty;
++    final overlay = showOverlay && !debugMode;
+     final hasTopContent =
+         showTopBar && ((!kIsWeb && settings.showStatus) || showLoc);
+     final hasBottomContent = settings.showClock ||
+@@ -103,10 +110,11 @@ class FroggyView extends StatelessWidget {
+                   key: ValueKey(s.frog),
+                   asset: s.frog,
+                   animation: _animationName,
++                  loop: debugMode,
+                 ),
+               ),
+             ),
+-          if (showOverlay && hasTopContent)
++          if (overlay && hasTopContent)
+             Positioned(
+               top: 0,
+               left: 0,
+@@ -127,7 +135,7 @@ class FroggyView extends StatelessWidget {
+                 ),
+               ),
+             ),
+-          if (showOverlay && hasBottomContent)
++          if (overlay && hasBottomContent)
+             Positioned(
+               bottom: 0,
+               left: 0,
+@@ -148,15 +156,15 @@ class FroggyView extends StatelessWidget {
+                 ),
+               ),
+             ),
+-          if (showOverlay) WeatherOverlay(weather: weather, settings: settings),
+-          if (showOverlay && settings.showHourlyChart)
++          if (overlay) WeatherOverlay(weather: weather, settings: settings),
++          if (overlay && settings.showHourlyChart)
+             Positioned(
+               top: 0,
+               left: 0,
+               right: 0,
+               child: HourlyChartStrip(weather: weather),
+             ),
+-          if (showOverlay && settings.showMoodCaption)
++          if (overlay && settings.showMoodCaption)
+             Positioned(
+               bottom:
+                   statusPad + (cornerGear ? statusIcon * 1.5 + 8 : 0),
+@@ -168,7 +176,7 @@ class FroggyView extends StatelessWidget {
+                 shadows: shadows,
+               ),
+             ),
+-          if (showOverlay && hasTopContent)
++          if (overlay && hasTopContent)
+             Positioned(
+               top: 0,
+               left: 0,
+@@ -271,11 +279,20 @@ class _LocationLabel extends StatelessWidget {
+ }
+ 
+ class _LoopingFrog extends StatefulWidget {
+-  const _LoopingFrog({super.key, required this.asset, required this.animation});
++  const _LoopingFrog({
++    super.key,
++    required this.asset,
++    required this.animation,
++    this.loop = false,
++  });
+ 
+   final String asset;
+   final String animation;
+ 
++  /// When true the animation restarts immediately after it completes
++  /// (debug capture mode) instead of waiting for a random idle gap.
++  final bool loop;
++
+   @override
+   State<_LoopingFrog> createState() => _LoopingFrogState();
+ }
+@@ -296,6 +313,14 @@ class _LoopingFrogState extends State<_LoopingFrog>
+   void _scheduleNextPlay() {
+     _timer?.cancel();
+     if (!foreground) return;
++    if (widget.loop) {
++      // Debug capture: keep the animation running without idle gaps.
++      _timer = Timer(const Duration(milliseconds: 16), () {
++        if (!mounted) return;
++        setState(() => _current = widget.animation);
++      });
++      return;
++    }
+     final gapMs = 2500 + _rng.nextInt(7500);
+     _timer = Timer(Duration(milliseconds: gapMs), () {
+       if (!mounted) return;
+-- 
+2.43.0
+
