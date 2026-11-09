@@ -190,6 +190,27 @@ class FroggyView extends StatelessWidget {
                 shadows: shadows,
               ),
             ),
+          // Always-visible bottom-right corner readout (independent of the
+          // showWeather toggle): current temperature plus today's min/max,
+          if (overlay && weather != null)
+            Positioned(
+              // Bottom-right corner readout: current temperature plus today's
+              // min/max, e.g. `12° (3…9°)`. On kiosk layouts (no corner gear)
+              // this is exactly where the mood caption pill used to sit. When
+              // a gear button occupies that corner, the readout is lifted
+              // above it.
+              right: statusPad,
+              bottom: cornerGear ? statusPad + 48 : statusPad,
+              child: IgnorePointer(
+                child: _CornerTemp(
+                  weather: weather!,
+                  settings: settings,
+                  size: (h * 0.075).clamp(16.0, tv ? 22.0 : 30.0) *
+                      settings.overlayScale,
+                  shadows: shadows,
+                ),
+              ),
+            ),
           if (overlay && hasTopContent)
             Positioned(
               top: 0,
@@ -249,6 +270,38 @@ class FroggyView extends StatelessWidget {
               ),
             ),
         ],
+      ),
+    );
+  }
+}
+
+class _CornerTemp extends StatelessWidget {
+  const _CornerTemp({
+    required this.weather,
+    required this.settings,
+    required this.size,
+    required this.shadows,
+  });
+
+  final WeatherData weather;
+  final Settings settings;
+  final double size;
+  final List<Shadow> shadows;
+
+  @override
+  Widget build(BuildContext context) {
+    final s = settings;
+    final w = weather;
+    final range = (w.tempMinC != null && w.tempMaxC != null)
+        ? ' (${s.formatTemp(w.tempMinC!)}…${s.formatTemp(w.tempMaxC!)})'
+        : '';
+    return Text(
+      '${s.formatTemp(w.temperatureC)}$range',
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: size,
+        fontWeight: FontWeight.w400,
+        shadows: shadows,
       ),
     );
   }
