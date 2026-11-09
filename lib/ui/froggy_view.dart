@@ -175,6 +175,25 @@ class FroggyView extends StatelessWidget {
                 ),
               ),
             ),
+          if (showLoc)
+            Positioned(
+              // Location label: LOWER line, same y coordinate as the mood
+              // caption pill (statusPad + statusIcon*1.5) — on the left,
+              // mirroring the pill on the right.
+              left: statusPad,
+              top: statusPad + statusIcon * 1.5,
+              child: IgnorePointer(
+                child: ConstrainedBox(
+                  constraints:
+                      BoxConstraints(maxWidth: h * 0.45),
+                  child: _LocationLabel(
+                    name: locationName!,
+                    size: statusIcon,
+                    shadows: shadows,
+                  ),
+                ),
+              ),
+            ),
           if (overlay && settings.showMoodCaption)
             Positioned(
               // Sits top-right, directly under the location name: the status
@@ -222,19 +241,6 @@ class FroggyView extends StatelessWidget {
                       return Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          if (showLoc)
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: ConstrainedBox(
-                                constraints:
-                                    BoxConstraints(maxWidth: c.maxWidth * 0.4),
-                                child: _LocationLabel(
-                                  name: locationName!,
-                                  size: statusIcon,
-                                  shadows: shadows,
-                                ),
-                              ),
-                            ),
                           Expanded(
                             child: Align(
                               alignment: Alignment.centerRight,
